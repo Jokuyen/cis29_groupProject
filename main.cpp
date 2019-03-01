@@ -10,6 +10,7 @@
  */
 
 #include <SFML/Graphics.hpp>
+#include "Collision.h"
 
 #include "screens.h"
 
@@ -64,8 +65,8 @@ int main(int argc, char** argv)
 	}
 	*/
 
-    const int SCREENWIDTH = 1680;
-    const int SCREENHEIGHT = 1050;
+	const int SCREENWIDTH = 2048;
+	const int SCREENHEIGHT = 1536;
     
     // Applications variables
     std::vector<cScreen*> Screens;

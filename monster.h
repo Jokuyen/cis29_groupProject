@@ -3,38 +3,30 @@
 
 #include <SFML/Graphics.hpp>
 
-const sf::Vector2f monsterSize(32.0f, 32.0f);
-
 class Monster : public sf::RectangleShape
 {
 public:
-	Monster(const std::string& filename);
+	Monster(const std::string& filename, const int SCREENWIDTH, const int BG_HEIGHT);
 	void draw(sf::RenderWindow& App);
 
 	enum Direction { Right, Left };
 	bool move(); // Return false if unable to move
 
 private:
+	const int BG_WIDTH;
+	const int BG_HEIGHT;
+
 	sf::Texture monsterTexture;
 	sf::Sprite monsterSprite;
 	Direction direction = Right;
 };
 
-Monster::Monster(const std::string& filename)
+Monster::Monster(const std::string& filename, const int SCREENWIDTH, const int BG_HEIGHT) :
+	BG_WIDTH(SCREENWIDTH), BG_HEIGHT(BG_HEIGHT)
 {
-	monsterTexture.loadFromFile(filename);
-	if (!monsterTexture.loadFromFile("monster.png"))
-	{
-		std::cerr << "Could not load monster.png\n";
-	}
+	Collision::CreateTextureAndBitmask(monsterTexture, filename);
 
-	sf::IntRect monsterImageLocationInTexture;
-	monsterImageLocationInTexture.height = monsterSize.y;
-	monsterImageLocationInTexture.width = monsterSize.x;
-
-	sf::Sprite sprite(monsterTexture);
-	monsterSprite = sprite;
-
+	monsterSprite.setTexture(monsterTexture);
 	monsterSprite.setOrigin(0, -300);
 }
 
@@ -46,7 +38,7 @@ void Monster::draw(sf::RenderWindow& App)
 bool Monster::move()
 {
 	////////// CHANGE WINDOW RESOLUTION LATER /////////////
-	if (monsterSprite.getPosition().x != 1550 && direction == Right) // Hitting right limit
+	if (monsterSprite.getPosition().x != BG_WIDTH - 64 && direction == Right) // Hitting right limit
 	{
 		monsterSprite.move(sf::Vector2f(1.f, 0.f));
 	}
@@ -55,7 +47,7 @@ bool Monster::move()
 		direction = Left;
 	}
 
-	if (monsterSprite.getPosition().x != 20 && direction == Left)
+	if (monsterSprite.getPosition().x != 0 && direction == Left)
 	{
 		monsterSprite.move(sf::Vector2f(-1.f, 0.f));
 	}

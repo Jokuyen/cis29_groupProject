@@ -35,19 +35,20 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Text txt("Name"
                    "\t\t\t\t\t\t\t\t\tScore:  "
                    "\tLives:  "
-                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
+                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
                  "\t\t\t\t\t\t\t\tQuit(Q)", font);
     txt.setCharacterSize(40);
     txt.setFillColor(sf::Color::White);
     
-    sf::RectangleShape background(sf::Vector2f(1650.0f, 900.0f));
-    background.setPosition(sf::Vector2f(15, 50));
+	const int BG_HEIGHT = SCREENHEIGHT - 100;
+    sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
+    background.setPosition(sf::Vector2f(0, 50));
     sf::Texture backgroundTexture;
     backgroundTexture.loadFromFile("grass.jpg");
     background.setTexture(&backgroundTexture);
 
 	// Monsters
-	Monster monster(monsterImageFilename);
+	Monster monster(monsterImageFilename, SCREENWIDTH, BG_HEIGHT);
 
     sf::Event event;
     while (Running)
