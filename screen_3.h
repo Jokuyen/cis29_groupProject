@@ -47,12 +47,22 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     backgroundTexture.loadFromFile("grass.jpg");
     background.setTexture(&backgroundTexture);
 
+	// Monster Vector Array
+	std::vector<Monster>::const_iterator monsterIterator;
+	std::vector<Monster> monsterArray;
+
 	// Monsters
-	Monster monster(monsterImageFilename, SCREENWIDTH, BG_HEIGHT);
+	sf::Texture monsterTexture;
+	Collision::CreateTextureAndBitmask(monsterTexture, monsterImageFilename);
+
+	sf::Clock clock;
 
     sf::Event event;
     while (Running)
     {
+		// Time management
+		sf::Time timer = clock.getElapsedTime();
+		//std::cout << timer.asSeconds() << std::endl;
 
         // Verifying events
         while (App.pollEvent(event))
@@ -78,12 +88,36 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 }
             }
         }
+
+		// Create new enemies
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+		{
+			Monster monster(&monsterTexture, SCREENWIDTH, BG_HEIGHT);
+			monsterArray.push_back(monster);
+		}
         
         App.clear();
         App.draw(txt);
         App.draw(background);
-		monster.draw(App);
-		monster.move();
+
+		// Draw enemies
+		int counter = 0;
+		for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+		{
+			monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
+
+			// If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
+			if (timer.asSeconds() > 2.5)
+			{
+				monsterArray[counter].increaseSpeed();
+				clock.restart();
+			}
+
+			monsterArray[counter].draw(App);
+
+			counter++;
+		}
+
         App.display();
     }
     

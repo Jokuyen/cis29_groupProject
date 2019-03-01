@@ -18,53 +18,6 @@
 
 int main(int argc, char** argv)
 {
-	/*
-	sf::RenderWindow renderWindow(sf::VideoMode(640, 480), "Demo Game");
-
-	sf::Event event;
-
-	sf::Texture texture;
-	if (!texture.loadFromFile("monster.png"))
-	{
-		std::cerr << "Could not load monster.png\n";
-	}
-
-	sf::Sprite sprite(texture);
-
-	while (renderWindow.isOpen()) {
-		while (renderWindow.pollEvent(event)) 
-		{
-			if (event.type == sf::Event::EventType::Closed)
-				renderWindow.close();
-			// Key pressed
-			if (event.type == sf::Event::KeyPressed)
-			{
-				switch (event.key.code)
-				{
-				case sf::Keyboard::Up: // Move up
-					sprite.move(sf::Vector2f(0.f, -10.f));;
-					break;
-				case sf::Keyboard::Down: // Move down
-					sprite.move(sf::Vector2f(0.f, 10.f));;
-					break;
-				case sf::Keyboard::Left: // Move left
-					sprite.move(sf::Vector2f(-10.f, 0.f));;
-					break;
-				case sf::Keyboard::Right: // Move right
-					sprite.move(sf::Vector2f(10.f, 0.f));;
-					break;
-				default:
-					break;
-				}
-			}
-		}
-
-		renderWindow.clear();
-		renderWindow.draw(sprite);
-		renderWindow.display();
-	}
-	*/
-
 	const int SCREENWIDTH = 2048;
 	const int SCREENHEIGHT = 1536;
     
@@ -72,8 +25,9 @@ int main(int argc, char** argv)
     std::vector<cScreen*> Screens;
     int screen = 0;
     
-    // Window creation
+    // Window creation & set frame rate
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "Gold Rush");
+	App.setFramerateLimit(60);
     
     // Screens preparation
     screen_0 s0;
