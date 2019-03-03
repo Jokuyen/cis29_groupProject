@@ -9,25 +9,22 @@
  Screen 2: Help/Controls Screen
  */
 
-#include <SFML/Graphics.hpp>
-#include "Collision.h"
-
-#include "screens.h"
-
 #include <iostream>
+#include <SFML/Graphics.hpp>
+#include "screens.h"
+#include "Collision.h"
 
 int main(int argc, char** argv)
 {
-	const int SCREENWIDTH = 2048;
-	const int SCREENHEIGHT = 1536;
+    const int SCREENWIDTH = 1680;
+    const int SCREENHEIGHT = 1050;
     
     // Applications variables
     std::vector<cScreen*> Screens;
     int screen = 0;
     
-    // Window creation & set frame rate
-    sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "Gold Rush");
-	App.setFramerateLimit(60);
+    // Window creation
+    sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "CIS 29 Game Project");
     
     // Screens preparation
     screen_0 s0;
@@ -38,6 +35,8 @@ int main(int argc, char** argv)
     Screens.push_back(&s2);
     screen_3 s3;
     Screens.push_back(&s3);
+    screen_4 s4;
+    Screens.push_back(&s4);
     
     // Main loop
     while (screen >= 0)

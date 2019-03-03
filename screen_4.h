@@ -3,14 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 
-class screen_2 : public cScreen
+class screen_4 : public cScreen
 {
 public:
-    screen_2(void) { }
+    screen_4(void) { }
     virtual int Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT);
 };
 
-int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
+int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
 {
     bool Running = true;
     
@@ -21,7 +21,7 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         std::cout << "can't load font in screen_1" << std::endl;
         return (-1);
     }
-    sf::Text text("Controls \nW: Move up \nS: Move down \nA: Move left \nD: Move right \n\nO: Attack \nP: Defend", font);
+    sf::Text text("Game Over", font);
     text.setCharacterSize(70);
     text.setFillColor(sf::Color::White);
     
@@ -39,10 +39,10 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    case sf::Keyboard::Backspace: // Return to screen_1
-                        return (1);
+                    case sf::Keyboard::Return: // Progress to screen_2
+                        return (0);
                         break;
-                    case sf::Keyboard::Return: // Return to screen_1
+                    case sf::Keyboard::Backspace: // Return to screen_0
                         return (3);
                         break;
                     default:

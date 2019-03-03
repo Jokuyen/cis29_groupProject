@@ -9,5 +9,6 @@
 #include "screen_1.h"
 #include "screen_2.h"
 #include "screen_3.h"
+#include "screen_4.h"
 
 #endif // SCREENS_H

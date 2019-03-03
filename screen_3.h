@@ -9,7 +9,13 @@
 #ifndef screen_3_h
 #define screen_3_h
 
-#include "monster.h"
+#include "Monster.h"
+#include "Collision.h"
+#include "Player.h"
+#include <iostream>
+
+using namespace std;
+
 const std::string monsterImageFilename = "monster.png";
 
 class screen_3 : public cScreen
@@ -32,38 +38,44 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     }
     
     //Will need to link player object here.
-    sf::Text txt("Name"
-                   "\t\t\t\t\t\t\t\t\tScore:  "
-                   "\tLives:  "
-                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
+    sf::Text txt("Gold Rush"
+                 "\t\t\t\t\t\t\tScore:  "
+                 "\tLives:  "
+                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
                  "\t\t\t\t\t\t\t\tQuit(Q)", font);
     txt.setCharacterSize(40);
     txt.setFillColor(sf::Color::White);
     
-	const int BG_HEIGHT = SCREENHEIGHT - 100;
+    const int BG_HEIGHT = SCREENHEIGHT - 50;
     sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
     background.setPosition(sf::Vector2f(0, 50));
     sf::Texture backgroundTexture;
     backgroundTexture.loadFromFile("grass.jpg");
     background.setTexture(&backgroundTexture);
-
-	// Monster Vector Array
-	std::vector<Monster>::const_iterator monsterIterator;
-	std::vector<Monster> monsterArray;
-
-	// Monsters
-	sf::Texture monsterTexture;
-	Collision::CreateTextureAndBitmask(monsterTexture, monsterImageFilename);
-
-	sf::Clock clock;
-
+    
+    // Monster Vector Array
+    std::vector<Monster>::const_iterator monsterIterator;
+    std::vector<Monster> monsterArray;
+    
+    // Monsters
+    sf::Texture monsterTexture;
+    Collision::CreateTextureAndBitmask(monsterTexture, monsterImageFilename);
+    
+    sf::Texture playerTextureOne;
+    playerTextureOne.loadFromFile("playertempone.png");
+    sf::Texture playerTextureTwo;
+    playerTextureTwo.loadFromFile("playertemptwo.png");
+    Player p(playerTextureOne, playerTextureTwo, SCREENWIDTH, BG_HEIGHT);
+    
+    sf::Clock clock;
+    
     sf::Event event;
     while (Running)
     {
-		// Time management
-		sf::Time timer = clock.getElapsedTime();
-		//std::cout << timer.asSeconds() << std::endl;
-
+        // Time management
+        sf::Time timer = clock.getElapsedTime();
+        //std::cout << timer.asSeconds() << std::endl;
+        
         // Verifying events
         while (App.pollEvent(event))
         {
@@ -75,49 +87,76 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    //instructions
+                        //instructions
                     case sf::Keyboard::Backspace: // Back to screen 2
                         return (2);
                         break;
-                    //quit
+                        //quit
                     case sf::Keyboard::Q: // Back to screen 0
                         return (0);
+                        break;
+                    case sf::Keyboard::Return: // Return to screen_1
+                        return (4);
+                        break;
+                    case sf::Keyboard::S:
+                        p.applyShield();
+                        break;
+                    case sf::Keyboard::Right:
+                        p.move(Player::Right);
+                        break;
+                    case sf::Keyboard::Left:
+                        p.move(Player::Left);
+                        break;
+                    case sf::Keyboard::Up:
+                        p.move(Player::Up);
+                        break;
+                    case sf::Keyboard::Down:
+                        p.move(Player::Down);
                         break;
                     default:
                         break;
                 }
             }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+            {
+                Monster monster(monsterTexture, SCREENWIDTH, BG_HEIGHT);
+                monsterArray.push_back(monster);
+            }
+            
         }
-
-		// Create new enemies
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
-		{
-			Monster monster(&monsterTexture, SCREENWIDTH, BG_HEIGHT);
-			monsterArray.push_back(monster);
-		}
+        
+        // Create new enemies
         
         App.clear();
         App.draw(txt);
         App.draw(background);
-
-		// Draw enemies
-		int counter = 0;
-		for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
-		{
-			monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
-
-			// If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
-			if (timer.asSeconds() > 2.5)
-			{
-				monsterArray[counter].increaseSpeed();
-				clock.restart();
-			}
-
-			monsterArray[counter].draw(App);
-
-			counter++;
-		}
-
+        p.draw(App);
+        
+        // Draw enemies
+        
+        //cout << monsterArray.size() << endl;
+        int counter = 0;
+        for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+        {
+            if(p.getPosition() == monsterArray[counter].getPosition())
+            {
+                //std::cout << p.getPosition() << "     " << monsterArray[counter].getPosition() << std::endl;
+                p.loseLife();
+            }
+            monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
+            
+            // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
+            if (timer.asSeconds() > 2.5)
+            {
+                //monsterArray[counter].increaseSpeed();
+                clock.restart();
+            }
+            
+            monsterArray[counter].draw(App);
+            
+            counter++;
+        }
+        
         App.display();
     }
     

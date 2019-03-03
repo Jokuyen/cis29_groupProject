@@ -55,7 +55,6 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             }
         }
         
-
         App.clear();
         App.draw(text);
         App.display();
