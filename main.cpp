@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     
     // Window creation
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "CIS 29 Game Project");
-    
+    App.setFramerateLimit(60);
     // Screens preparation
     screen_0 s0;
     Screens.push_back(&s0);
