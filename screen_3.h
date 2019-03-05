@@ -37,21 +37,21 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         return (-1);
     }
     
-    //Will need to link player object here.
-    sf::Text txt("Gold Rush"
-                 "\t\t\t\t\t\t\tScore:  "
-                 "\tLives:  "
-                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
-                 "\t\t\t\t\t\t\t\tQuit(Q)", font);
-    txt.setCharacterSize(40);
-    txt.setFillColor(sf::Color::White);
-    
-    const int BG_HEIGHT = SCREENHEIGHT - 50;
-    sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
-    background.setPosition(sf::Vector2f(0, 50));
-    sf::Texture backgroundTexture;
-    backgroundTexture.loadFromFile("grass.jpg");
-    background.setTexture(&backgroundTexture);
+	//Will need to link player object here.
+	sf::Text txt("Name"
+		"\t\t\t\t\t\t\t\t\tScore:  "
+		"\tLives:  "
+		"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
+		"\t\t\t\t\t\t\t\tQuit(Q)", font);
+	txt.setCharacterSize(40);
+	txt.setFillColor(sf::Color::White);
+
+	const int BG_HEIGHT = SCREENHEIGHT - 100;
+	sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
+	background.setPosition(sf::Vector2f(0, 50));
+	sf::Texture backgroundTexture;
+	backgroundTexture.loadFromFile("grass.jpg");
+	background.setTexture(&backgroundTexture);
     
     // Monster Vector Array
     std::vector<Monster>::const_iterator monsterIterator;
@@ -117,16 +117,14 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                         break;
                 }
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) // Create new enemies
             {
                 Monster monster(monsterTexture, SCREENWIDTH, BG_HEIGHT);
                 monsterArray.push_back(monster);
             }
             
         }
-        
-        // Create new enemies
-        
+
         App.clear();
         App.draw(txt);
         App.draw(background);
@@ -148,11 +146,20 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
             if (timer.asSeconds() > 2.5)
             {
-                //monsterArray[counter].increaseSpeed();
+                monsterArray[counter].increaseSpeed();
                 clock.restart();
             }
             
             monsterArray[counter].draw(App);
+
+			if (Collision::PixelPerfectTest(monsterArray[counter].getSprite(), p.getSprite()))
+			{
+				std::cout << "Collision" << std::endl;
+			}
+			else
+			{
+				std::cout << "No Collision" << std::endl;
+			}
             
             counter++;
         }
