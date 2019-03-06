@@ -11,7 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 
-static sf::Vector2f BackgroundSize = sf::Vector2f(1650.0f, 1000.0f);
+static sf::Vector2f BackgroundSize = sf::Vector2f(2048.0f, 1436.0f);
 
 class Entity
 {

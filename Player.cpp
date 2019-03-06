@@ -33,24 +33,44 @@ void Player::move(Direction d)
     switch (d)
     {
         case Up:
-            sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 30.0f);
+            if (sprite.getPosition().y < 80.0f)
+                break;
+            else
+                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 30.0f);
+            /*
             if (sprite.getPosition().y < 50.0f)
                 sprite.setPosition(sprite.getPosition().x, BackgroundSize.y - 1.0f);
+             */
             break;
         case Down:
-            sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 30.0f);
+            if (sprite.getPosition().y > BackgroundSize.y-50.0f)
+                break;
+            else
+                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 30.0f);
+            /*
             if (sprite.getPosition().y > BackgroundSize.y)
                 sprite.setPosition(sprite.getPosition().x, 1.0f+50);
+             */
             break;
         case Left:
-            sprite.setPosition(sprite.getPosition().x - 30.0f,sprite.getPosition().y);
+            if (sprite.getPosition().x < 0.0f)
+                break;
+            else
+                sprite.setPosition(sprite.getPosition().x - 30.0f,sprite.getPosition().y);
+            /*
             if (sprite.getPosition().x < 0.0f)
                 sprite.setPosition(BackgroundSize.x - 1.0f,sprite.getPosition().y);
+             */
             break;
         case Right:
-            sprite.setPosition(sprite.getPosition().x + 30.0f, sprite.getPosition().y);
-            if (sprite.getPosition().x+200.0f > BackgroundSize.x)
+            if (sprite.getPosition().x > BackgroundSize.x-100)
+                break;
+            else
+                sprite.setPosition(sprite.getPosition().x + 30.0f, sprite.getPosition().y);
+            /*
+            if (sprite.getPosition().x > BackgroundSize.x)
                 sprite.setPosition(1.0f,sprite.getPosition().y);
+             */
             break;
         default:
             ;
@@ -61,6 +81,7 @@ void Player::move(Direction d)
 void Player::applyShield()
 {
     shield = true;
+    cout << "shieldAPP" << endl;
 }
 
 
@@ -70,6 +91,10 @@ void Player::loseLife()
     if(shield == false)
     {
         lives--;
+    }
+    else
+    {
+        cout << "shield" << endl;
     }
     shield = false;
 }
