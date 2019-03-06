@@ -38,6 +38,8 @@ int main(int argc, char** argv)
 	Screens.push_back(&s2);
 	screen_3 s3;
 	Screens.push_back(&s3);
+	screen_4 s4;
+	Screens.push_back(&s4);
 
 	// Main loop
 	while (screen >= 0)

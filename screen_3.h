@@ -50,7 +50,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
 	background.setPosition(sf::Vector2f(0, 50));
 	sf::Texture backgroundTexture;
-	backgroundTexture.loadFromFile("grass.jpg");
+	backgroundTexture.loadFromFile("grass.png");
 	background.setTexture(&backgroundTexture);
     
     // Monster Vector Array
