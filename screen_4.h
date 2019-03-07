@@ -40,7 +40,7 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 switch (event.key.code)
                 {
                     case sf::Keyboard::Return: // Progress to screen_2
-                        return (0);
+                        return (5);
                         break;
                     case sf::Keyboard::Backspace: // Return to screen_0
                         return (3);
