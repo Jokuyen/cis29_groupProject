@@ -155,10 +155,18 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			if (Collision::PixelPerfectTest(monsterArray[counter].getSprite(), p.getSprite()))
 			{
 				std::cout << "Collision" << std::endl;
+				monsterArray[counter].alive = false; // Kill monster upon collision
 			}
 			else
 			{
 				std::cout << "No Collision" << std::endl;
+			}
+
+			// Delete dead monsters
+			if (monsterArray[counter].alive == false)
+			{
+				monsterArray.erase(monsterIterator);
+				break;
 			}
             
             counter++;
