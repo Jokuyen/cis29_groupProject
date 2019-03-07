@@ -7,6 +7,7 @@
  Screen 0: Introduction Screen (This is where the name of the game should be)
  Screen 1: Gameplay Screen
  Screen 2: Help/Controls Screen
+ Screen 5: Score Board
  */
 
 #include <SFML/Graphics.hpp>
@@ -40,6 +41,8 @@ int main(int argc, char** argv)
 	Screens.push_back(&s3);
 	screen_4 s4;
 	Screens.push_back(&s4);
+	screen_5 s5;
+	Screens.push_back(&s5);
 
 	// Main loop
 	while (screen >= 0)
