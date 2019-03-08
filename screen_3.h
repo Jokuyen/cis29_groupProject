@@ -2,8 +2,8 @@
 //  screen_3.h
 //  jscreens
 //
-//  Created by Mihika Marathe on 2/24/19.
-//  Copyright © 2019 Mihika Marathe. All rights reserved.
+//  Created by Mihika Marathe on 2/24/19 and Felicia Dewanaga on 3/7/19.
+//  Copyright © 2019 Mihika Marathe and Felicia Dewanaga on 3/7/19. All rights reserved.
 //
 
 #ifndef screen_3_h
@@ -13,6 +13,7 @@
 #include "Collision.h"
 #include "Player.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ public:
 int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
 {
     bool Running = true;
-    
+
     // Setup font
     sf::Font font;
     if (!font.loadFromFile("fake receipt.ttf"))
@@ -36,15 +37,15 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         std::cout << "can't load font in screen_0" << std::endl;
         return (-1);
     }
-    
+
 	//Will need to link player object here.
-	sf::Text txt("Name"
+	/*sf::Text txt("Name"
 		"\t\t\t\t\t\t\t\t\tScore:  "
 		"\tLives:  "
 		"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
 		"\t\t\t\t\t\t\t\tQuit(Q)", font);
-	txt.setCharacterSize(40);
-	txt.setFillColor(sf::Color::White);
+     */
+
 
 	const int BG_HEIGHT = SCREENHEIGHT - 100;
 	sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
@@ -52,30 +53,36 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	sf::Texture backgroundTexture;
 	backgroundTexture.loadFromFile("grass.png");
 	background.setTexture(&backgroundTexture);
-    
+
     // Monster Vector Array
     std::vector<Monster>::const_iterator monsterIterator;
     std::vector<Monster> monsterArray;
-    
+
     // Monsters
     sf::Texture monsterTexture;
     Collision::CreateTextureAndBitmask(monsterTexture, monsterImageFilename);
-    
+
     sf::Texture playerTextureOne;
     playerTextureOne.loadFromFile("playertempone.png");
     sf::Texture playerTextureTwo;
     playerTextureTwo.loadFromFile("playertemptwo.png");
     Player p(playerTextureOne, playerTextureTwo, SCREENWIDTH, BG_HEIGHT);
-    
+
+
+    string name = "Name";
+    sf::Text txt(name + "                   " + "Score: " + to_string(p.getScore()) + "                 " + "Lives: " + to_string(p.getLives()), font);
+    txt.setCharacterSize(20);
+	txt.setFillColor(sf::Color::White);
+
     sf::Clock clock;
-    
+
     sf::Event event;
     while (Running)
     {
         // Time management
         sf::Time timer = clock.getElapsedTime();
         //std::cout << timer.asSeconds() << std::endl;
-        
+
         // Verifying events
         while (App.pollEvent(event))
         {
@@ -122,16 +129,18 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 Monster monster(monsterTexture, SCREENWIDTH, BG_HEIGHT);
                 monsterArray.push_back(monster);
             }
-            
+
         }
 
+
         App.clear();
-        App.draw(txt);
+        //App.draw(txt);
         App.draw(background);
         p.draw(App);
-        
+
+
         // Draw enemies
-        
+
         //cout << monsterArray.size() << endl;
         int counter = 0;
         for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
@@ -142,39 +151,47 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 p.loseLife();
             }
             monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
-            
+
             // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
             if (timer.asSeconds() > 2.5)
             {
                 monsterArray[counter].increaseSpeed();
                 clock.restart();
             }
-            
+
             monsterArray[counter].draw(App);
 
+            /*
 			if (Collision::PixelPerfectTest(monsterArray[counter].getSprite(), p.getSprite()))
 			{
 				std::cout << "Collision" << std::endl;
-				monsterArray[counter].alive = false; // Kill monster upon collision
 			}
+             */
+            if (p.hitByMonster(monsterArray[counter].getPosition().x, monsterArray[counter].getPosition().y, monsterArray[counter].size()))
+            {
+                if (p.getHit() == -1) {
+                    std::cout << "Player hit by Monster" << std::endl;
+                    p.setHit(counter);
+                    p.loseLife();
+                    txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+                }
+            }
 			else
 			{
-				std::cout << "No Collision" << std::endl;
+			    if (p.getHit() == counter)
+                    p.setHit(-1);
+				//std::cout << "No Collision" << std::endl;
 			}
 
-			// Delete dead monsters
-			if (monsterArray[counter].alive == false)
-			{
-				monsterArray.erase(monsterIterator);
-				break;
-			}
-            
             counter++;
         }
-        
+
+
+
+        App.draw(txt);
         App.display();
     }
-    
+
     // Never reach this point normally, but just in case, exit the application
     return (-1);
 }

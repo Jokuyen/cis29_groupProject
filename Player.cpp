@@ -2,20 +2,23 @@
 //  Player.cpp
 //  jscreens
 //
-//  Created by Mihika Marathe on 3/1/19.
-//  Copyright © 2019 Mihika Marathe. All rights reserved.
+//  Created by Mihika Marathe on 3/1/19 and Felicia Dewanaga on 3/7/19.
+//  Copyright © 2019 Mihika Marathe and Felicia Dewanaga on 3/7/19. All rights reserved.
 //
 
 #include "Player.h"
+#include <cmath>
 
 Player::Player(sf::Texture& textone, sf::Texture& texttwo, float h, float w): Entity(textone, w, h)
 {
     textureone = textone;
     texturetwo = texttwo;
     texture = 1;
-    lives = 3;
+    lives = 20;
     score = 0;
     shield = false;
+    sprite.setOrigin(sprite.getLocalBounds().width/2.0f,sprite.getLocalBounds().height / 2.0f);
+    hit = -1;
 }
 
 void Player::move(Direction d)
@@ -75,7 +78,7 @@ void Player::move(Direction d)
         default:
             ;
     };
-    
+
 }
 
 void Player::applyShield()
@@ -115,3 +118,21 @@ bool Player::getShield()
 }
 
 Player::~Player(){};
+
+
+bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size, bool debug)
+{
+
+    float diffX = getPosition().x - monster_x;
+    float diffY = getPosition().y - monster_y;
+
+    if (debug) {
+        std::cout <<  "player position = (" << getPosition().x << ", " << getPosition().y << ")" << std::endl;
+        std::cout <<  "monster position = (" << monster_x << ", " << monster_y << ")" << std::endl;
+        std::cout << "dist=" << std::sqrt(diffX * diffX + diffY * diffY) << " < " <<  (size().x + monster_size.x) / 2.0f << std::endl;
+        std::cout <<  "player size = " << size().x << "  monster size = " << monster_size.x << " " << std::endl;
+    }
+    return std::sqrt(diffX * diffX + diffY * diffY) < (size().x + monster_size.x) / 2.0f;
+
+
+}
