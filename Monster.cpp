@@ -1,10 +1,11 @@
 //  monster.cpp
-//  Created by Johnny Nguyen on 02-16-19.
+//  Created by Johnny Nguyen on 02-16-19 and Felicia Dewanaga on 3/8/19.
 
 #include "Monster.h"
 
-Monster::Monster(sf::Texture& monsterTexture, const int SCREENWIDTH, const int BG_HEIGHT) : Entity(monsterTexture, SCREENWIDTH / 2, BG_HEIGHT / 2) 
+Monster::Monster(sf::Texture& monsterTexture, const int SCREENWIDTH, const int BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH/2, BG_HEIGHT/2)
 {
+    sprite.setOrigin(sprite.getLocalBounds().width/2.0f,sprite.getLocalBounds().height / 2.0f);
 }
 
 void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
