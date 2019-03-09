@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+const char* fontImage = "fake receipt.ttf";
 class cScreen
 {
 public:

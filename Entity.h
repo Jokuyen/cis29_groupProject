@@ -14,7 +14,6 @@
 static sf::Vector2f BackgroundSize = sf::Vector2f(2048.0f, 1436.0f);
 //static sf::Vector2f BackgroundSize = sf::Vector2f(1024.0f, 720.0f);
 
-
 class Entity
 {
 protected:

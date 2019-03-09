@@ -50,7 +50,7 @@ void Player::move(Direction d)
              */
             break;
         case Down:
-            if (sprite.getPosition().y > BackgroundSize.y-50.0f)
+            if (sprite.getPosition().y > BackgroundSize.y)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
@@ -60,7 +60,7 @@ void Player::move(Direction d)
              */
             break;
         case Left:
-            if (sprite.getPosition().x < 0.0f)
+            if (sprite.getPosition().x < size().x/2)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x - 10.0f,sprite.getPosition().y);
@@ -70,7 +70,7 @@ void Player::move(Direction d)
              */
             break;
         case Right:
-            if (sprite.getPosition().x > BackgroundSize.x-100)
+            if (sprite.getPosition().x > BackgroundSize.x-size().x/2)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x + 10.0f, sprite.getPosition().y);
@@ -82,7 +82,7 @@ void Player::move(Direction d)
         default:
             ;
     };
-    //shield = false;
+    shield = false;
     
 }
 
@@ -95,8 +95,8 @@ void Player::applyShield()
 
 void Player::loseShield()
 {
-	shield = false;
-	sprite.setTexture(texturetwo);
+    shield = false;
+    sprite.setTexture(texturetwo);
 }
 
 
@@ -151,4 +151,3 @@ bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monste
     
     
 }
-

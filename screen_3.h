@@ -17,7 +17,11 @@
 
 using namespace std;
 
-const std::string monsterImageFilename = "monster.png";
+const char* backgroundImage = "grass.png";
+const char* monsterImage = "monster.png";
+const char* playerImageOne = "playertempone.png";
+const char* playerImageTwo = "playertemptwo.png";
+const char* shieldImage = "shield.png";
 
 class screen_3 : public cScreen
 {
@@ -32,10 +36,16 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Setup font
     sf::Font font;
-    if (!font.loadFromFile("fake receipt.ttf"))
+    try { // throws error if file not opened
+        if(!font.loadFromFile(fontImage))
+        {
+            throw FileOpenException(fontImage);
+        }
+    }
+    catch(exception& e)
     {
-        std::cout << "can't load font in screen_0" << std::endl;
-        return (-1);
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
     }
     
     //bool pause = false;
@@ -52,7 +62,17 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
     background.setPosition(sf::Vector2f(0, 50));
     sf::Texture backgroundTexture;
-    backgroundTexture.loadFromFile("grass.png");
+    try { // throws error if file not opened
+        if(!backgroundTexture.loadFromFile(backgroundImage))
+        {
+            throw FileOpenException(backgroundImage);
+        }
+    }
+    catch(exception& e)
+    {
+        //cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
     background.setTexture(&backgroundTexture);
     
     // Monster Vector Array
@@ -61,14 +81,44 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Monsters
     sf::Texture monsterTexture;
-    Collision::CreateTextureAndBitmask(monsterTexture, monsterImageFilename);
+    Collision::CreateTextureAndBitmask(monsterTexture, monsterImage);
     
     sf::Texture playerTextureOne;
-    playerTextureOne.loadFromFile("playertempone.png");
+    try { // throws error if file not opened
+        if(!playerTextureOne.loadFromFile(playerImageOne))
+        {
+            throw FileOpenException(playerImageOne);
+        }
+    }
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
     sf::Texture playerTextureTwo;
-    playerTextureTwo.loadFromFile("playertemptwo.png");
+    try { // throws error if file not opened
+        if(!playerTextureTwo.loadFromFile(playerImageTwo))
+        {
+            throw FileOpenException(playerImageTwo);
+        }
+    }
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
     sf::Texture shieldTexture;
-    shieldTexture.loadFromFile("shield.png");
+    try { // throws error if file not opened
+        if(!shieldTexture.loadFromFile(shieldImage))
+        {
+            throw FileOpenException(shieldImage);
+        }
+    }
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
     Player p(playerTextureOne, playerTextureTwo, shieldTexture, SCREENWIDTH, BG_HEIGHT);
     
     string name = "Name";
@@ -84,7 +134,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     {
         // Time management
         sf::Time monsterSpeedTimer = monsterSpeedClock.getElapsedTime();
-
+        
         // Verifying events
         while (App.pollEvent(event))
         {
@@ -133,10 +183,10 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         {
             p.move(Player::Down);
         }
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			p.applyShield();
-		}
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        {
+            p.applyShield();
+        }
         
         App.clear();
         //App.draw(txt);
@@ -144,48 +194,48 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         p.draw(App);
         
         // Drawing enemies
-		int counter = 0;
-		for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
-		{
-			if (p.getPosition() == monsterArray[counter].getPosition())
-			{
-				//std::cout << p.getPosition() << "     " << monsterArray[counter].getPosition() << std::endl;
-				p.loseLife();
-			}
-			monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
-
-			// If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
-			if (monsterSpeedTimer.asSeconds() > 2.5)
-			{
-				monsterArray[counter].increaseSpeed();
-				monsterSpeedClock.restart();
-			}
-
-			monsterArray[counter].draw(App);
-
-			if (p.hitByMonster(monsterArray[counter].getPosition().x, monsterArray[counter].getPosition().y, monsterArray[counter].size()))
-			{
-				if (p.getHit() == -1) {
-					std::cout << "Player hit by Monster" << std::endl;
-					p.setHit(counter);
-					p.loseLife();
-					txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
-				}
-			}
-			else
-			{
-				if (p.getHit() == counter)
-					p.setHit(-1);
-				//std::cout << "No Collision" << std::endl;
-			}
-
-			counter++;
-		}
-
-
-
-		App.draw(txt);
-		App.display();
+        int counter = 0;
+        for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+        {
+            if (p.getPosition() == monsterArray[counter].getPosition())
+            {
+                //std::cout << p.getPosition() << "     " << monsterArray[counter].getPosition() << std::endl;
+                p.loseLife();
+            }
+            monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
+            
+            // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
+            if (monsterSpeedTimer.asSeconds() > 2.5)
+            {
+                monsterArray[counter].increaseSpeed();
+                monsterSpeedClock.restart();
+            }
+            
+            monsterArray[counter].draw(App);
+            
+            if (p.hitByMonster(monsterArray[counter].getPosition().x, monsterArray[counter].getPosition().y, monsterArray[counter].size()))
+            {
+                if (p.getHit() == -1) {
+                    std::cout << "Player hit by Monster" << std::endl;
+                    p.setHit(counter);
+                    p.loseLife();
+                    txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+                }
+            }
+            else
+            {
+                if (p.getHit() == counter)
+                    p.setHit(-1);
+                //std::cout << "No Collision" << std::endl;
+            }
+            
+            counter++;
+        }
+        
+        
+        
+        App.draw(txt);
+        App.display();
     }
     
     // Never reach this point normally, but just in case, exit the application

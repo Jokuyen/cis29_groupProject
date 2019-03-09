@@ -5,7 +5,6 @@
 
 Monster::Monster(sf::Texture& monsterTexture, const int SCREENWIDTH, const int BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH/2, BG_HEIGHT/2)
 {
-	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 }
 
 void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
