@@ -78,15 +78,13 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Time management variables
     sf::Clock monsterSpeedClock;
-    sf::Clock collisionDelayClock;
     
     sf::Event event;
     while (Running)
     {
         // Time management
         sf::Time monsterSpeedTimer = monsterSpeedClock.getElapsedTime();
-        sf::Time collisionDelayTimer = collisionDelayClock.getElapsedTime();
-        
+
         // Verifying events
         while (App.pollEvent(event))
         {
@@ -135,11 +133,10 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         {
             p.move(Player::Down);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            p.applyShield();
-        }
-        
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			p.applyShield();
+		}
         
         App.clear();
         //App.draw(txt);
@@ -147,38 +144,48 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         p.draw(App);
         
         // Drawing enemies
-        int counter = 0;
-        for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
-        {
-            monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
-            
-            // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
-            if (monsterSpeedTimer.asSeconds() > 2.5)
-            {
-                monsterArray[counter].increaseSpeed();
-                monsterSpeedClock.restart();
-            }
-            
-            monsterArray[counter].draw(App);
-            
-            if (Collision::PixelPerfectTest(monsterArray[counter].getSprite(), p.getSprite()))
-            {
-                /* If collisionDelayClock is more than selected seconds, allow to collision to occur and reset the clock
-                 This allows player some time to recover and prevents multiple collisions after the first one */
-                if (collisionDelayTimer.asSeconds() > 3)
-                {
-                    std::cout << "Player hit by monster" << std::endl;
-                    p.loseLife();
-                    txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
-                    collisionDelayClock.restart();
-                }
-            }
-            
-            counter++;
-        }
-        
-        App.draw(txt);
-        App.display();
+		int counter = 0;
+		for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+		{
+			if (p.getPosition() == monsterArray[counter].getPosition())
+			{
+				//std::cout << p.getPosition() << "     " << monsterArray[counter].getPosition() << std::endl;
+				p.loseLife();
+			}
+			monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
+
+			// If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
+			if (monsterSpeedTimer.asSeconds() > 2.5)
+			{
+				monsterArray[counter].increaseSpeed();
+				monsterSpeedClock.restart();
+			}
+
+			monsterArray[counter].draw(App);
+
+			if (p.hitByMonster(monsterArray[counter].getPosition().x, monsterArray[counter].getPosition().y, monsterArray[counter].size()))
+			{
+				if (p.getHit() == -1) {
+					std::cout << "Player hit by Monster" << std::endl;
+					p.setHit(counter);
+					p.loseLife();
+					txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+				}
+			}
+			else
+			{
+				if (p.getHit() == counter)
+					p.setHit(-1);
+				//std::cout << "No Collision" << std::endl;
+			}
+
+			counter++;
+		}
+
+
+
+		App.draw(txt);
+		App.display();
     }
     
     // Never reach this point normally, but just in case, exit the application

@@ -82,7 +82,7 @@ void Player::move(Direction d)
         default:
             ;
     };
-    shield = false;
+    //shield = false;
     
 }
 
@@ -91,6 +91,12 @@ void Player::applyShield()
     shield = true;
     sprite.setTexture(shieldtexture);
     cout << "shieldAPP" << endl;
+}
+
+void Player::loseShield()
+{
+	shield = false;
+	sprite.setTexture(texturetwo);
 }
 
 
