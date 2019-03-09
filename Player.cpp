@@ -82,7 +82,7 @@ void Player::move(Direction d)
         default:
             ;
     };
-    shield = false;
+    //shield = false;
     
 }
 
