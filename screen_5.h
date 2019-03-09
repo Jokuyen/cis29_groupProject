@@ -62,10 +62,16 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     
     sf::Font font;
-    if (!font.loadFromFile("fake receipt.ttf"))
+    try { // throws error if file not opened
+        if(!font.loadFromFile(fontImage))
+        {
+            throw FileOpenException(fontImage);
+        }
+    }
+    catch(exception& e)
     {
-        std::cout << "Unable to load font" << std::endl;
-        return (-1);
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
     }
     
     

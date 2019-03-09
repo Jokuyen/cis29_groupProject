@@ -16,10 +16,16 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Setup font
     sf::Font font;
-    if (!font.loadFromFile("fake receipt.ttf"))
+    try { // throws error if file not opened
+        if(!font.loadFromFile(fontImage))
+        {
+            throw FileOpenException(fontImage);
+        }
+    }
+    catch(exception& e)
     {
-        std::cout << "can't load font in screen_1" << std::endl;
-        return (-1);
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
     }
     sf::Text text("Game Over", font);
     text.setCharacterSize(70);
