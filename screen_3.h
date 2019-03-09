@@ -127,12 +127,16 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Time management variables
     sf::Clock monsterSpeedClock;
-    
+	sf::Clock shieldDelayClock;
+	sf::Clock shieldPopClock;
+   
     sf::Event event;
     while (Running)
     {
         // Time management
         sf::Time monsterSpeedTimer = monsterSpeedClock.getElapsedTime();
+		sf::Time shieldDelayTimer = shieldDelayClock.getElapsedTime();
+		sf::Time shieldPopTimer = shieldPopClock.getElapsedTime();
         
         // Verifying events
         while (App.pollEvent(event))
@@ -182,10 +186,20 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         {
             p.move(Player::Down);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        {
-            p.applyShield();
-        }
+		if (shieldDelayTimer.asSeconds() > 5)
+		{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			{
+				p.applyShield();
+				shieldDelayClock.restart();
+				shieldPopClock.restart();
+			}
+		}
+		if (shieldPopTimer.asSeconds() > 2.2 && shieldPopTimer.asSeconds() < 2.5) 
+		{
+			p.loseShield();
+		}
+
         
         App.clear();
         //App.draw(txt);
