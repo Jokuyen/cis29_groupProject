@@ -14,16 +14,15 @@ using namespace std;
 
 class Score
 {
-	int score;
-	string name;
+    int score;
+    string name;
 public:
-	Score() : score(0), name() {}
-	Score(int s, string nm) : score(s), name(nm) {}
-	int getScore() { return score; }
-	string getName() { return name; }
-	bool operator>(const Score obj) const;
-	string toString();
+    Score() : score(0), name() {}
+    Score(int s, string nm) : score(s), name(nm) {}
+    int getScore() { return score; }
+    string getName() { return name; }
+    bool operator>(const Score obj) const;
+    string toString();
 };
 
 ostream& operator<<(ostream& out, Score s);
-

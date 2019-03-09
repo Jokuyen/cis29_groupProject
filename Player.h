@@ -29,20 +29,20 @@ private:
     int hit;
     sf::Texture textureone;
     sf::Texture texturetwo;
+    sf::Texture shieldtexture;
 public:
-    Player(sf::Texture& textone, sf::Texture& texttwo, float h, float w);
+    Player(sf::Texture& textone, sf::Texture& texttwo, sf::Texture& stexture, float h, float w);
     void move(Direction d);
     void applyShield();
     void loseLife();
     int getLives();
     int getScore();
     bool getShield();
-    void setHit(int h) { hit = h; };
-    int getHit() const { return hit; };
-
+    
     ~Player();
-    bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size);
-
+    bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/);
+    
 };
 
 #endif /* Player_hpp */
+

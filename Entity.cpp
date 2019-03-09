@@ -5,9 +5,9 @@
 //  Created by Mihika Marathe on 3/1/19 and Felicia Dewanaga on 3/7/19.
 //  Copyright © 2019 Mihika Marathe and Felicia Dewanaga on 3/7/19. All rights reserved.
 //
-
-#include <stdio.h>
 #include "Entity.h"
+#include <stdio.h>
+
 
 using namespace std;
 

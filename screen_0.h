@@ -21,7 +21,7 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         std::cout << "can't load font in screen_0" << std::endl;
         return (-1);
     }
-    sf::Text text("Introduction Screen"
+    sf::Text text("Gold Rush"
                   "\n\nEnter: Next screen"
                   "\nBackspace: Previous screen", font);
     text.setCharacterSize(70);

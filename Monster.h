@@ -15,17 +15,17 @@ class Monster : public Entity
 public:
     // Constructor
     Monster(sf::Texture& monsterTexture, const int SCREENWIDTH, const int BG_HEIGHT);
-	~Monster();
+    ~Monster();
     
     // Monster stats
-	bool alive = true;
+    bool alive = true;
     int direction = 0; // 0 = Up, 1 = Down, 2 = Left, 3 = Right
     double movementSpeed = 2;
     int movementCounter = 0;
     int movementLength = 30;
     
     // Functions
-	int randomNumber(int max);
+    int randomNumber(int max);
     void increaseSpeed() { if (movementSpeed < 15) movementSpeed += 0.5; }
     void updateMovement(const int SCREENWIDTH, const int BG_HEIGHT);
 };

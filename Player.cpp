@@ -9,10 +9,11 @@
 #include "Player.h"
 #include <cmath>
 
-Player::Player(sf::Texture& textone, sf::Texture& texttwo, float h, float w): Entity(textone, w, h)
+Player::Player(sf::Texture& textone, sf::Texture& texttwo, sf::Texture& stexture, float h, float w): Entity(textone, w, h)
 {
     textureone = textone;
     texturetwo = texttwo;
+    shieldtexture = stexture;
     texture = 1;
     lives = 20;
     score = 0;
@@ -23,15 +24,18 @@ Player::Player(sf::Texture& textone, sf::Texture& texttwo, float h, float w): En
 
 void Player::move(Direction d)
 {
-    if(texture == 1)
+    if(shield == false)
     {
-        sprite.setTexture(texturetwo);
-        texture = 2;
-    }
-    else
-    {
-        sprite.setTexture(textureone);
-        texture = 1;
+        if(texture == 1)
+        {
+            sprite.setTexture(texturetwo);
+            texture = 2;
+        }
+        else
+        {
+            sprite.setTexture(textureone);
+            texture = 1;
+        }
     }
     switch (d)
     {
@@ -39,51 +43,53 @@ void Player::move(Direction d)
             if (sprite.getPosition().y < 80.0f)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 30.0f);
+                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 10.0f);
             /*
-            if (sprite.getPosition().y < 50.0f)
-                sprite.setPosition(sprite.getPosition().x, BackgroundSize.y - 1.0f);
+             if (sprite.getPosition().y < 50.0f)
+             sprite.setPosition(sprite.getPosition().x, BackgroundSize.y - 1.0f);
              */
             break;
         case Down:
             if (sprite.getPosition().y > BackgroundSize.y-50.0f)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 30.0f);
+                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
             /*
-            if (sprite.getPosition().y > BackgroundSize.y)
-                sprite.setPosition(sprite.getPosition().x, 1.0f+50);
+             if (sprite.getPosition().y > BackgroundSize.y)
+             sprite.setPosition(sprite.getPosition().x, 1.0f+50);
              */
             break;
         case Left:
             if (sprite.getPosition().x < 0.0f)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x - 30.0f,sprite.getPosition().y);
+                sprite.setPosition(sprite.getPosition().x - 10.0f,sprite.getPosition().y);
             /*
-            if (sprite.getPosition().x < 0.0f)
-                sprite.setPosition(BackgroundSize.x - 1.0f,sprite.getPosition().y);
+             if (sprite.getPosition().x < 0.0f)
+             sprite.setPosition(BackgroundSize.x - 1.0f,sprite.getPosition().y);
              */
             break;
         case Right:
             if (sprite.getPosition().x > BackgroundSize.x-100)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x + 30.0f, sprite.getPosition().y);
+                sprite.setPosition(sprite.getPosition().x + 10.0f, sprite.getPosition().y);
             /*
-            if (sprite.getPosition().x > BackgroundSize.x)
-                sprite.setPosition(1.0f,sprite.getPosition().y);
+             if (sprite.getPosition().x > BackgroundSize.x)
+             sprite.setPosition(1.0f,sprite.getPosition().y);
              */
             break;
         default:
             ;
     };
-
+    shield = false;
+    
 }
 
 void Player::applyShield()
 {
     shield = true;
+    sprite.setTexture(shieldtexture);
     cout << "shieldAPP" << endl;
 }
 
@@ -99,6 +105,7 @@ void Player::loseLife()
     {
         cout << "shield" << endl;
     }
+    sprite.setTexture(texturetwo);
     shield = false;
 }
 
@@ -120,19 +127,22 @@ bool Player::getShield()
 Player::~Player(){};
 
 
-bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size, bool debug)
+bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/)
 {
-
+    
     float diffX = getPosition().x - monster_x;
     float diffY = getPosition().y - monster_y;
-
-    if (debug) {
-        std::cout <<  "player position = (" << getPosition().x << ", " << getPosition().y << ")" << std::endl;
-        std::cout <<  "monster position = (" << monster_x << ", " << monster_y << ")" << std::endl;
-        std::cout << "dist=" << std::sqrt(diffX * diffX + diffY * diffY) << " < " <<  (size().x + monster_size.x) / 2.0f << std::endl;
-        std::cout <<  "player size = " << size().x << "  monster size = " << monster_size.x << " " << std::endl;
-    }
+    
+    /*
+     if (debug) {
+     std::cout <<  "player position = (" << getPosition().x << ", " << getPosition().y << ")" << std::endl;
+     std::cout <<  "monster position = (" << monster_x << ", " << monster_y << ")" << std::endl;
+     std::cout << "dist=" << std::sqrt(diffX * diffX + diffY * diffY) << " < " <<  (size().x + monster_size.x) / 2.0f << std::endl;
+     std::cout <<  "player size = " << size().x << "  monster size = " << monster_size.x << " " << std::endl;
+     }
+     */
     return std::sqrt(diffX * diffX + diffY * diffY) < (size().x + monster_size.x) / 2.0f;
-
-
+    
+    
 }
+
