@@ -12,7 +12,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "screens.h"
-#include "Collision.h"
 
 int main(int argc, char** argv)
 {
