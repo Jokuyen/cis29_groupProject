@@ -10,7 +10,6 @@
 #define screen_3_h
 
 #include "Monster.h"
-#include "Collision.h"
 #include "Player.h"
 #include <iostream>
 #include <string>
@@ -81,7 +80,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Monsters
     sf::Texture monsterTexture;
-    Collision::CreateTextureAndBitmask(monsterTexture, monsterImage);
+	monsterTexture.loadFromFile(monsterImage);
     
     sf::Texture playerTextureOne;
     try { // throws error if file not opened

@@ -20,7 +20,7 @@ public:
     // Monster stats
     bool alive = true;
     int direction = 0; // 0 = Up, 1 = Down, 2 = Left, 3 = Right
-    double movementSpeed = 2;
+    float movementSpeed = 2;
     int movementCounter = 0;
     int movementLength = 30;
     
