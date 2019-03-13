@@ -3,8 +3,10 @@
 
 #include "Monster.h"
 
-Monster::Monster(sf::Texture& monsterTexture, const int SCREENWIDTH, const int BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
+Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
 {
+	movementOneTexture = monsterTexture;
+	collisionTexture = monsterCollisionTexture;
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 }
 
@@ -55,14 +57,14 @@ void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
     {
         /* If randomNumber(5), and since we only have 4 numbers for direction,
          there will be a 4/5 chance that the monster will move. */
-        direction = randomNumber(5);
+        direction = randomNumber(6);
         movementCounter = 0;
     }
 }
 
 int Monster::randomNumber(int max)
 {
-    // Output random number from 0 to max
+    // Return random number from 0 to max
     int randomNumber;
     randomNumber = rand() % (max + 1);
     return randomNumber;

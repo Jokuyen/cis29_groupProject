@@ -17,7 +17,10 @@
 using namespace std;
 
 const char* backgroundImage = "grass.png";
+// Monster
 const char* monsterImage = "monster.png";
+const char* monsterCollisionImage = "monsterCollision.png";
+// Player
 const char* playerImageOne = "playertempone.png";
 const char* playerImageTwo = "playertemptwo.png";
 const char* shieldImage = "shield.png";
@@ -80,7 +83,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     // Monsters
     sf::Texture monsterTexture;
+	sf::Texture monsterCollisionTexture;
 	monsterTexture.loadFromFile(monsterImage);
+	monsterCollisionTexture.loadFromFile(monsterCollisionImage);
     
     sf::Texture playerTextureOne;
     try { // throws error if file not opened
@@ -126,6 +131,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     txt.setFillColor(sf::Color::White);
     
     // Time management variables
+	sf::Clock monsterSpawnClock;
     sf::Clock monsterSpeedClock;
 	sf::Clock shieldDelayClock;
 	sf::Clock shieldPopClock;
@@ -134,6 +140,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     while (Running)
     {
         // Time management
+		sf::Time monsterSpawnTimer = monsterSpawnClock.getElapsedTime();
         sf::Time monsterSpeedTimer = monsterSpeedClock.getElapsedTime();
 		sf::Time shieldDelayTimer = shieldDelayClock.getElapsedTime();
 		sf::Time shieldPopTimer = shieldPopClock.getElapsedTime();
@@ -161,11 +168,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     default:
                         break;
                 }
-            }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) // Create new enemies
-            {
-                Monster monster(monsterTexture, SCREENWIDTH, BG_HEIGHT);
-                monsterArray.push_back(monster);
             }
         }
         
@@ -206,7 +208,27 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         App.draw(background);
         p.draw(App);
         
-        // Drawing enemies
+        // Drawing monsters
+
+		if (monsterSpawnTimer.asSeconds() > 3.2) // Create new monster
+		{
+			int randomNumber;
+			randomNumber = rand() % 2;
+
+			if (randomNumber == 0) // Spawn from left side
+			{
+				Monster monster(monsterTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2)));
+				monsterArray.push_back(monster);
+			}
+			else if (randomNumber == 1) // Spawn from right side
+			{
+				Monster monster(monsterTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2)));
+				monsterArray.push_back(monster);
+			}
+
+			monsterSpawnClock.restart();
+		}
+
         int counter = 0;
         for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
         {
@@ -218,13 +240,11 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
             
             // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
-            if (monsterSpeedTimer.asSeconds() > 2.5)
-            {
-                monsterArray[counter].increaseSpeed();
-                monsterSpeedClock.restart();
-            }
-            
-            monsterArray[counter].draw(App);
+			if (monsterSpeedTimer.asSeconds() > 2.5)
+			{
+				monsterArray[counter].increaseSpeed();
+				monsterSpeedClock.restart();
+			}
             
             if (p.hitByMonster(monsterArray[counter].getPosition().x, monsterArray[counter].getPosition().y, monsterArray[counter].size()))
             {
@@ -233,15 +253,18 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     p.setHit(counter);
                     p.loseLife();
                     txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
-                }
+					monsterArray[counter].collisionAnimation();
+				}
             }
             else
             {
                 if (p.getHit() == counter)
                     p.setHit(-1);
+				monsterArray[counter].movementAnimation();
                 //std::cout << "No Collision" << std::endl;
             }
             
+			monsterArray[counter].draw(App);
             counter++;
         }
         

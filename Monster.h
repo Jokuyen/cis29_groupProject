@@ -12,17 +12,26 @@
 
 class Monster : public Entity
 {
+private:
+	// Textures
+	sf::Texture movementOneTexture;
+	sf::Texture collisionTexture;
+
 public:
     // Constructor
-    Monster(sf::Texture& monsterTexture, const int SCREENWIDTH, const int BG_HEIGHT);
+    Monster(sf::Texture& monsterTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT);
     ~Monster();
+
+	// Animations
+	void movementAnimation() { sprite.setTexture(movementOneTexture); }
+	void collisionAnimation() { sprite.setTexture(collisionTexture); }
     
     // Monster stats
     bool alive = true;
     int direction = 0; // 0 = Up, 1 = Down, 2 = Left, 3 = Right
     float movementSpeed = 2;
     int movementCounter = 0;
-    int movementLength = 30;
+    int movementLength = 55;
     
     // Functions
     int randomNumber(int max);
