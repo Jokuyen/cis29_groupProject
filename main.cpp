@@ -12,11 +12,14 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "screens.h"
+#include <cstdlib>
+#include <ctime>
 
 int main(int argc, char** argv)
 {
     const int SCREENWIDTH = 2048;
     const int SCREENHEIGHT = 1536;
+	srand(static_cast<unsigned int>(time(NULL))); // To randomize the rand() function within Monster::randomNumber()
     
     // Applications variables
     std::vector<cScreen*> Screens;
@@ -25,6 +28,7 @@ int main(int argc, char** argv)
     // Window creation
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "CIS 29 Game Project");
     App.setFramerateLimit(60);
+
     // Screens preparation
     screen_0 s0;
     Screens.push_back(&s0);
