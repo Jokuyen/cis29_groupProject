@@ -3,13 +3,23 @@
 
 #include "Monster.h"
 
+/*
+ Description: This is the constructor for the monster, it sets the movement texture, the collision texture, and the origin. It also calls the constructor of the parent class, Entity, to set the original texture and the starting position.
+ */
+
+
 Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
 {
-	movementOneTexture = monsterTexture;
-	collisionTexture = monsterCollisionTexture;
-	sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
+    movementOneTexture = monsterTexture;
+    collisionTexture = monsterCollisionTexture;
+    sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 }
 
+/*
+ Description: This method handles the movement of the monster. It uses a random number calculator to determine the direction and moves by the set speed. There are statements in place to make sure a monster does not move out of the boundaries and reacts correctly.
+ Parameters: width of the screen, height of the screen
+ 
+ */
 void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
 {
     if (direction == 0) // Up
@@ -62,12 +72,35 @@ void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
     }
 }
 
+/*
+ Description: This method returns a random number from 0 to max.
+ Paramaters: integer max
+ Return: integer generated
+ */
 int Monster::randomNumber(int max)
 {
-    // Return random number from 0 to max
+
     int randomNumber;
     randomNumber = rand() % (max + 1);
     return randomNumber;
+}
+
+/*
+ Description: This method returns the value of the alive member.
+ Return: boolean alive
+ */
+bool Monster::getAlive()
+{
+    return alive;
+}
+
+/*
+ Description: This function sets the member alive to the passed value.
+ Parameter: bool to set alive to
+ */
+void Monster::setAlive(bool a)
+{
+    alive = a;
 }
 
 Monster::~Monster() {};

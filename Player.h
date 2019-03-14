@@ -41,6 +41,8 @@ public:
     bool getShield();
     void setHit(int h) { hit = h; };
     int getHit() const { return hit; };
+    bool attack(float monster_x, float monster_y,  sf::Vector2f monster_size);
+    double getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size);
     
     ~Player();
     bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/);

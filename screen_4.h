@@ -3,6 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 
+
+/*
+ This screen contains a message saying the game is over and controls to move forward.
+ */
 class screen_4 : public cScreen
 {
 public:
@@ -17,9 +21,9 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     // Setup font
     sf::Font font;
     try { // throws error if file not opened
-        if(!font.loadFromFile(fontImage))
+        if(!font.loadFromFile(FONTIMAGE))
         {
-            throw FileOpenException(fontImage);
+            throw FileOpenException(FONTIMAGE);
         }
     }
     catch(exception& e)

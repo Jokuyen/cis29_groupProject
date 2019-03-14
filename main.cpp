@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 {
     const int SCREENWIDTH = 2048;
     const int SCREENHEIGHT = 1536;
-	srand(static_cast<unsigned int>(time(NULL))); // To randomize the rand() function within Monster::randomNumber()
+    srand(static_cast<unsigned int>(time(NULL))); // To randomize the rand() function within Monster::randomNumber()
     
     // Applications variables
     std::vector<cScreen*> Screens;
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     // Window creation
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "CIS 29 Game Project");
     App.setFramerateLimit(60);
-
+    
     // Screens preparation
     screen_0 s0;
     Screens.push_back(&s0);
@@ -52,4 +52,4 @@ int main(int argc, char** argv)
 
 /*
  jscreens mihika$ g++ -Wall -std=c++11 *.cpp -Iinclude -I/usr/local/include -L/usr/local/lib -lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system -o main
-*/
+ */

@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-const char* fontImage = "fake receipt.ttf";
+const char* FONTIMAGE = "fake receipt.ttf";
 class cScreen
 {
 public:

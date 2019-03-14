@@ -3,6 +3,10 @@
  *  CIS29 / Group #4
  ********************/
 
+/*
+ This screen includes a display of the high scores.
+ */
+
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -11,7 +15,7 @@ using namespace std;
 #include "Score.h"
 #include <SFML/Graphics.hpp>
 
-const size_t MaxNumOfScores = 10;
+const size_t MAXNUMOFSCORES = 10;
 int processScores(const char* filename, Score scores[]);
 bool sort(Score scores[]);
 bool writeScoresToFile(const char* ScoresFile, Score scores[]);
@@ -29,7 +33,7 @@ public:
 int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
 {
     const char* filename = "ScoreFile.bin";
-    Score scores[MaxNumOfScores];
+    Score scores[MAXNUMOFSCORES];
     initializeScores(scores);
     eraseScoreFile(filename);
     Score iris(100, "iris");
@@ -63,9 +67,9 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     sf::Font font;
     try { // throws error if file not opened
-        if(!font.loadFromFile(fontImage))
+        if(!font.loadFromFile(FONTIMAGE))
         {
-            throw FileOpenException(fontImage);
+            throw FileOpenException(FONTIMAGE);
         }
     }
     catch(exception& e)
@@ -78,7 +82,7 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Text text("", font);
     ostringstream sout;
     sout << "Score Board" << endl;
-    for (int i = 0; i < MaxNumOfScores; i++) {
+    for (int i = 0; i < MAXNUMOFSCORES; i++) {
         sout << setw(2) << (i + 1) << " " << scores[i].toString() << "\n";
     }
     text.setCharacterSize(70);
@@ -151,7 +155,7 @@ bool sort(Score scores[]) {
     do
     {
         swapOccurred = false;
-        for (int i = 0; i < MaxNumOfScores - 1; i++)
+        for (int i = 0; i < MAXNUMOFSCORES - 1; i++)
         {
             if (scores[i + 1] > scores[i])
             {
@@ -170,7 +174,7 @@ bool writeScoresToFile(const char* filename, Score scores[]) {
         cerr << "Unable to open input text file " << filename << endl;
         exit(2);
     }
-    for (int i = 0; i < MaxNumOfScores; i++) {
+    for (int i = 0; i < MAXNUMOFSCORES; i++) {
         fout.write(reinterpret_cast<const char*>(&scores[i]), sizeof(Score));
     }
     fout.close();
@@ -179,11 +183,11 @@ bool writeScoresToFile(const char* filename, Score scores[]) {
 
 void storeScore(const char* filename, Score scores[], Score score) {
     int count = processScores(filename, scores);
-    if (count < MaxNumOfScores) {
+    if (count < MAXNUMOFSCORES) {
         scores[count++] = score;
     }
-    else if (score > scores[MaxNumOfScores - 1])
-        scores[MaxNumOfScores - 1] = score;
+    else if (score > scores[MAXNUMOFSCORES - 1])
+        scores[MAXNUMOFSCORES - 1] = score;
     else return;
     sort(scores);
     writeScoresToFile(filename, scores);

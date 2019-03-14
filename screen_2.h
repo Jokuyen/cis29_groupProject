@@ -1,3 +1,6 @@
+/*
+ This screen has an explanation the control functions of the game specifically along with controls to move forward.
+ */
 #include <iostream>
 #include "cScreen.h"
 
@@ -17,9 +20,9 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     // Setup font
     sf::Font font;
     try { // throws error if file not opened
-        if(!font.loadFromFile(fontImage))
+        if(!font.loadFromFile(FONTIMAGE))
         {
-            throw FileOpenException(fontImage);
+            throw FileOpenException(FONTIMAGE);
         }
     }
     catch(exception& e)
