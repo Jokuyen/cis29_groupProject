@@ -1,5 +1,10 @@
-//  monster.cpp
-//  Created by Johnny Nguyen on 02-16-19 and Felicia Dewanaga on 3/8/19.
+//
+//  Monster.cpp
+//  jscreens
+//
+//  Created by Johnny Nguyen on 02/16/19 and Felicia Dewanaga on 3/8/19.
+//  Copyright © 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
+//
 
 #include "Monster.h"
 
@@ -7,18 +12,32 @@
  Description: This is the constructor for the monster, it sets the movement texture, the collision texture, and the origin. It also calls the constructor of the parent class, Entity, to set the original texture and the starting position.
  */
 
-
-Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
+Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
 {
     movementOneTexture = monsterTexture;
+	movementTwoTexture = monsterTwoTexture;
     collisionTexture = monsterCollisionTexture;
     sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 }
 
 /*
+Description: This method updates the sprite with a new texture
+*/
+void Monster::movementAnimation()
+{
+	if (sprite.getTexture() == &movementOneTexture)
+	{
+		sprite.setTexture(movementTwoTexture);
+	}
+	else
+	{
+		sprite.setTexture(movementOneTexture);
+	}
+}
+
+/*
  Description: This method handles the movement of the monster. It uses a random number calculator to determine the direction and moves by the set speed. There are statements in place to make sure a monster does not move out of the boundaries and reacts correctly.
  Parameters: width of the screen, height of the screen
- 
  */
 void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
 {
