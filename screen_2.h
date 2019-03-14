@@ -30,8 +30,8 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    sf::Text text("Controls \nW: Move up \nS: Move down \nA: Move left \nD: Move right \n\nO: Attack \nP: Defend", font);
-    text.setCharacterSize(70);
+    sf::Text text("Controls: \n\nMovement (Arrow keys) \nAttack (A) \nShield (S) \n\nShield lasts for 2 seconds \nand recharges after 4 seconds.", font);
+    text.setCharacterSize(100);
     text.setFillColor(sf::Color::White);
     
     sf::Event event;

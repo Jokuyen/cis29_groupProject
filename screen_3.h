@@ -18,10 +18,13 @@
 using namespace std;
 
 const char* BACKGROUNDIMAGE = "grass.png";
-// Monster
+
+// Monster assets
 const char* MONSTERIMAGE = "monster.png";
+const char* MONSTERTWOIMAGE = "monsterTwo.png";
 const char* MONSTERCOLLISIONIMAGE = "monsterCollision.png";
-// Player
+
+// Player assets
 const char* PLAYERIMAGEONE = "playertempone.png";
 const char* PLAYERIMAGETWO = "playertemptwo.png";
 const char* SHIELDIMAGE = "shield.png";
@@ -37,7 +40,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 {
     bool Running = true;
     
-    // Setup font
+    // Font
     sf::Font font;
     try { // throws error if file not opened
         if(!font.loadFromFile(FONTIMAGE))
@@ -53,14 +56,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     //bool pause = false;
     
-    //Will need to link player object here.
-    /*sf::Text txt("Name"
-     "\t\t\t\t\t\t\t\t\tScore:  "
-     "\tLives:  "
-     "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInstructions(Backspace)"
-     "\t\t\t\t\t\t\t\tQuit(Q)", font);
-     */
-    
+	// Background
     const int BG_HEIGHT = SCREENHEIGHT - 100;
     sf::RectangleShape background(sf::Vector2f(SCREENWIDTH, BG_HEIGHT));
     background.setPosition(sf::Vector2f(0, 50));
@@ -78,16 +74,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     }
     background.setTexture(&backgroundTexture);
     
-    // Monster Vector Array
-    std::vector<Monster>::const_iterator monsterIterator;
-    std::vector<Monster> monsterArray;
-    
-    // Monsters
-    sf::Texture monsterTexture;
-    sf::Texture monsterCollisionTexture;
-    monsterTexture.loadFromFile(MONSTERIMAGE);
-    monsterCollisionTexture.loadFromFile(MONSTERCOLLISIONIMAGE);
-    
+	// Player
     sf::Texture playerTextureOne;
     try { // throws error if file not opened
         if(!playerTextureOne.loadFromFile(PLAYERIMAGEONE))
@@ -125,11 +112,24 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     Player p(playerTextureOne, playerTextureTwo, shieldTexture, SCREENWIDTH, BG_HEIGHT);
-    
-    string name = "Name";
-    sf::Text txt(name + "                   " + "Score: " + to_string(p.getScore()) + "                 " + "Lives: " + to_string(p.getLives()), font);
-    txt.setCharacterSize(40);
-    txt.setFillColor(sf::Color::White);
+
+	// Header line
+	string name = "Name";
+	sf::Text txt(name + "                   " + "Score: " + to_string(p.getScore()) + "                 " + "Lives: " + to_string(p.getLives()), font);
+	txt.setCharacterSize(40);
+	txt.setFillColor(sf::Color::White);
+
+	// Monster
+	sf::Texture monsterTexture;
+	sf::Texture monsterTwoTexture;
+	sf::Texture monsterCollisionTexture;
+	monsterTexture.loadFromFile(MONSTERIMAGE);
+	monsterTwoTexture.loadFromFile(MONSTERTWOIMAGE);
+	monsterCollisionTexture.loadFromFile(MONSTERCOLLISIONIMAGE);
+
+	// Monster Vector Array
+	std::vector<Monster *>::const_iterator monsterIterator;
+	std::vector<Monster *> monsterArray;
     
     // Time management variables
     sf::Clock monsterSpawnClock;
@@ -191,7 +191,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         {
             p.move(Player::Down);
         }
-        if (shieldDelayTimer.asSeconds() > 5)
+        if (shieldDelayTimer.asSeconds() > 4)
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             {
@@ -209,28 +209,25 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             p.loseShield();
         }
         
-        
         App.clear();
-        //App.draw(txt);
         App.draw(background);
         p.draw(App);
         
-        // Drawing monsters
-        
-        if (monsterSpawnTimer.asSeconds() > 3.2) // Create new monster
+		// Create new monster
+        if (monsterSpawnTimer.asSeconds() > 3.2)
         {
             int randomNumber;
             randomNumber = rand() % 2;
             
-            if (randomNumber == 0) // Spawn from left side
+			// Spawn from left side
+            if (randomNumber == 0)
             {
-                Monster monster(monsterTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2)));
-                monsterArray.push_back(monster);
+				monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2))));
             }
-            else if (randomNumber == 1) // Spawn from right side
+			// Spawn from right side
+            else if (randomNumber == 1)
             {
-                Monster monster(monsterTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2)));
-                monsterArray.push_back(monster);
+				monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2))));
             }
             
             monsterSpawnClock.restart();
@@ -239,37 +236,35 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         int counter = 0;
         for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
         {
-            monsterArray[counter].updateMovement(SCREENWIDTH, BG_HEIGHT);
+            monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
             
             // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
             if (monsterSpeedTimer.asSeconds() > 2.5)
             {
-                monsterArray[counter].increaseSpeed();
+				monsterArray[counter]->movementAnimation();
+                monsterArray[counter]->increaseSpeed();
                 monsterSpeedClock.restart();
             }
             
-            if (p.hitByMonster(monsterArray[counter].getPosition().x, monsterArray[counter].getPosition().y, monsterArray[counter].size()))
+			// Collision detection
+            if (p.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
             {
                 if (p.getHit() == -1) {
                     std::cout << "Player hit by Monster" << std::endl;
                     p.setHit(counter);
                     p.loseLife();
                     txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
-                    monsterArray[counter].collisionAnimation();
+                    monsterArray[counter]->collisionAnimation();
                 }
             }
             else
             {
                 if (p.getHit() == counter)
                     p.setHit(-1);
-                monsterArray[counter].movementAnimation();
-                //std::cout << "No Collision" << std::endl;
             }
-            monsterArray[counter].draw(App);
+            monsterArray[counter]->draw(App);
             counter++;
         }
-        
-        
         
         App.draw(txt);
         App.display();
