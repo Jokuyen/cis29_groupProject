@@ -22,21 +22,16 @@ using namespace std;
 class Player : public Entity
 {
 private:
+    int texture;
     int lives;
     bool shield;
     int score;
     int hit;
-    
-    // Textures
-    int currentTexture;
-    sf::Texture texture;
-    sf::Texture shieldTexture;
-    sf::Texture flippedTexture;
-    sf::Texture flippedShieldTexture;
-    Direction dir;
-    
+    sf::Texture textureone;
+    sf::Texture texturetwo;
+    sf::Texture shieldtexture;
 public:
-    Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w);
+    Player(sf::Texture& textone, sf::Texture& texttwo, sf::Texture& stexture, float h, float w);
     void move(Direction d);
     void applyShield();
     void loseShield();
@@ -55,4 +50,5 @@ public:
 };
 
 #endif /* Player_hpp */
+
 
