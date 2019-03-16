@@ -32,15 +32,15 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-	sf::Text text("Gameplay:"
-		"\n\nCollect coins to increase \nyour score."
-		"\n\nBe careful of wandering monsters!"
-		"\nAttack monsters to defeat them."
-		"\nDefend yourself by shielding."
-
-		"\n\nMonsters gradually increase in"
-		"\nspeed, so defeat them quickly"
-		"\nbefore things get out of hand!", font);
+    sf::Text text("Gameplay:"
+                  "\n\nCollect coins to increase \nyour score."
+                  "\n\nBe careful of wandering monsters!"
+                  "\nAttack monsters to defeat them."
+                  "\nDefend yourself by shielding."
+                  
+                  "\n\nMonsters gradually increase in"
+                  "\nspeed, so defeat them quickly"
+                  "\nbefore things get out of hand!", font);
     text.setCharacterSize(85);
     text.setFillColor(sf::Color::White);
     

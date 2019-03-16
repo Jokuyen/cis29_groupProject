@@ -1,3 +1,5 @@
+
+
 //
 //  Character.h
 //  jscreens
@@ -34,6 +36,7 @@ public:
 };
 
 #endif /* Character_h */
+
 
 
 

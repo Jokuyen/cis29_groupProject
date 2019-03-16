@@ -20,7 +20,6 @@ Entity::Entity(sf::Texture& texture, float width, float height)
 {
     sprite.setTexture(texture);
     sprite.setPosition(width / 2, height / 2);
-    sprite.setScale(0.75, 0.75);
 }
 
 /*

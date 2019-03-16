@@ -3,7 +3,7 @@
 //  jscreens
 //
 //  Created by Johnny Nguyen on 02/16/19 and Felicia Dewanaga on 3/8/19.
-//  Copyright © 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
+//  Copyright Â© 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
 //
 
 #include "Monster.h"
@@ -15,24 +15,25 @@
 Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
 {
     movementOneTexture = monsterTexture;
-	movementTwoTexture = monsterTwoTexture;
+    movementTwoTexture = monsterTwoTexture;
     collisionTexture = monsterCollisionTexture;
+    sprite.setScale(0.75, 0.75);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 }
 
 /*
-Description: This method updates the sprite with a new texture
-*/
+ Description: This method updates the sprite with a new texture
+ */
 void Monster::movementAnimation()
 {
-	if (sprite.getTexture() == &movementOneTexture)
-	{
-		sprite.setTexture(movementTwoTexture);
-	}
-	else
-	{
-		sprite.setTexture(movementOneTexture);
-	}
+    if (sprite.getTexture() == &movementOneTexture)
+    {
+        sprite.setTexture(movementTwoTexture);
+    }
+    else
+    {
+        sprite.setTexture(movementOneTexture);
+    }
 }
 
 /*
@@ -98,7 +99,7 @@ void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
  */
 int Monster::randomNumber(int max)
 {
-
+    
     int randomNumber;
     randomNumber = rand() % (max + 1);
     return randomNumber;

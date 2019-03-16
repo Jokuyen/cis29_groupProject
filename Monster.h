@@ -3,7 +3,7 @@
 //  jscreens
 //
 //  Created by Johnny Nguyen on 02/16/19 and Felicia Dewanaga on 3/8/19.
-//  Copyright © 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
+//  Copyright Â© 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
 //
 
 #ifndef MONSTER_H
@@ -20,7 +20,7 @@ class Monster : public Entity
 private:
     // Textures
     sf::Texture movementOneTexture;
-	sf::Texture movementTwoTexture;
+    sf::Texture movementTwoTexture;
     sf::Texture collisionTexture;
     
     bool alive = true;
@@ -35,7 +35,7 @@ public:
     ~Monster();
     
     // Animations
-	void movementAnimation();
+    void movementAnimation();
     void collisionAnimation() { sprite.setTexture(collisionTexture); }
     
     
