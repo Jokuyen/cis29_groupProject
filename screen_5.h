@@ -41,10 +41,16 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 
 
 	sf::Font font;
-	if (!font.loadFromFile("fake receipt.ttf"))
+	try { // throws error if file not opened
+		if (!font.loadFromFile(FONTIMAGE))
+		{
+			throw FileOpenException(FONTIMAGE);
+		}
+	}
+	catch (exception& e)
 	{
-		std::cout << "Unable to load font" << std::endl;
-		return (-1);
+		cout << "Cannot open: " << e.what() << endl;
+		exit(-1);
 	}
 	
 	
@@ -124,12 +130,18 @@ void eraseScoreFile(const char* filename) {
 
 int writeToScoreFile(const char* filename, multimap<int, string> myMap) {
 	ofstream fout(filename);
-	if (!fout) {
-		cout << "File not found. Creating new file: " << filename << endl;
+	try {
+		if (!fout) {
+			throw FileOpenException(filename);
+		}
+	}
+	catch (FileOpenException& e) {
+		cout << "File not found. Creating new file: " << e.what() << endl;
 		ofstream fout(filename);
 		fout.close();
 		return 0;
 	}
+	
 	if (myMap.size() == 0) {
 		return 0;
 	}
@@ -143,13 +155,18 @@ int writeToScoreFile(const char* filename, multimap<int, string> myMap) {
 int readFromScoreFile(const char* filename, multimap<int, string>& myMap) {
 	int count = 0;
 	ifstream fin(filename);
-	if (!fin) {
-		cout << "File not found. Creating new file: " << filename << endl;
+	try {
+		if (!fin) {
+			throw FileOpenException(filename);
+		}
+	}
+	catch (FileOpenException& e) {
+		cout << "File not found. Creating new file: " << e.what() << endl;
 		ofstream fout(filename);
 		fout.close();
 		return count;
 	}
-
+	
 	if (fin.peek() == std::ifstream::traits_type::eof()) {
 		return count;
 	}

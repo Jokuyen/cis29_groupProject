@@ -28,10 +28,16 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 
 
 	sf::Font font;
-	if (!font.loadFromFile("fake receipt.ttf"))
+	try { // throws error if file not opened
+		if (!font.loadFromFile(FONTIMAGE))
+		{
+			throw FileOpenException(FONTIMAGE);
+		}
+	}
+	catch (exception& e)
 	{
-		std::cout << "Unable to load font" << std::endl;
-		return (-1);
+		cout << "Cannot open: " << e.what() << endl;
+		exit(-1);
 	}
 
 
@@ -41,7 +47,7 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 
 	int count = 0;
 	for (auto it = highScores.rbegin(); it != highScores.rend(); ++it) {
-		sout << setw(2) << (++count) << setw(5) << it->first << "\t" << it->second << endl;
+		sout << setw(2) << (++count) << setw(10) << it->first << "\t\t" << it->second << endl;
 	}
 	text.setString(sout.str());
 	text.setCharacterSize(70);
