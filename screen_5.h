@@ -11,7 +11,6 @@
 using namespace std;
 
 #include "cScreen.h"
-#include "Score.h"
 #include <SFML/Graphics.hpp>
 
 const size_t MaxNumOfScores = 10;
@@ -29,9 +28,7 @@ public:
 int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
 {
 	string name = "";
-	int score;
-	cout << "Enter score:";
-	cin >> score;
+	int score = Score::score;
 
 	multimap<int, string> highScores;
 	const char* filename = "ScoreFile.txt";

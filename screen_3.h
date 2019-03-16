@@ -29,6 +29,10 @@ const char* PLAYERIMAGEONE = "playertempone.png";
 const char* PLAYERIMAGETWO = "playertemptwo.png";
 const char* SHIELDIMAGE = "shield.png";
 
+namespace Score {
+	int score = 0;
+}
+
 class screen_3 : public cScreen
 {
 public:
@@ -136,6 +140,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Clock monsterSpeedClock;
     sf::Clock shieldDelayClock;
     sf::Clock shieldPopClock;
+
+	cout << "Enter Score: ";
+	cin >> Score::score;
     
     sf::Event event;
     while (Running)
