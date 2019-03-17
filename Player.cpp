@@ -14,17 +14,25 @@
  Parameters: RenderWindow object on which to draw the sprite.
  
  */
-Player::Player(sf::Texture& textone, sf::Texture& texttwo, sf::Texture& stexture, float h, float w): Entity(textone, w, h)
+Player::Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w): Entity(inputTexture, w, h)
 {
-    textureone = textone;
-    texturetwo = texttwo;
-    shieldtexture = stexture;
-    texture = 1;
     lives = 20;
     score = 0;
-    shield = false;
-    sprite.setOrigin(sprite.getLocalBounds().width/2.0f,sprite.getLocalBounds().height / 2.0f);
     hit = -1;
+    currentTexture = 1;
+    dir = Right;
+    
+    texture = inputTexture;
+    flippedTexture = inputFlippedTexture;
+    
+    shield = false;
+    shieldTexture = inputShieldTexture;
+    flippedShieldTexture = inputFlippedShieldTexture;
+    
+    sprite.setTexture(texture);
+    sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
+    sprite.setScale(4, 4);
+    sprite.setOrigin(sprite.getLocalBounds().width/2.0f,sprite.getLocalBounds().height / 2.0f);
 }
 
 
@@ -35,50 +43,148 @@ Player::Player(sf::Texture& textone, sf::Texture& texttwo, sf::Texture& stexture
  */
 void Player::move(Direction d)
 {
-    if(shield == false)
-    {
-        if(texture == 1)
-        {
-            sprite.setTexture(texturetwo);
-            texture = 2;
-        }
-        else
-        {
-            sprite.setTexture(textureone);
-            texture = 1;
-        }
-    }
     switch (d)
     {
         case Up:
-            if (sprite.getPosition().y < 80.0f)
+            dir = Up;
+            if (shield == false)
+            {
+                sprite.setTexture(texture);
+            }
+            else
+            {
+                sprite.setTexture(shieldTexture);
+            }
+            
+            if (currentTexture == 1)
+            {
+                // 3rd row, 4th cat
+                sprite.setTextureRect(sf::IntRect(160, 110, 24, 30));
+                currentTexture = 2;
+            }
+            else
+            {
+                // 6th row, 3rd cat
+                sprite.setTextureRect(sf::IntRect(110, 260, 24, 30));
+                currentTexture = 1;
+            }
+            
+            if (sprite.getPosition().y < 105.0f)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 10.0f);
             break;
         case Down:
-            if (sprite.getPosition().y > BACKGROUNDSIZE.y)
+            dir = Down;
+            if (shield == false)
+            {
+                sprite.setTexture(texture);
+            }
+            else
+            {
+                sprite.setTexture(shieldTexture);
+            }
+            
+            // 1st row of sprite sheet
+            if (currentTexture == 1)
+            {
+                // 1st cat
+                sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
+                currentTexture = 2;
+            }
+            else if (currentTexture == 2)
+            {
+                // 4th cat
+                sprite.setTextureRect(sf::IntRect(160, 10, 24, 30));
+                currentTexture = 3;
+            }
+            else if (currentTexture == 3)
+            {
+                // 5th cat
+                sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
+                currentTexture = 1;
+            }
+            
+            if ((sprite.getPosition().y + 20) > BACKGROUNDSIZE.y)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
             break;
-        case Left:
-            if (sprite.getPosition().x < size().x/2)
-                break;
-            else
-                sprite.setPosition(sprite.getPosition().x - 10.0f,sprite.getPosition().y);
-            break;
         case Right:
+            dir = Right;
+            if (shield == false)
+            {
+                sprite.setTexture(texture);
+            }
+            else
+            {
+                sprite.setTexture(shieldTexture);
+            }
+            
+            // 1st row of sprite sheet
+            if (currentTexture == 1)
+            {
+                // 1st cat
+                sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
+                currentTexture = 2;
+            }
+            else if (currentTexture == 2)
+            {
+                // 4th cat
+                sprite.setTextureRect(sf::IntRect(160, 10, 24, 30));
+                currentTexture = 3;
+            }
+            else if (currentTexture == 3)
+            {
+                // 5th cat
+                sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
+                currentTexture = 1;
+            }
+            
             if (sprite.getPosition().x > BACKGROUNDSIZE.x-size().x/2)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x + 10.0f, sprite.getPosition().y);
             break;
+        case Left:
+            dir = Left;
+            if (shield == false)
+            {
+                sprite.setTexture(flippedTexture);
+            }
+            else
+            {
+                sprite.setTexture(flippedShieldTexture);
+            }
+            
+            // 1st row of sprite sheet
+            if (currentTexture == 1)
+            {
+                // 10th cat
+                sprite.setTextureRect(sf::IntRect(465, 10, 24, 30));
+                currentTexture = 2;
+            }
+            else if (currentTexture == 2)
+            {
+                // 7th cat
+                sprite.setTextureRect(sf::IntRect(315, 10, 24, 30));
+                currentTexture = 3;
+            }
+            else if (currentTexture == 3)
+            {
+                // 6th cat
+                sprite.setTextureRect(sf::IntRect(265, 10, 24, 30));
+                currentTexture = 1;
+            }
+            
+            if (sprite.getPosition().x < size().x / 2)
+                break;
+            else
+                sprite.setPosition(sprite.getPosition().x - 10.0f, sprite.getPosition().y);
+            break;
         default:
             ;
     };
-    //shield = false;
-    
 }
 
 /*
@@ -88,7 +194,16 @@ void Player::move(Direction d)
 void Player::applyShield()
 {
     shield = true;
-    sprite.setTexture(shieldtexture);
+    
+    if (sprite.getTexture() == &texture)
+    {
+        sprite.setTexture(shieldTexture);
+    }
+    else if (sprite.getTexture() == &flippedTexture)
+    {
+        sprite.setTexture(flippedShieldTexture);
+    }
+    
     cout << "shieldAPP" << endl;
 }
 
@@ -99,7 +214,15 @@ void Player::applyShield()
 void Player::loseShield()
 {
     shield = false;
-    sprite.setTexture(texturetwo);
+    
+    if (sprite.getTexture() == &shieldTexture)
+    {
+        sprite.setTexture(texture);
+    }
+    else if (sprite.getTexture() == &flippedShieldTexture)
+    {
+        sprite.setTexture(flippedTexture);
+    }
 }
 
 /*
@@ -116,9 +239,8 @@ void Player::loseLife()
     else
     {
         cout << "shield" << endl;
+        loseShield();
     }
-    sprite.setTexture(texturetwo);
-    shield = false;
 }
 
 /*
@@ -159,20 +281,55 @@ Player::~Player(){};
  */
 bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/)
 {
-    
+    return getDistance(monster_x, monster_y, monster_size) < (size().x + monster_size.x) / 2.0f;
+}
+
+double Player::getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size)
+{
     float diffX = getPosition().x - monster_x;
     float diffY = getPosition().y - monster_y;
     
-    /*
-     if (debug) {
-     std::cout <<  "player position = (" << getPosition().x << ", " << getPosition().y << ")" << std::endl;
-     std::cout <<  "monster position = (" << monster_x << ", " << monster_y << ")" << std::endl;
-     std::cout << "dist=" << std::sqrt(diffX * diffX + diffY * diffY) << " < " <<  (size().x + monster_size.x) / 2.0f << std::endl;
-     std::cout <<  "player size = " << size().x << "  monster size = " << monster_size.x << " " << std::endl;
-     }
-     */
-    return std::sqrt(diffX * diffX + diffY * diffY) < (size().x + monster_size.x) / 2.0f;
+    return sqrt(diffX * diffX + diffY * diffY);
     
+}
+
+bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
+{
+    float startx = getPosition().x-(size().x/2);
+    float endx = getPosition().x+(size().x/2);
+    float starty = getPosition().y-(size().y/2);
+    float endy = getPosition().y+(size().y/2);
+    double dist = getDistance(monster_x, monster_y, monster_size);
     
+    switch (dir)
+    {
+        case Up:
+            if((dist < 300) && (monster_x >= startx && monster_x <= endx) && (monster_y <= endy))
+            {
+                return true;
+            }
+            break;
+        case Down:
+            if((dist < 300) && (monster_x >= startx && monster_x <= endx) && (monster_y >= endy))
+            {
+                return true;
+            }
+            break;
+        case Right:
+            if((dist < 300) && (monster_y >= starty && monster_y <= endy) && (monster_x >= endx))
+            {
+                return true;
+            }
+            break;
+        case Left:
+            if((dist < 300) && (monster_y >= starty && monster_y <= endy) && (monster_x <= startx))
+            {
+                return true;
+            }
+            break;
+        default:
+            return false;
+    };
+    return false;
 }
 
