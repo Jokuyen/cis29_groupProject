@@ -1,5 +1,3 @@
-
-
 //
 //  Character.h
 //  jscreens
@@ -8,8 +6,8 @@
 //  Copyright © 2019 Mihika Marathe and Felicia Dewanaga on 3/7/19. All rights reserved.
 //
 
-#ifndef Entity_h
-#define Entity_h
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include <SFML/Graphics.hpp>
 
@@ -29,6 +27,7 @@ public:
     {
         return sprite.getPosition();
     }
+    
     sf::Sprite getSprite() const { return sprite; }
     void draw(sf::RenderWindow& App);
     //virtual void move(Direction);

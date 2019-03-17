@@ -3,7 +3,7 @@
 //  jscreens
 //
 //  Created by Johnny Nguyen on 02/16/19 and Felicia Dewanaga on 3/8/19.
-//  Copyright © 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
+//  Copyright � 2019 Johnny Nguyen and Felicia Dewanaga on 3/8/19. All rights reserved.
 //
 
 #include "Monster.h"
@@ -17,7 +17,6 @@ Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf
     movementOneTexture = monsterTexture;
     movementTwoTexture = monsterTwoTexture;
     collisionTexture = monsterCollisionTexture;
-    sprite.setScale(0.75, 0.75);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
 }
 
@@ -124,3 +123,4 @@ void Monster::setAlive(bool a)
 }
 
 Monster::~Monster() {};
+
