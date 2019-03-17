@@ -26,3 +26,4 @@ public:
 };
 
 ostream& operator<<(ostream& out, Score s);
+

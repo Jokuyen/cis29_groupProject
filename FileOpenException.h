@@ -17,8 +17,8 @@
 #include <typeinfo>
 #include <string>
 
-#ifndef FileOpenException_h
-#define FileOpenException_h
+#ifndef FILEOPENEXCEPTION_H
+#define FILEOPENEXCEPTION_H
 
 using namespace std;
 
@@ -35,5 +35,6 @@ public:
 };
 
 #endif /* FileOpenException_h */
+
 
 

@@ -6,8 +6,8 @@
 //  Copyright © 2019 Mihika Marathe and Felicia Dewanaga on 3/7/19. All rights reserved.
 //
 
-#ifndef Player_hpp
-#define Player_hpp
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -22,21 +22,17 @@ using namespace std;
 class Player : public Entity
 {
 private:
+    int texture;
     int lives;
     bool shield;
     int score;
     int hit;
-    
-    // Textures
-    int currentTexture;
-    sf::Texture texture;
-    sf::Texture shieldTexture;
-    sf::Texture flippedTexture;
-    sf::Texture flippedShieldTexture;
-    Direction dir;
+    sf::Texture textureone;
+    sf::Texture texturetwo;
+    sf::Texture shieldtexture;
     
 public:
-    Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w);
+    Player(sf::Texture& textone, sf::Texture& texttwo, sf::Texture& stexture, float h, float w) ;
     void move(Direction d);
     void applyShield();
     void loseShield();
@@ -49,10 +45,16 @@ public:
     bool attack(float monster_x, float monster_y,  sf::Vector2f monster_size);
     double getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size);
     
+    bool touchCoins() { score++;}
+    void incrementScore() {score++;}
+    
     ~Player();
     bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/);
+    
     
 };
 
 #endif /* Player_hpp */
+
+
 

@@ -16,6 +16,7 @@ bool Score::operator>(const Score obj) const {
 /*
  Description: This function converts the score object to a string in a specific format.
  Return: String containing details of the score object.
+ 
  */
 string Score::toString() {
     stringstream ss;
@@ -36,3 +37,4 @@ ostream& operator<<(ostream& out, Score s) {
     out << setw(5) << s.getScore();
     return out;
 }
+
