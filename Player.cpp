@@ -279,18 +279,18 @@ Player::~Player(){};
  Parameters: float x_position of monster, float y_position of monster, sf::Vector2f size of the monster
  Return: bool whether there was a collision or not
  */
-bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/)
+bool Player::hitByMonster(float monster_x, float monster_y, sf::Vector2f monster_size/*, bool debug*/)
 {
-    return getDistance(monster_x, monster_y, monster_size) < (size().x + monster_size.x) / 2.0f;
+	return getDistance(monster_x, monster_y) < (size().x + monster_size.x) / 2.0f;
 }
 
-double Player::getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size)
+double Player::getDistance(float monster_x, float monster_y)
 {
-    float diffX = getPosition().x - monster_x;
-    float diffY = getPosition().y - monster_y;
-    
-    return sqrt(diffX * diffX + diffY * diffY);
-    
+	float diffX = getPosition().x - monster_x;
+	float diffY = getPosition().y - monster_y;
+
+	return sqrt(diffX * diffX + diffY * diffY);
+
 }
 
 bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
@@ -299,7 +299,7 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
     float endx = getPosition().x+(size().x/2);
     float starty = getPosition().y-(size().y/2);
     float endy = getPosition().y+(size().y/2);
-    double dist = getDistance(monster_x, monster_y, monster_size);
+    double dist = getDistance(monster_x, monster_y);
     
     switch (dir)
     {
@@ -310,12 +310,16 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
             }
             break;
         case Down:
+			// 5th row, 10th cat
+			sprite.setTextureRect(sf::IntRect(463, 210, 24, 30));
             if((dist < 300) && (monster_x >= startx && monster_x <= endx) && (monster_y >= endy))
             {
                 return true;
             }
             break;
         case Right:
+			// 4th row, 7th cat
+			sprite.setTextureRect(sf::IntRect(313, 160, 24, 30));
             if((dist < 300) && (monster_y >= starty && monster_y <= endy) && (monster_x >= endx))
             {
                 return true;
@@ -333,3 +337,12 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
     return false;
 }
 
+bool Player::collectCoin(float coin_x, float coin_y, float coinSize_x, float coinSize_y)
+{
+	if (getDistance(coin_x, coin_y) < (size().x + coinSize_x) / 2.0f)
+	{
+		score++;
+		return true;
+	}
+	return false;
+}

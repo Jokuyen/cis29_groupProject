@@ -14,6 +14,7 @@
 
 #include "Monster.h"
 #include "Player.h"
+#include "Coins.h"
 #include <iostream>
 #include <string>
 
@@ -38,6 +39,13 @@ namespace Score
 	int score = 0;
 }
 
+double getRandom(int lower, int upper) 
+{
+	double num = (rand() % (upper - lower + 1)) + lower;
+	return num;
+}
+
+
 class screen_3 : public cScreen
 {
 public:
@@ -48,6 +56,7 @@ public:
 int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
 {
     bool Running = true;
+	bool pause = false;
     
     // Music
     sf::Music theme;
@@ -79,8 +88,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    
-    bool pause = false;
     
     // Background
     const int BG_HEIGHT = SCREENHEIGHT - 100;
@@ -176,7 +183,50 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Clock shieldPopClock;
     
 	cout << "Enter Score: ";
-	cin >> Score::score;
+	//cin >> Score::score;
+	Score::score = 1; /////////////////////////////////////////////TEMPORARY
+
+	// Coins
+	sf::RectangleShape coinArray[6];
+
+	srand(time(0));
+	//sf::RenderWindow window(sf::VideoMode(2000, 2000), "Welcome!", sf::Style::Close | sf::Style::Default);
+	sf::RectangleShape coin1(sf::Vector2f(40.0f, 40.0f));
+	coinArray[0] = coin1;
+	sf::RectangleShape coin2(sf::Vector2f(40.0f, 40.0f));
+	coinArray[1] = coin2;
+	sf::RectangleShape coin3(sf::Vector2f(40.0f, 40.0f));
+	coinArray[2] = coin3;
+	sf::RectangleShape coin4(sf::Vector2f(40.0f, 40.0f));
+	coinArray[3] = coin4;
+	sf::RectangleShape coin5(sf::Vector2f(40.0f, 40.0f));
+	coinArray[4] = coin5;
+	sf::RectangleShape coin6(sf::Vector2f(40.0f, 40.0f));
+	coinArray[5] = coin6;
+
+	//    sf::RectangleShape coinss;
+	//    coinss.setScale(100.f, 100.f);
+	sf::SoundBuffer buffer;
+	sf::Texture coinTexture;
+
+	if (!buffer.loadFromFile("1_Coins.wav")) {
+		std::cout << "Error " << std::endl;
+	}
+
+	if (!coinTexture.loadFromFile("Coin1.png")) {
+		std::cerr << "An eror oucred" << std::endl;
+	}
+
+	sf::Sound coinSound;
+
+	//sound.setBuffer(buffer);
+	Coins gameCoins(coinSound);
+	for (int i = 0; i < 6; i++)
+	{
+		coinArray[i].setFillColor(sf::Color::Yellow);
+		coinArray[i].setTexture(&coinTexture);
+		coinArray[i].setPosition(getRandom(100, 1800), getRandom(100, 1500));
+	}
 
     sf::Event event;
     while (Running)
@@ -220,22 +270,30 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         
 		if (!pause)
 		{
-			// Player movement
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			// Attack Mechanism
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
-				p.move(Player::Left);
+				attack = true;
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			else
 			{
-				p.move(Player::Right);
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				p.move(Player::Up);
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				p.move(Player::Down);
+				// Player movement
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+				{
+					p.move(Player::Left);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+				{
+					p.move(Player::Right);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+				{
+					p.move(Player::Up);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+				{
+					p.move(Player::Down);
+				}
 			}
 
 			// Shield Mechanism
@@ -251,12 +309,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			if (shieldPopTimer.asSeconds() > 2.2 && shieldPopTimer.asSeconds() < 2.5)
 			{
 				p.loseShield();
-			}
-
-			// Attack Mechanism
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			{
-				attack = true;
 			}
 
 			App.clear();
@@ -330,6 +382,19 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 				monsterArray[counter]->draw(App);
 				counter++;
 			}
+
+			// Coin generation
+			for (int i = 0; i < 6; i++)
+			{
+				App.draw(coinArray[i]);
+				if (p.collectCoin(coinArray[i].getPosition().x, coinArray[i].getPosition().y, 40, 40))
+				{
+					coinArray[i].setPosition(getRandom(100, 1800), getRandom(100, 1500));
+					txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+					cout << p.getScore() << endl;
+				}
+			}
+
 
 			App.draw(txt);
 			App.display();

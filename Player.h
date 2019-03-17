@@ -34,7 +34,7 @@ private:
     sf::Texture flippedTexture;
     sf::Texture flippedShieldTexture;
     Direction dir;
-    
+
 public:
     Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w);
     void move(Direction d);
@@ -47,7 +47,8 @@ public:
     void setHit(int h) { hit = h; };
     int getHit() const { return hit; };
     bool attack(float monster_x, float monster_y,  sf::Vector2f monster_size);
-    double getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size);
+	double getDistance(float monster_x, float monster_y);
+	bool collectCoin(float coin_x, float coin_y, float coinSize_x, float coinSize_y);
     
     ~Player();
     bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/);
