@@ -33,6 +33,11 @@ const char* MONSTERIMAGE = "monster.png";
 const char* MONSTERTWOIMAGE = "monsterTwo.png";
 const char* MONSTERCOLLISIONIMAGE = "monsterCollision.png";
 
+namespace Score 
+{
+	int score = 0;
+}
+
 class screen_3 : public cScreen
 {
 public:
@@ -75,7 +80,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     
-    //bool pause = false;
+    bool pause = false;
     
     // Background
     const int BG_HEIGHT = SCREENHEIGHT - 100;
@@ -170,6 +175,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Clock shieldDelayClock;
     sf::Clock shieldPopClock;
     
+	cout << "Enter Score: ";
+	cin >> Score::score;
+
     sf::Event event;
     while (Running)
     {
@@ -201,125 +209,132 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     case sf::Keyboard::Return: // Return to screen_1
                         return (4);
                         break;
+					case sf::Keyboard::Space:
+						pause = !pause;
+						break;
                     default:
                         break;
                 }
             }
         }
         
-        // Player movement
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            p.move(Player::Left);
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            p.move(Player::Right);
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            p.move(Player::Up);
-        }
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            p.move(Player::Down);
-        }
+		if (!pause)
+		{
+			// Player movement
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			{
+				p.move(Player::Left);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				p.move(Player::Right);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+				p.move(Player::Up);
+			}
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				p.move(Player::Down);
+			}
+
+			// Shield Mechanism
+			if (shieldDelayTimer.asSeconds() > 4)
+			{
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+				{
+					p.applyShield();
+					shieldDelayClock.restart();
+					shieldPopClock.restart();
+				}
+			}
+			if (shieldPopTimer.asSeconds() > 2.2 && shieldPopTimer.asSeconds() < 2.5)
+			{
+				p.loseShield();
+			}
+
+			// Attack Mechanism
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				attack = true;
+			}
+
+			App.clear();
+			App.draw(background);
+			p.draw(App);
+
+			// Create new monster
+			if (monsterSpawnTimer.asSeconds() > 3)
+			{
+				int randomNumber;
+				randomNumber = rand() % 2;
+
+				// Spawn from left side
+				if (randomNumber == 0)
+				{
+					monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2))));
+				}
+				// Spawn from right side
+				else if (randomNumber == 1)
+				{
+					monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2))));
+				}
+
+				monsterSpawnClock.restart();
+			}
+
+			int counter = 0;
+			for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+			{
+				monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
+
+				// If timer passes, increase monsters' speed and restart clock to 0
+				if (monsterSpeedTimer.asSeconds() > 1)
+				{
+					monsterArray[counter]->movementAnimation();
+					monsterArray[counter]->increaseSpeed();
+					monsterSpeedClock.restart();
+				}
+
+				// Collision detection
+				if (p.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
+				{
+					if (p.getHit() == -1) {
+						std::cout << "Player hit by Monster" << std::endl;
+						p.setHit(counter);
+						p.loseLife();
+						txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+						monsterArray[counter]->collisionAnimation();
+					}
+				}
+				else
+				{
+					if (p.getHit() == counter)
+						p.setHit(-1);
+				}
+				if (attack == true)
+				{
+					if (p.attack(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
+					{
+						monsterArray[counter]->setAlive(false);
+						//monsterArray.erase(monsterIterator);
+						cout << "ATTACK" << endl;
+					}
+					if (monsterArray[counter]->getAlive() == false)
+					{
+						monsterArray.erase(monsterIterator);
+						break;
+					}
+
+				}
+				monsterArray[counter]->draw(App);
+				counter++;
+			}
+
+			App.draw(txt);
+			App.display();
+		}
         
-        // Shield Mechanism
-        if (shieldDelayTimer.asSeconds() > 4)
-        {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            {
-                p.applyShield();
-                shieldDelayClock.restart();
-                shieldPopClock.restart();
-            }
-        }
-        if (shieldPopTimer.asSeconds() > 2.2 && shieldPopTimer.asSeconds() < 2.5)
-        {
-            p.loseShield();
-        }
-        
-        // Attack Mechanism
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        {
-            attack = true;
-        }
-        
-        App.clear();
-        App.draw(background);
-        p.draw(App);
-        
-        // Create new monster
-        if (monsterSpawnTimer.asSeconds() > 3.2)
-        {
-            int randomNumber;
-            randomNumber = rand() % 2;
-            
-            // Spawn from left side
-            if (randomNumber == 0)
-            {
-                monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2))));
-            }
-            // Spawn from right side
-            else if (randomNumber == 1)
-            {
-                monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2))));
-            }
-            
-            monsterSpawnClock.restart();
-        }
-        
-        int counter = 0;
-        for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
-        {
-            monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
-            
-            // If timer passes 2.5 seconds, increase monsters' speed and restart clock to 0
-            if (monsterSpeedTimer.asSeconds() > 2.5)
-            {
-                monsterArray[counter]->movementAnimation();
-                monsterArray[counter]->increaseSpeed();
-                monsterSpeedClock.restart();
-            }
-            
-            // Collision detection
-            if (p.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
-            {
-                if (p.getHit() == -1) {
-                    std::cout << "Player hit by Monster" << std::endl;
-                    p.setHit(counter);
-                    p.loseLife();
-                    txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
-                    monsterArray[counter]->collisionAnimation();
-                }
-            }
-            else
-            {
-                if (p.getHit() == counter)
-                    p.setHit(-1);
-            }
-            if(attack == true)
-            {
-                if(p.attack(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
-                {
-                    monsterArray[counter]->setAlive(false) ;
-                    //monsterArray.erase(monsterIterator);
-                    cout << "ATTACK" << endl;
-                }
-                if(monsterArray[counter]->getAlive()==false)
-                {
-                    monsterArray.erase(monsterIterator);
-                    break;
-                }
-                
-            }
-            monsterArray[counter]->draw(App);
-            counter++;
-        }
-        
-        App.draw(txt);
-        App.display();
     }
     
     // Never reach this point normally, but just in case, exit the application
