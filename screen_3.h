@@ -292,7 +292,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			}
 
 			// Shield Mechanism
-			if (shieldDelayTimer.asSeconds() > 4)
+			if (shieldDelayTimer.asSeconds() > 3)
 			{
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 				{
@@ -301,7 +301,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 					shieldPopClock.restart();
 				}
 			}
-			if (shieldPopTimer.asSeconds() > 2.2 && shieldPopTimer.asSeconds() < 2.5)
+			if (shieldPopTimer.asSeconds() > 2.8 && shieldPopTimer.asSeconds() < 2.9)
 			{
 				p.loseShield();
 			}
@@ -310,7 +310,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			App.draw(background);
 			p.draw(App);
 
-			if (monsterSpawnTimer.asSeconds() > 3)
+			if (monsterSpawnTimer.asSeconds() > 8)
 			{
 				for (int i = 0; i < spawnCount; i++)
 				{
@@ -337,7 +337,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 				monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
 
 				// If timer passes, increase monsters' speed and restart clock to 0
-				if (monsterSpeedTimer.asSeconds() > 3)
+				if (monsterSpeedTimer.asSeconds() > 2.5)
 				{
 					monsterArray[counter]->movementAnimation();
 					monsterArray[counter]->increaseSpeed();
