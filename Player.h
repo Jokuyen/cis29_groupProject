@@ -26,7 +26,7 @@ private:
     bool shield;
     int score;
     int hit;
-    
+
     // Textures
     int currentTexture;
     sf::Texture texture;
@@ -47,12 +47,12 @@ public:
     void setHit(int h) { hit = h; };
     int getHit() const { return hit; };
     bool attack(float monster_x, float monster_y,  sf::Vector2f monster_size);
-	double getDistance(float monster_x, float monster_y);
-	bool collectCoin(float coin_x, float coin_y, float coinSize_x, float coinSize_y);
-    
+    double getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size);
+
     ~Player();
     bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/);
-    
+    void setPosition(float x, float y);
+    void setMask(sf::Texture& maskTexture);
 };
 
 #endif /* Player_hpp */

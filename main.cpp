@@ -17,18 +17,20 @@
 
 int main(int argc, char** argv)
 {
-    const int SCREENWIDTH = 2048;
-    const int SCREENHEIGHT = 1536;
+    //const int SCREENWIDTH = 2048;
+    //const int SCREENHEIGHT = 1536;
+    const int SCREENWIDTH = 1024;
+    const int SCREENHEIGHT = 720;
     srand(static_cast<unsigned int>(time(NULL))); // To randomize the rand() function within Monster::randomNumber()
-    
+
     // Applications variables
     std::vector<cScreen*> Screens;
     int screen = 0;
-    
+
     // Window creation
     sf::RenderWindow App(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), "CIS 29 Game Project");
     App.setFramerateLimit(60);
-    
+
     // Screens preparation
     screen_0 s0;
     Screens.push_back(&s0);
@@ -42,9 +44,6 @@ int main(int argc, char** argv)
     Screens.push_back(&s4);
     screen_5 s5;
     Screens.push_back(&s5);
-	screen_6 s6;
-	Screens.push_back(&s6);
-    
 
     // Main loop
     while (screen >= 0)

@@ -13,13 +13,14 @@
 
 #include <SFML/Graphics.hpp>
 
-static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(2048.0f, 1436.0f);
-//static sf::Vector2f BackgroundSize = sf::Vector2f(1024.0f, 720.0f);
+//static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(2048.0f, 1436.0f);
+static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(2700.0f, 1800.0f);//1024.0f, 720.0f);
 
 class Entity
 {
 protected:
     sf::Sprite sprite;
+    sf::Image image;
     //sf::Vector2f position;
 public:
     enum Direction {Up,Down,Left,Right};

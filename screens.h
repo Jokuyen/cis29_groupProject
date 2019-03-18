@@ -11,6 +11,5 @@
 #include "screen_3.h"
 #include "screen_4.h"
 #include "screen_5.h"
-#include "screen_6.h"
 
 #endif // SCREENS_H

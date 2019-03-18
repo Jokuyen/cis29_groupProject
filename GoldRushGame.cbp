@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="GoldRushGame" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/GoldRushGame" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/GoldRushGame" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/include" />
+			<Add directory="/usr/local/include/include" />
+		</Compiler>
+		<Linker>
+			<Add library="sfml-audio" />
+			<Add library="sfml-graphics" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
+			<Add directory="/usr/local/lib/lib" />
+		</Linker>
+		<Unit filename="Bomb.cpp" />
+		<Unit filename="Border.cpp" />
+		<Unit filename="Collision.cpp" />
+		<Unit filename="Entity.cpp" />
+		<Unit filename="Explosion.cpp" />
+		<Unit filename="Monster.cpp" />
+		<Unit filename="Player.cpp" />
+		<Unit filename="Score.cpp" />
+		<Unit filename="include/Bomb.h" />
+		<Unit filename="include/Border.h" />
+		<Unit filename="include/Collision.h" />
+		<Unit filename="include/Entity.h" />
+		<Unit filename="include/Explosion.h" />
+		<Unit filename="include/Monster.h" />
+		<Unit filename="include/Player.h" />
+		<Unit filename="include/Score.h" />
+		<Unit filename="include/cScreen.h" />
+		<Unit filename="include/screen_0.h" />
+		<Unit filename="include/screen_1.h" />
+		<Unit filename="include/screen_2.h" />
+		<Unit filename="include/screen_3.h" />
+		<Unit filename="include/screen_4.h" />
+		<Unit filename="include/screen_5.h" />
+		<Unit filename="include/screens.h" />
+		<Unit filename="main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
