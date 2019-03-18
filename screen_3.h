@@ -171,26 +171,16 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     monsterTexture.loadFromFile(MONSTERIMAGE);
     monsterTwoTexture.loadFromFile(MONSTERTWOIMAGE);
     monsterCollisionTexture.loadFromFile(MONSTERCOLLISIONIMAGE);
+	int spawnCount = 1;
     
     // Monster Vector Array
     std::vector<Monster *>::const_iterator monsterIterator;
     std::vector<Monster *> monsterArray;
-    
-    // Time management variables
-    sf::Clock monsterSpawnClock;
-    sf::Clock monsterSpeedClock;
-    sf::Clock shieldDelayClock;
-    sf::Clock shieldPopClock;
-    
-	cout << "Enter Score: ";
-	//cin >> Score::score;
-	Score::score = 1; /////////////////////////////////////////////TEMPORARY
 
 	// Coins
 	sf::RectangleShape coinArray[6];
 
 	srand(time(0));
-	//sf::RenderWindow window(sf::VideoMode(2000, 2000), "Welcome!", sf::Style::Close | sf::Style::Default);
 	sf::RectangleShape coin1(sf::Vector2f(40.0f, 40.0f));
 	coinArray[0] = coin1;
 	sf::RectangleShape coin2(sf::Vector2f(40.0f, 40.0f));
@@ -204,8 +194,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	sf::RectangleShape coin6(sf::Vector2f(40.0f, 40.0f));
 	coinArray[5] = coin6;
 
-	//    sf::RectangleShape coinss;
-	//    coinss.setScale(100.f, 100.f);
 	sf::SoundBuffer buffer;
 	sf::Texture coinTexture;
 
@@ -214,7 +202,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	}
 
 	if (!coinTexture.loadFromFile("Coin1.png")) {
-		std::cerr << "An eror oucred" << std::endl;
+		std::cerr << "An error occured" << std::endl;
 	}
 
 	sf::Sound coinSound;
@@ -227,6 +215,12 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 		coinArray[i].setTexture(&coinTexture);
 		coinArray[i].setPosition(getRandom(100, 1800), getRandom(100, 1500));
 	}
+
+	// Time management variables
+	sf::Clock monsterSpawnClock;
+	sf::Clock monsterSpeedClock;
+	sf::Clock shieldDelayClock;
+	sf::Clock shieldPopClock;
 
     sf::Event event;
     while (Running)
@@ -257,6 +251,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                         return (0);
                         break;
                     case sf::Keyboard::Return: // Return to screen_1
+						Score::score = p.getScore();
                         return (4);
                         break;
 					case sf::Keyboard::Space:
@@ -315,23 +310,24 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			App.draw(background);
 			p.draw(App);
 
-			// Create new monster
 			if (monsterSpawnTimer.asSeconds() > 3)
 			{
-				int randomNumber;
-				randomNumber = rand() % 2;
-
-				// Spawn from left side
-				if (randomNumber == 0)
+				for (int i = 0; i < spawnCount; i++)
 				{
-					monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2))));
-				}
-				// Spawn from right side
-				else if (randomNumber == 1)
-				{
-					monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2))));
-				}
+					int randomNumber;
+					randomNumber = rand() % 2;
 
+					// Spawn from left side
+					if (randomNumber == 0)
+					{
+						monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, -65, static_cast<float>(rand() % (BG_HEIGHT * 2))));
+					}
+					// Spawn from right side
+					else if (randomNumber == 1)
+					{
+						monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, static_cast<float>(SCREENWIDTH * 2.1), static_cast<float>(rand() % (BG_HEIGHT * 2))));
+					}
+				}
 				monsterSpawnClock.restart();
 			}
 
@@ -341,7 +337,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 				monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
 
 				// If timer passes, increase monsters' speed and restart clock to 0
-				if (monsterSpeedTimer.asSeconds() > 1)
+				if (monsterSpeedTimer.asSeconds() > 3)
 				{
 					monsterArray[counter]->movementAnimation();
 					monsterArray[counter]->increaseSpeed();
@@ -369,7 +365,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 					if (p.attack(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
 					{
 						monsterArray[counter]->setAlive(false);
-						//monsterArray.erase(monsterIterator);
 						cout << "ATTACK" << endl;
 					}
 					if (monsterArray[counter]->getAlive() == false)
@@ -392,6 +387,10 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 					coinArray[i].setPosition(getRandom(100, 1800), getRandom(100, 1500));
 					txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
 					cout << p.getScore() << endl;
+					if (p.getScore() % 15 == 0)
+					{
+						spawnCount++;
+					}
 				}
 			}
 

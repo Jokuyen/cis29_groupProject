@@ -1,10 +1,6 @@
-1  5
-5  Johnny
-5  Nguyen
-5  Hello
-5  Hello
-5  Hello
-5  Hello
-5  Hello
-5  John
-10  John
+1  Kat
+1  johnny
+2  SWAG
+10  John
+10  Cat
+50  KitKat

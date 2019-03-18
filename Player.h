@@ -34,6 +34,7 @@ private:
     sf::Texture flippedTexture;
     sf::Texture flippedShieldTexture;
     Direction dir;
+	Direction sideDir;
 
 public:
     Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w);
