@@ -21,6 +21,7 @@ Player::Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::T
     hit = -1;
     currentTexture = 1;
     dir = Right;
+	sideDir = Right;
     
     texture = inputTexture;
     flippedTexture = inputFlippedTexture;
@@ -56,18 +57,37 @@ void Player::move(Direction d)
                 sprite.setTexture(shieldTexture);
             }
             
-            if (currentTexture == 1)
-            {
-                // 3rd row, 4th cat
-                sprite.setTextureRect(sf::IntRect(160, 110, 24, 30));
-                currentTexture = 2;
-            }
-            else
-            {
-                // 6th row, 3rd cat
-                sprite.setTextureRect(sf::IntRect(110, 260, 24, 30));
-                currentTexture = 1;
-            }
+			if (sideDir == Right)
+			{
+				if (currentTexture == 1)
+				{
+					// 3rd row, 4th cat
+					sprite.setTextureRect(sf::IntRect(160, 110, 24, 30));
+					currentTexture = 2;
+				}
+				else
+				{
+					// 6th row, 3rd cat
+					sprite.setTextureRect(sf::IntRect(110, 260, 24, 30));
+					currentTexture = 1;
+				}
+			}
+			else
+			{
+				sprite.setTexture(flippedTexture);
+				if (currentTexture == 1)
+				{
+					// 3rd row, 7th cat
+					sprite.setTextureRect(sf::IntRect(315, 110, 24, 30));
+					currentTexture = 2;
+				}
+				else
+				{
+					// 6th row, 8th cat
+					sprite.setTextureRect(sf::IntRect(365, 260, 24, 30));
+					currentTexture = 1;
+				}
+			}
             
             if (sprite.getPosition().y < 105.0f)
                 break;
@@ -84,26 +104,52 @@ void Player::move(Direction d)
             {
                 sprite.setTexture(shieldTexture);
             }
-            
-            // 1st row of sprite sheet
-            if (currentTexture == 1)
-            {
-                // 1st cat
-                sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
-                currentTexture = 2;
-            }
-            else if (currentTexture == 2)
-            {
-                // 4th cat
-                sprite.setTextureRect(sf::IntRect(160, 10, 24, 30));
-                currentTexture = 3;
-            }
-            else if (currentTexture == 3)
-            {
-                // 5th cat
-                sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
-                currentTexture = 1;
-            }
+  
+			if (sideDir == Right)
+			{
+				// 1st row of sprite sheet
+				if (currentTexture == 1)
+				{
+					// 1st cat
+					sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
+					currentTexture = 2;
+				}
+				else if (currentTexture == 2)
+				{
+					// 4th cat
+					sprite.setTextureRect(sf::IntRect(160, 10, 24, 30));
+					currentTexture = 3;
+				}
+				else if (currentTexture == 3)
+				{
+					// 5th cat
+					sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
+					currentTexture = 1;
+				}
+			}
+			else
+			{
+				sprite.setTexture(flippedTexture);
+				// 1st row of sprite sheet
+				if (currentTexture == 1)
+				{
+					// 10th cat
+					sprite.setTextureRect(sf::IntRect(465, 10, 24, 30));
+					currentTexture = 2;
+				}
+				else if (currentTexture == 2)
+				{
+					// 7th cat
+					sprite.setTextureRect(sf::IntRect(315, 10, 24, 30));
+					currentTexture = 3;
+				}
+				else if (currentTexture == 3)
+				{
+					// 6th cat
+					sprite.setTextureRect(sf::IntRect(265, 10, 24, 30));
+					currentTexture = 1;
+				}
+			}
             
             if ((sprite.getPosition().y + 20) > BACKGROUNDSIZE.y)
                 break;
@@ -112,6 +158,7 @@ void Player::move(Direction d)
             break;
         case Right:
             dir = Right;
+			sideDir = Right;
             if (shield == false)
             {
                 sprite.setTexture(texture);
@@ -120,7 +167,7 @@ void Player::move(Direction d)
             {
                 sprite.setTexture(shieldTexture);
             }
-            
+
             // 1st row of sprite sheet
             if (currentTexture == 1)
             {
@@ -148,6 +195,7 @@ void Player::move(Direction d)
             break;
         case Left:
             dir = Left;
+			sideDir = Left;
             if (shield == false)
             {
                 sprite.setTexture(flippedTexture);
@@ -304,14 +352,36 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
     switch (dir)
     {
         case Up:
+			if (sideDir == Right)
+			{
+				// 6th row, 4th cat
+				sprite.setTextureRect(sf::IntRect(165, 260, 24, 30));
+			}
+			else
+			{
+				sprite.setTexture(flippedTexture);
+				// 6th row, 7th cat
+				sprite.setTextureRect(sf::IntRect(313, 260, 24, 30));
+			}
+
             if((dist < 300) && (monster_x >= startx && monster_x <= endx) && (monster_y <= endy))
             {
                 return true;
             }
             break;
         case Down:
-			// 5th row, 10th cat
-			sprite.setTextureRect(sf::IntRect(463, 210, 24, 30));
+			if (sideDir == Right)
+			{
+				// 5th row, 10th cat
+				sprite.setTextureRect(sf::IntRect(463, 210, 24, 30));
+			}
+			else
+			{
+				// 5th row, 1st cat
+				sprite.setTextureRect(sf::IntRect(13, 210, 24, 30));
+			}
+
+
             if((dist < 300) && (monster_x >= startx && monster_x <= endx) && (monster_y >= endy))
             {
                 return true;
@@ -326,6 +396,8 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
             }
             break;
         case Left:
+			// 4th row, 1st cat
+			sprite.setTextureRect(sf::IntRect(10, 160, 24, 30));
             if((dist < 300) && (monster_y >= starty && monster_y <= endy) && (monster_x <= startx))
             {
                 return true;

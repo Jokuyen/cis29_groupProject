@@ -55,7 +55,7 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	ostringstream sout;
 
 	if (highScores.size() < 10 || score > (highScores.begin())->first && score > 0) {
-		sout << "Congraduation! You make it into top 10!" << endl;
+		sout << "Congratulations! You made it into top 10!" << endl;
 		sout << "Enter your name: ";
 	}
 	else {
