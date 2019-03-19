@@ -12,11 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <stdio.h>
-
-
 #include "Entity.h"
-//#include "Monster.h"
-
 using namespace std;
 
 class Player : public Entity
@@ -26,7 +22,7 @@ private:
     bool shield;
     int score;
     int hit;
-    
+
     // Textures
     int currentTexture;
 	int currentAttackTexture;
@@ -52,10 +48,10 @@ public:
 	void incrementCurrentAttackTexture() { currentAttackTexture++; }
 	double getDistance(float monster_x, float monster_y);
 	bool collectCoin(float coin_x, float coin_y, float coinSize_x, float coinSize_y);
-    
+    bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size);
+    void setMask(sf::Texture& maskTexture);
     ~Player();
-    bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/);
-    
+
 };
 
 #endif /* Player_hpp */

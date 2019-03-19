@@ -12,7 +12,7 @@
 /*
  Description: This is the constructor for the player. It sets the textures for the animation, the shield texture, sets the number of lives, the score, the status of the shield, the origin, and number of hits.
  Parameters: RenderWindow object on which to draw the sprite.
- 
+
  */
 Player::Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w): Entity(inputTexture, w, h)
 {
@@ -23,25 +23,29 @@ Player::Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::T
 	currentAttackTexture = 1;
     dir = Right;
 	sideDir = Right;
-    
+
     texture = inputTexture;
     flippedTexture = inputFlippedTexture;
-    
+
     shield = false;
     shieldTexture = inputShieldTexture;
     flippedShieldTexture = inputFlippedShieldTexture;
-    
+
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
     sprite.setScale(4, 4);
     sprite.setOrigin(sprite.getLocalBounds().width/2.0f,sprite.getLocalBounds().height / 2.0f);
 }
 
+void Player::setMask(sf::Texture& maskTexture)
+{
+    image = maskTexture.copyToImage();
+}
 
 /*
  Description: This function handles the movement of the player. It changes the texture each move to animate the player. It moves the player 10.0f in the direction entered. There are statements in place to handle the boundaries of the screen.
  Parameters: Direction to move the sprite.
- 
+
  */
 void Player::move(Direction d)
 {
@@ -49,7 +53,7 @@ void Player::move(Direction d)
     {
         case Up:
             dir = Up;
-            
+
 			if (sideDir == Right)
 			{
 				if (shield == false)
@@ -110,15 +114,16 @@ void Player::move(Direction d)
 					currentTexture = 1;
 				}
 			}
-            
+
             if (sprite.getPosition().y < 105.0f)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 10.0f);
+                if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y - 10.0f) != sf::Color::Black)
+                    sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 10.0f);
 			break;
         case Down:
             dir = Down;
-  
+
 			if (sideDir == Right)
 			{
 				if (shield == false)
@@ -181,11 +186,12 @@ void Player::move(Direction d)
 					currentTexture = 1;
 				}
 			}
-            
-            if ((sprite.getPosition().y + 20) > BACKGROUNDSIZE.y)
+
+            if ((sprite.getPosition().y + 20) >  1800)//BACKGROUNDSIZE.y)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
+                 if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y + 10.0f) != sf::Color::Black)
+                    sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
             break;
         case Right:
             dir = Right;
@@ -219,11 +225,12 @@ void Player::move(Direction d)
                 sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
                 currentTexture = 1;
             }
-            
-            if (sprite.getPosition().x > BACKGROUNDSIZE.x-size().x/2)
+
+            if (sprite.getPosition().x > 2700-size().x / 2)//BACKGROUNDSIZE.x-size().x/2)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x + 10.0f, sprite.getPosition().y);
+                if (image.getPixel(sprite.getPosition().x + 10.0f, sprite.getPosition().y) != sf::Color::Black)
+                  sprite.setPosition(sprite.getPosition().x + 10.0f, sprite.getPosition().y);
             break;
         case Left:
             dir = Left;
@@ -237,7 +244,7 @@ void Player::move(Direction d)
             {
                 sprite.setTexture(flippedShieldTexture);
             }
-            
+
             // 1st row of sprite sheet
             if (currentTexture == 1)
             {
@@ -257,11 +264,12 @@ void Player::move(Direction d)
                 sprite.setTextureRect(sf::IntRect(265, 10, 24, 30));
                 currentTexture = 1;
             }
-            
+
             if (sprite.getPosition().x < size().x / 2)
                 break;
             else
-                sprite.setPosition(sprite.getPosition().x - 10.0f, sprite.getPosition().y);
+                if (image.getPixel(sprite.getPosition().x - 10.0f, sprite.getPosition().y) != sf::Color::Black)
+                  sprite.setPosition(sprite.getPosition().x - 10.0f, sprite.getPosition().y);
             break;
         default:
             ;
@@ -270,12 +278,12 @@ void Player::move(Direction d)
 
 /*
  Description: This function changes the status of the shield to true and sets the shield texture.
- 
+
  */
 void Player::applyShield()
 {
     shield = true;
-    
+
     if (sprite.getTexture() == &texture)
     {
         sprite.setTexture(shieldTexture);
@@ -284,18 +292,18 @@ void Player::applyShield()
     {
         sprite.setTexture(flippedShieldTexture);
     }
-    
+
     cout << "shieldAPP" << endl;
 }
 
 /*
  Description: This function disables the shield(sets to false) and sets the texture back to regular.
- 
+
  */
 void Player::loseShield()
 {
     shield = false;
-    
+
     if (sprite.getTexture() == &shieldTexture)
     {
         sprite.setTexture(texture);
@@ -308,7 +316,7 @@ void Player::loseShield()
 
 /*
  Description: This function subtracts a life if the shield is not active. If the shield is active, it deactivates it and does not subtract a life.
- 
+
  */
 void Player::loseLife()
 {
@@ -327,7 +335,7 @@ void Player::loseLife()
 /*
  Description: This returns the number of lives the player has.
  Return: int number of lives.
- 
+
  */
 int Player::getLives()
 {
@@ -360,9 +368,14 @@ Player::~Player(){};
  Parameters: float x_position of monster, float y_position of monster, sf::Vector2f size of the monster
  Return: bool whether there was a collision or not
  */
-bool Player::hitByMonster(float monster_x, float monster_y, sf::Vector2f monster_size/*, bool debug*/)
+bool Player::hitByMonster(float monster_x, float monster_y, sf::Vector2f monster_size)
 {
-	return getDistance(monster_x, monster_y) < (size().x + monster_size.x) / 2.0f;
+	bool hit;
+    if (monster_size.y < monster_size.x)
+        hit = getDistance(monster_x, monster_y) < (size().y + monster_size.y) / 2.0f;
+    else
+        hit = getDistance(monster_x, monster_y) < (size().x + monster_size.x) / 2.0f;
+    return hit;
 }
 
 double Player::getDistance(float monster_x, float monster_y)
@@ -381,7 +394,7 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
     float starty = getPosition().y-(size().y/2);
     float endy = getPosition().y+(size().y/2);
     double dist = getDistance(monster_x, monster_y);
-    
+
     switch (dir)
     {
         case Up:

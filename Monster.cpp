@@ -12,13 +12,16 @@
  Description: This is the constructor for the monster, it sets the movement texture, the collision texture, and the origin. It also calls the constructor of the parent class, Entity, to set the original texture and the starting position.
  */
 
-Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT): Entity(monsterTexture, SCREENWIDTH, BG_HEIGHT)
+Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, sf::Texture& maskTexture, float  chamberx, float chambery, bool boss): Entity(monsterTexture, chamberx, chambery)
 {
     movementOneTexture = monsterTexture;
     movementTwoTexture = monsterTwoTexture;
     collisionTexture = monsterCollisionTexture;
-    sprite.setScale(0.75, 0.75);
+    bigBoss = boss;
+    if (bigBoss == false)
+        sprite.setScale(0.75, 0.75);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
+    image = maskTexture.copyToImage();
 }
 
 /*
@@ -44,45 +47,63 @@ void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
 {
     if (direction == 0) // Up
     {
-        sprite.move(0, -movementSpeed);
+        if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y - movementSpeed) == sf::Color::White)
+            {
+                sprite.move(0, -movementSpeed );
+            }
     }
     else if (direction == 1) // Down
     {
-        sprite.move(0, movementSpeed);
+        if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y + movementSpeed) == sf::Color::White)
+        {
+            sprite.move(0, movementSpeed);
+        }
     }
     else if (direction == 2) // Left
     {
-        sprite.move(-movementSpeed, 0);
+        if (image.getPixel(sprite.getPosition().x - movementSpeed, sprite.getPosition().y) == sf::Color::White)
+        {
+            if (bigBoss == true)
+                sprite.setTextureRect(sf::IntRect(0, 0, 500, 200)); //unflips sprite using sprite.setTextureRect(sf::IntRect(0, 0, width, height));
+            sprite.move(-movementSpeed, 0);
+        }
     }
     else if (direction == 3) // Right
     {
-        sprite.move(movementSpeed, 0);
+        if (image.getPixel(sprite.getPosition().x + movementSpeed, sprite.getPosition().y) == sf::Color::White)
+        {
+            if (bigBoss == true)
+                sprite.setTextureRect(sf::IntRect(500, 0, -500, 200)); //flips sprite using sprite.setTextureRect(sf::IntRect(width, 0, -width, height));
+            sprite.move(movementSpeed, 0);
+        }
     }
     else
     {
         // No movement
     }
-    
-    // Prevent monsters from leaving the window
-    if (sprite.getPosition().y < 85) // Hitting top wall
+
+     // Prevent monsters from leaving the window
+    if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y - 30) == sf::Color::Black)//sprite.getPosition().y < 85) // Hitting top wall
     {
         direction = 1;
     }
-    else if (sprite.getPosition().y > BG_HEIGHT + 15) // Hitting bottom wall
+    else if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y + 30) == sf::Color::Black) //sprite.getPosition().y >  BACKGROUNDSIZE.y + 15)//BG_HEIGHT + 15) // Hitting bottom wall
     {
         direction = 0;
     }
-    else if (sprite.getPosition().x < 35) // Hitting left wall
+    else if (image.getPixel(sprite.getPosition().x - 30, sprite.getPosition().y) == sf::Color::Black) //sprite.getPosition().x < 35) // Hitting left wall
     {
         direction = 3;
     }
-    else if (sprite.getPosition().x > SCREENWIDTH - 20) // Hitting right wall
+    else if (image.getPixel(sprite.getPosition().x + 30, sprite.getPosition().y) == sf::Color::Black) //sprite.getPosition().x > BACKGROUNDSIZE.x - 20) // SCREENWIDTH - 20) // Hitting right wall
     {
         direction = 2;
     }
-    
+
+
     movementCounter++;
-    
+
+
     if (movementCounter >= movementLength)
     {
         /* If randomNumber(5), and since we only have 4 numbers for direction,
@@ -99,7 +120,7 @@ void Monster::updateMovement(const int SCREENWIDTH, const int BG_HEIGHT)
  */
 int Monster::randomNumber(int max)
 {
-    
+
     int randomNumber;
     randomNumber = rand() % (max + 1);
     return randomNumber;
