@@ -20,7 +20,9 @@ Player::Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::T
     score = 0;
     hit = -1;
     currentTexture = 1;
+	currentAttackTexture = 1;
     dir = Right;
+	sideDir = Right;
 
     texture = inputTexture;
     flippedTexture = inputFlippedTexture;
@@ -45,85 +47,156 @@ void Player::setMask(sf::Texture& maskTexture)
  Parameters: Direction to move the sprite.
 
  */
-void Player::setPosition(float x, float y)
-{
-    sprite.setPosition(x, y);
-}
 void Player::move(Direction d)
 {
     switch (d)
     {
         case Up:
             dir = Up;
-            if (shield == false)
-            {
-                sprite.setTexture(texture);
-            }
-            else
-            {
-                sprite.setTexture(shieldTexture);
-            }
 
-            if (currentTexture == 1)
-            {
-                // 3rd row, 4th cat
-                sprite.setTextureRect(sf::IntRect(160, 110, 24, 30));
-                currentTexture = 2;
-            }
-            else
-            {
-                // 6th row, 3rd cat
-                sprite.setTextureRect(sf::IntRect(110, 260, 24, 30));
-                currentTexture = 1;
-            }
+			if (sideDir == Right)
+			{
+				if (shield == false)
+				{
+					sprite.setTexture(texture);
+				}
+				else
+				{
+					sprite.setTexture(shieldTexture);
+				}
+
+				if (currentTexture == 1)
+				{
+					// 3rd row, 4th cat
+					sprite.setTextureRect(sf::IntRect(160, 110, 24, 30));
+					currentTexture = 2;
+				}
+				else if (currentTexture ==2)
+				{
+					// 6th row, 3rd cat
+					sprite.setTextureRect(sf::IntRect(110, 260, 24, 30));
+					currentTexture = 3;
+				}
+				else if (currentTexture == 3)
+				{
+					// 6th row, 3rd cat
+					sprite.setTextureRect(sf::IntRect(110, 260, 24, 30));
+					currentTexture = 1;
+				}
+			}
+			else
+			{
+				if (shield == false)
+				{
+					sprite.setTexture(flippedTexture);
+				}
+				else
+				{
+					sprite.setTexture(flippedShieldTexture);
+				}
+
+				if (currentTexture == 1)
+				{
+					// 3rd row, 7th cat
+					sprite.setTextureRect(sf::IntRect(315, 110, 24, 30));
+					currentTexture = 2;
+				}
+				else if (currentTexture == 2)
+				{
+					// 6th row, 8th cat
+					sprite.setTextureRect(sf::IntRect(365, 260, 24, 30));
+					currentTexture = 3;
+				}
+				else if (currentTexture == 3)
+				{
+					// 6th row, 8th cat
+					sprite.setTextureRect(sf::IntRect(365, 260, 24, 30));
+					currentTexture = 1;
+				}
+			}
 
             if (sprite.getPosition().y < 105.0f)
                 break;
             else
-            {
                 if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y - 10.0f) != sf::Color::Black)
                     sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 10.0f);
-            }
-            break;
+			break;
         case Down:
             dir = Down;
-            if (shield == false)
-            {
-                sprite.setTexture(texture);
-            }
-            else
-            {
-                sprite.setTexture(shieldTexture);
-            }
 
-            // 1st row of sprite sheet
-            if (currentTexture == 1)
-            {
-                // 1st cat
-                sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
-                currentTexture = 2;
-            }
-            else if (currentTexture == 2)
-            {
-                // 4th cat
-                sprite.setTextureRect(sf::IntRect(160, 10, 24, 30));
-                currentTexture = 3;
-            }
-            else if (currentTexture == 3)
-            {
-                // 5th cat
-                sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
-                currentTexture = 1;
-            }
+			if (sideDir == Right)
+			{
+				if (shield == false)
+				{
+					sprite.setTexture(texture);
+				}
+				else
+				{
+					sprite.setTexture(shieldTexture);
+				}
 
-            if ((sprite.getPosition().y + 60) > 1800)//BACKGROUNDSIZE.y)
+				// 1st row of sprite sheet
+				if (currentTexture == 1)
+				{
+					// 1st cat
+					sprite.setTextureRect(sf::IntRect(10, 10, 24, 30));
+					currentTexture = 2;
+				}
+				else if (currentTexture == 2)
+				{
+					// 4th cat
+					sprite.setTextureRect(sf::IntRect(160, 10, 24, 30));
+					currentTexture = 3;
+				}
+				else if (currentTexture == 3)
+				{
+					// 5th cat
+					sprite.setTextureRect(sf::IntRect(210, 10, 24, 30));
+					currentTexture = 1;
+				}
+			}
+			else
+			{
+				if (shield == false)
+				{
+					sprite.setTexture(flippedTexture);
+				}
+				else
+				{
+					sprite.setTexture(flippedShieldTexture);
+				}
+
+				// 1st row of sprite sheet
+				if (currentTexture == 1)
+				{
+					// 10th cat
+					sprite.setTextureRect(sf::IntRect(465, 10, 24, 30));
+					currentTexture = 2;
+				}
+				else if (currentTexture == 2)
+				{
+					// 7th cat
+					sprite.setTextureRect(sf::IntRect(315, 10, 24, 30));
+					currentTexture = 3;
+				}
+				else if (currentTexture == 3)
+				{
+					// 6th cat
+					sprite.setTextureRect(sf::IntRect(265, 10, 24, 30));
+					currentTexture = 1;
+				}
+			}
+
+            if ((sprite.getPosition().y + 20) >  1800)//BACKGROUNDSIZE.y)
                 break;
             else
-                if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y + 10.0f) != sf::Color::Black)
-                  sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
+                 if (image.getPixel(sprite.getPosition().x, sprite.getPosition().y + 10.0f) != sf::Color::Black)
+                    sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y + 10.0f);
             break;
         case Right:
             dir = Right;
+			sideDir = Right;
+
             if (shield == false)
             {
                 sprite.setTexture(texture);
@@ -153,7 +226,7 @@ void Player::move(Direction d)
                 currentTexture = 1;
             }
 
-            if (sprite.getPosition().x >  2700-size().x/2)//BACKGROUNDSIZE.x-size().x/2)
+            if (sprite.getPosition().x > 2700-size().x / 2)//BACKGROUNDSIZE.x-size().x/2)
                 break;
             else
                 if (image.getPixel(sprite.getPosition().x + 10.0f, sprite.getPosition().y) != sf::Color::Black)
@@ -161,6 +234,8 @@ void Player::move(Direction d)
             break;
         case Left:
             dir = Left;
+			sideDir = Left;
+
             if (shield == false)
             {
                 sprite.setTexture(flippedTexture);
@@ -293,17 +368,22 @@ Player::~Player(){};
  Parameters: float x_position of monster, float y_position of monster, sf::Vector2f size of the monster
  Return: bool whether there was a collision or not
  */
-bool Player::hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size/*, bool debug*/)
+bool Player::hitByMonster(float monster_x, float monster_y, sf::Vector2f monster_size)
 {
-    return getDistance(monster_x, monster_y, monster_size) < (size().x + monster_size.x) / 2.0f;
+	bool hit;
+    if (monster_size.y < monster_size.x)
+        hit = getDistance(monster_x, monster_y) < (size().y + monster_size.y) / 2.0f;
+    else
+        hit = getDistance(monster_x, monster_y) < (size().x + monster_size.x) / 2.0f;
+    return hit;
 }
 
-double Player::getDistance(float monster_x, float monster_y,  sf::Vector2f monster_size)
+double Player::getDistance(float monster_x, float monster_y)
 {
-    float diffX = getPosition().x - monster_x;
-    float diffY = getPosition().y - monster_y;
+	float diffX = getPosition().x - monster_x;
+	float diffY = getPosition().y - monster_y;
 
-    return sqrt(diffX * diffX + diffY * diffY);
+	return sqrt(diffX * diffX + diffY * diffY);
 
 }
 
@@ -313,7 +393,7 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
     float endx = getPosition().x+(size().x/2);
     float starty = getPosition().y-(size().y/2);
     float endy = getPosition().y+(size().y/2);
-    double dist = getDistance(monster_x, monster_y, monster_size);
+    double dist = getDistance(monster_x, monster_y);
 
     switch (dir)
     {
@@ -347,3 +427,125 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
     return false;
 }
 
+void Player::attackAnimation()
+{
+	switch (dir)
+	{
+	case Up:
+		if (sideDir == Right)
+		{
+			if (currentAttackTexture <= 2)
+			{
+				// 6th row, 4th cat
+				sprite.setTextureRect(sf::IntRect(165, 260, 24, 30));
+			}
+			else if (currentAttackTexture > 3 && currentAttackTexture < 5)
+			{
+				// 6th row, 5th cat
+				sprite.setTextureRect(sf::IntRect(215, 260, 24, 30));
+			}
+			else if (currentAttackTexture >= 6)
+			{
+				currentAttackTexture = 1;
+			}
+		}
+		else
+		{
+			if (currentAttackTexture <= 2)
+			{
+				// 6th row, 7th cat
+				sprite.setTextureRect(sf::IntRect(313, 260, 24, 30));
+			}
+			else if (currentAttackTexture > 3 && currentAttackTexture < 5)
+			{
+				// 6th row, 6th cat
+				sprite.setTextureRect(sf::IntRect(263, 260, 24, 30));
+			}
+			else if (currentAttackTexture >= 6)
+			{
+				currentAttackTexture = 1;
+			}
+		}
+		break;
+	case Down:
+		if (sideDir == Right)
+		{
+			if (currentAttackTexture <= 2)
+			{
+				// 5th row, 10th cat
+				sprite.setTextureRect(sf::IntRect(463, 210, 24, 30));
+			}
+			else if (currentAttackTexture > 3 && currentAttackTexture < 5)
+			{
+				// 5th row, 9th cat
+				sprite.setTextureRect(sf::IntRect(410, 210, 24, 30));
+			}
+			else if (currentAttackTexture >= 6)
+			{
+				currentAttackTexture = 1;
+			}
+
+		}
+		else
+		{
+			if (currentAttackTexture <= 2)
+			{
+				// 5th row, 1st cat
+				sprite.setTextureRect(sf::IntRect(13, 210, 24, 30));
+			}
+			else if (currentAttackTexture > 3 && currentAttackTexture < 5)
+			{
+				// 5th row, 2nd cat
+				sprite.setTextureRect(sf::IntRect(66, 210, 24, 30));
+			}
+			else if (currentAttackTexture >= 6)
+			{
+				currentAttackTexture = 1;
+			}
+		}
+		break;
+	case Right:
+		if (currentAttackTexture <= 2)
+		{
+			// 4th row, 7th cat
+			sprite.setTextureRect(sf::IntRect(313, 160, 24, 30));
+		}
+		else if (currentAttackTexture > 3 && currentAttackTexture < 5)
+		{
+			// 4th row, 9th cat
+			sprite.setTextureRect(sf::IntRect(413, 160, 24, 30));
+		}
+		else if (currentAttackTexture >= 6)
+		{
+			currentAttackTexture = 1;
+		}
+		break;
+	case Left:
+		if (currentAttackTexture <= 2)
+		{
+			// 4th row, 1st cat
+			sprite.setTextureRect(sf::IntRect(10, 160, 24, 30));
+		}
+		else if (currentAttackTexture > 3 && currentAttackTexture < 5)
+		{
+			// 4th row, 3rd cat
+			sprite.setTextureRect(sf::IntRect(110, 160, 24, 30));
+		}
+		else if (currentAttackTexture >= 6)
+		{
+			currentAttackTexture = 1;
+		}
+	default:
+		;
+	};
+}
+
+bool Player::collectCoin(float coin_x, float coin_y, float coinSize_x, float coinSize_y)
+{
+	if (getDistance(coin_x, coin_y) < (size().x + coinSize_x) / 2.0f)
+	{
+		score++;
+		return true;
+	}
+	return false;
+}
