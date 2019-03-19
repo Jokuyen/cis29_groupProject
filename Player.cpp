@@ -115,7 +115,7 @@ void Player::move(Direction d)
                 break;
             else
                 sprite.setPosition(sprite.getPosition().x, sprite.getPosition().y - 10.0f);
-            break;
+			break;
         case Down:
             dir = Down;
   
@@ -406,7 +406,6 @@ bool Player::attack(float monster_x, float monster_y, sf::Vector2f monster_size)
 			{
 				if (currentAttackTexture <= 2)
 				{
-					sprite.setTexture(flippedTexture);
 					// 6th row, 7th cat
 					sprite.setTextureRect(sf::IntRect(313, 260, 24, 30));
 				}
