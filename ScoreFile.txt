@@ -1,6 +1,9 @@
-1  Kat
-1  johnny
-2  SWAG
-10  John
-10  Cat
-50  KitKat
+0  1
+0  1
+0  
+0  
+0  
+0  
+0  
+
+1  

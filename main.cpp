@@ -42,10 +42,11 @@ int main(int argc, char** argv)
     Screens.push_back(&s4);
     screen_5 s5;
     Screens.push_back(&s5);
-	screen_6 s6;
-	Screens.push_back(&s6);
+    screen_6 s6;
+    Screens.push_back(&s6);
+    Menu m;
+    Screens.push_back(&m);
     
-
     // Main loop
     while (screen >= 0)
     {
