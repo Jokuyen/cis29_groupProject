@@ -386,6 +386,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			{
 				attack = true;
 				p.incrementCurrentAttackTexture();
+				p.attackAnimation();
 			}
 			else
 			{
