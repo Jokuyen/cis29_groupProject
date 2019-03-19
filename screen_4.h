@@ -1,5 +1,6 @@
 #include <iostream>
 #include "cScreen.h"
+#include <string>
 
 #include <SFML/Graphics.hpp>
 
@@ -31,9 +32,26 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    sf::Text text("Game Over", font);
-    text.setCharacterSize(70);
+    //sf::Text text("Game Over", font);
+    string t = "Game Over";
+    sf::Text title(t + "\n", font);
+    string score = "\n\n\nScore: ";
+    sf::Text text(score + to_string(Score::score) +  "\n  Next", font);
+    title.setCharacterSize(175);
+    text.setCharacterSize(120);
+    
+    sf::FloatRect titleRect = title.getLocalBounds();
+    title.setOrigin(titleRect.left + titleRect.width / 2.0f, titleRect.top + titleRect.height / 2.0f);
+    title.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f));
+    title.setFillColor(sf::Color::Red);
+    
+    // Center text
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    text.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f));
     text.setFillColor(sf::Color::White);
+    
+    
     
     sf::Event event;
     while (Running)
@@ -62,6 +80,7 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         }
         
         App.clear();
+        App.draw(title);
         App.draw(text);
         App.display();
     }

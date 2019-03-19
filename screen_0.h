@@ -33,9 +33,9 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     sf::Text text("Gold Rush"
-                  "\n\nEnter: Next screen"
-                  "\nBackspace: Previous screen", font);
-    text.setCharacterSize(70);
+                  "\n\n   Next"
+                  , font);
+    text.setCharacterSize(150);
     text.setFillColor(sf::Color::White);
     
     // Center text
@@ -53,19 +53,20 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
             // Key pressed
-            if (event.type == sf::Event::KeyPressed)
+            if (event.type == sf::Event::MouseButtonPressed)
             {
-                switch (event.key.code)
+                if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    case sf::Keyboard::Return: // Progress to screen_1
-                        return (1);
-                        break;
-                    default:
-                        break;
+                    sf::Vector2i position = sf::Mouse::getPosition();
+                    std::cout << position.x << " " << position.y << std::endl;
+                    if((position.x > 1280 && position.x < 1700) && (position.y > 2800 && position.y < 2962))
+                    {
+                        //std::cout << 7;
+                        return (7);
+                    }
                 }
             }
         }
-        
         App.clear();
         App.draw(text);
         App.display();

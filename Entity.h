@@ -1,4 +1,5 @@
 
+
 //
 //  Character.h
 //  jscreens
@@ -13,13 +14,13 @@
 #include <SFML/Graphics.hpp>
 
 static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(2048.0f, 1436.0f);
-//static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(1024.0f, 720.0f);
+//static sf::Vector2f BackgroundSize = sf::Vector2f(1024.0f, 720.0f);
 
 class Entity
 {
 protected:
     sf::Sprite sprite;
-    sf::Image image;
+    //sf::Vector2f position;
 public:
     enum Direction {Up,Down,Left,Right};
     Entity(sf::Texture& texture, float width, float height);
@@ -30,15 +31,11 @@ public:
     }
     sf::Sprite getSprite() const { return sprite; }
     void draw(sf::RenderWindow& App);
+    //virtual void move(Direction);
     virtual sf::Vector2f size() const;
-    void setPosition(float x, float y);
 };
 
 #endif /* Character_h */
-
-
-
-
 
 
 

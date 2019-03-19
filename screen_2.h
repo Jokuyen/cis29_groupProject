@@ -30,7 +30,8 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    sf::Text text("Controls: \n\nMovement (Arrow keys) \nAttack (A) \nShield (S) \n\nShield lasts for 2 seconds \nand recharges after 4 seconds.", font);
+    sf::Text text("Controls: \n\nMovement (Arrow keys) \nAttack (A) \nShield (S) \n\nShield lasts for 2 seconds \nand recharges after 4 seconds."
+        "\n\n\n\nMenu\t\t\t\t\tPlay", font);
     text.setCharacterSize(100);
     text.setFillColor(sf::Color::White);
     
@@ -43,21 +44,21 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             // Window closed
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
-            // Key pressed
-            if (event.type == sf::Event::KeyPressed)
+            // mouse pressed
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                switch (event.key.code)
+                sf::Vector2i position = sf::Mouse::getPosition();
+                std::cout << position.x << " " << position.y << std::endl;
+                if((position.x > 426 && position.x < 690) && (position.y > 3220 && position.y < 3320))
                 {
-                    case sf::Keyboard::Backspace: // Return to screen_1
-                        return (1);
-                        break;
-                    case sf::Keyboard::Return: // Return to screen_1
-                        return (3);
-                        break;
-                    default:
-                        break;
+                    return (7);
+                }
+                if((position.x > 2044 && position.x < 2324) && (position.y > 3220 && position.y < 3320))
+                {
+                    return (3);
                 }
             }
+            //key pressed
         }
         
         App.clear();

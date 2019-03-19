@@ -40,7 +40,9 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                   
                   "\n\nMonsters gradually increase in"
                   "\nspeed, so defeat them quickly"
-                  "\nbefore things get out of hand!", font);
+                  "\nbefore things get out of hand!"
+                  "\n\n\t\t\t\t\t\t\t  Next"
+                  , font);
     text.setCharacterSize(85);
     text.setFillColor(sf::Color::White);
     
@@ -53,19 +55,13 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             // Window closed
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
-            // Key pressed
-            if (event.type == sf::Event::KeyPressed)
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                switch (event.key.code)
+                sf::Vector2i position = sf::Mouse::getPosition();
+                std::cout << position.x << " " << position.y << std::endl;
+                if((position.x > 2110 && position.x < 2380) && (position.y > 3270 && position.y < 3360))
                 {
-                    case sf::Keyboard::Return: // Progress to screen_2
-                        return (2);
-                        break;
-                    case sf::Keyboard::Backspace: // Return to screen_0
-                        return (0);
-                        break;
-                    default:
-                        break;
+                    return (2);
                 }
             }
         }
