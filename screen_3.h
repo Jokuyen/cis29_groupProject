@@ -269,6 +269,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
 				attack = true;
+				p.incrementCurrentAttackTexture();
 			}
 			else
 			{
