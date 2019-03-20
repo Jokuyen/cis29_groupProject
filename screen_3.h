@@ -408,11 +408,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     case sf::Keyboard::Q: // Back to screen 0
                         return (0);
                         break;
-                    case sf::Keyboard::Return: // Return to screen_1
-                        App.setView(App.getDefaultView());
-                        Score::score = playerObj.getScore();
-                        return (4);
-                        break;
                     case sf::Keyboard::Space:
                         pause = !pause;
                         break;
@@ -604,7 +599,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 {
                     coinArray[i]->collide();
                     txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-                    cout << playerObj.getScore() << endl;
                     if (playerObj.getScore() % 10 == 0)
                     {
                         speedNumber += 0.25;
@@ -695,14 +689,18 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     App.draw(rectangle);
                     delete bigBoss;
                     bigBoss = nullptr;
+					playerObj.increaseLife();
                 }
                 else
                     bigBoss->draw(App);
             }
             
-            //            if (p.getScore() == 0) {
-            //                cout << "GAME OVER"
-            //            }
+			if (playerObj.getLives() == 0) 
+			{
+				App.setView(App.getDefaultView());
+				Score::score = playerObj.getScore();
+				return (4);
+			}
             
             
             //coinArray[0].draw(App);

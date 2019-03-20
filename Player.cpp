@@ -15,7 +15,7 @@
  */
 Player::Player(sf::Texture& inputTexture, sf::Texture& inputShieldTexture, sf::Texture& inputFlippedTexture, sf::Texture& inputFlippedShieldTexture, float h, float w): Entity(inputTexture, w, h)
 {
-    lives = 20;
+    lives = 3;
     score = 0;
     hit = -1;
     currentTexture = 1;
@@ -334,6 +334,14 @@ void Player::loseLife()
 int Player::getLives()
 {
     return lives;
+}
+
+/*
+ Description: This increases the number of lives the player has.
+ */
+void Player::increaseLife()
+{
+	lives++;
 }
 
 /*
