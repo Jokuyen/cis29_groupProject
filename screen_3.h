@@ -205,7 +205,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     // Header line
     string name = "Gold Rush";
     sf::Text txt(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()), font);
-    txt.setCharacterSize(50);
+    txt.setCharacterSize(25);
     txt.setFillColor(sf::Color::White);
     
     // Monster
@@ -215,7 +215,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     monsterTexture.loadFromFile(MONSTERIMAGE);
     monsterTwoTexture.loadFromFile(MONSTERTWOIMAGE);
     monsterCollisionTexture.loadFromFile(MONSTERCOLLISIONIMAGE);
-    int spawnCount = 1;
+	float speedNumber = 0.5;
     
     // Monster Vector Array
     std::vector<Monster *>::const_iterator monsterIterator;
@@ -265,7 +265,8 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     playerObj.setMask(borderTexture);
-    
+	sf::Image borderImage = borderTexture.copyToImage();
+
     // Coins
     std::vector<Coins*> coinArray;
     //Coins coinArray[6];
@@ -364,7 +365,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Vector2f viewPosition(SCREENWIDTH / 2, SCREENHEIGHT / 2);
     
     // Create Big Boss
-    Monster* bigBoss = new Monster(bigBossTexture, bigBossTwoTexture, bigBossCollisionTexture, borderTexture, 2*2100, 2*300, true);
+	Monster* bigBoss = new Monster(bigBossTexture, bigBossTwoTexture, bigBossCollisionTexture, borderImage, 2 * 2100, 2 * 300, true);
     
     
     // Big Boss health bar
@@ -517,27 +518,12 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             if (bombPtr)
                 bombPtr->draw(App);
             
-            // Create new monster
-            if (monsterSpawnTimer.asSeconds() > 8)
-            {
-                for (int i = 0; i < spawnCount; i++)
-                {
-                    int randomNumber;
-                    randomNumber = rand() % 2;
-                    
-                    // Spawn from left side
-                    if (randomNumber == 0)
-                    {
-                        monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, borderTexture, 2*250, 2*(750+static_cast<float>(rand() % 1000))));
-                    }
-                    // Spawn from right side
-                    else if (randomNumber == 1)
-                    {
-                        monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, borderTexture, 2*1200, 2*(800 + static_cast<float>(rand() % 1000))));
-                    }
-                }
-                monsterSpawnClock.restart();
-            }
+			// Create new monster
+			if (monsterSpawnTimer.asSeconds() > 5)
+			{
+				monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, borderImage, 2 * 250, 2 * 1700));
+				monsterSpawnClock.restart();
+			}
             
             int counter = 0;
             for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
@@ -545,10 +531,10 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
                 
                 // If timer passes, increase monsters' speed and restart clock to 0
-                if (monsterSpeedTimer.asSeconds() > 2.5)
+                if (monsterSpeedTimer.asSeconds() > 5)
                 {
                     monsterArray[counter]->movementAnimation();
-                    monsterArray[counter]->increaseSpeed();
+                    monsterArray[counter]->increaseSpeed(speedNumber);
                     monsterSpeedClock.restart();
                 }
                 
@@ -619,9 +605,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     coinArray[i]->collide();
                     txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
                     cout << playerObj.getScore() << endl;
-                    if (playerObj.getScore() % 15 == 0)
+                    if (playerObj.getScore() % 10 == 0)
                     {
-                        spawnCount++;
+                        speedNumber += 0.25;
                     }
                 }
             }
@@ -658,7 +644,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 {
                     bigBoss->updateMovement(SCREENWIDTH, BG_HEIGHT);
                     bigBoss->movementAnimation();
-                    bigBoss->increaseSpeed();
+                    bigBoss->increaseSpeed(speedNumber);
                     bigBossCountdown = 0;
                 }
                 
