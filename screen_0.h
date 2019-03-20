@@ -80,8 +80,8 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    case sf::Keyboard::Return: // Progress to screen_2
-                        return (1);
+                    case sf::Keyboard::Return: // Progress to menu
+                        return (7);
                         break;
                     default:
                         break;

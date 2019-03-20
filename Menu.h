@@ -81,6 +81,17 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
             // Key pressed
+			if (event.type == sf::Event::KeyPressed)
+			{
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Backspace: // Return to title screen
+					return (0);
+					break;
+				default:
+					break;
+				}
+			}
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)

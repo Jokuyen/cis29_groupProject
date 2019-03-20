@@ -391,11 +391,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    case sf::Keyboard::Backspace: // Back to screen 2
-                        return (2);
-                        break;
-                    case sf::Keyboard::Q: // Back to screen 0
-                        return (0);
+                    case sf::Keyboard::Q: // Back to menu
+						App.setView(App.getDefaultView());
+                        return (7);
                         break;
                     case sf::Keyboard::Space:
                         pause = !pause;
@@ -415,6 +413,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 attack = true;
                 playerObj.incrementCurrentAttackTexture();
+				playerObj.attackAnimation();
             }
             else
             {
@@ -688,6 +687,10 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 }
                 else
                     bigBoss->draw(App);
+
+				App.draw(bossTxt);
+				if (rectangle.getSize().x >= 0)
+					App.draw(rectangle);
             }
             
             if (playerObj.getLives() == 0 && testmode == false)
@@ -700,9 +703,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             
             //coinArray[0].draw(App);
             App.draw(txt);
-            App.draw(bossTxt);
-            if (rectangle.getSize().x >= 0)
-                App.draw(rectangle);
             App.display();
         }
         

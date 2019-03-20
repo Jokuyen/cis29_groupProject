@@ -33,8 +33,7 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     
-    sf::Text text("Game Over"
-                  , font);
+    sf::Text text("Game Over", font);
     text.setCharacterSize(70);
     text.setFillColor(sf::Color::Red);
     sf::FloatRect textRect = text.getLocalBounds();
@@ -84,11 +83,8 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    case sf::Keyboard::Return: // Progress to screen_2
+                    case sf::Keyboard::Return: // Progress to screen_5
                         return (5);
-                        break;
-                    case sf::Keyboard::Backspace: // Return to screen_0
-                        return (3);
                         break;
                     default:
                         break;

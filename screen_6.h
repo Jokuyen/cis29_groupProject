@@ -88,11 +88,8 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    case sf::Keyboard::Return: // Progress to screen_0
-                        return (0);
-                        break;
-                    case sf::Keyboard::Backspace: // Return to screen_4
-                        return (5);
+                    case sf::Keyboard::Return: // Return to menu
+                        return (7);
                         break;
                     default:
                         break;
