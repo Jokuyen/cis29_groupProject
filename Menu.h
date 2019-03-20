@@ -36,18 +36,40 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    sf::Text text("How to Play"
-                  "\n\nPlay"
-                  "\n\nHigh Score Board"
-                  "\n\nQuit"
-                  , font);
-    text.setCharacterSize(100);
-    text.setFillColor(sf::Color::White);
+    
+    //how to play button
+    sf::Text htpButton("How to Play", font);
+    htpButton.setCharacterSize(60);
+    htpButton.setFillColor(sf::Color::White);
+    sf::FloatRect htpButtonRect = htpButton.getLocalBounds();
+    htpButton.setOrigin(htpButtonRect.left + htpButtonRect.width / 2.0f, htpButtonRect.top + htpButtonRect.height / 2.0f);
+    htpButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (SCREENHEIGHT / 8.0f)));
+    
+    //play button
+    sf::Text pButton("Play", font);
+    pButton.setCharacterSize(60);
+    pButton.setFillColor(sf::Color::White);
+    sf::FloatRect pButtonRect = pButton.getLocalBounds();
+    pButton.setOrigin(pButtonRect.left + pButtonRect.width / 2.0f, pButtonRect.top + pButtonRect.height / 2.0f);
+    pButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (3*SCREENHEIGHT / 8.0f)));
+    
+    //high score screen button
+    sf::Text hsButton("High Score List", font);
+    hsButton.setCharacterSize(60);
+    hsButton.setFillColor(sf::Color::White);
+    sf::FloatRect hsButtonRect = hsButton.getLocalBounds();
+    hsButton.setOrigin(hsButtonRect.left + hsButtonRect.width / 2.0f, hsButtonRect.top + hsButtonRect.height / 2.0f);
+    hsButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (5*SCREENHEIGHT / 8.0f)));
+    
+    //quit button
+    sf::Text qButton("Quit", font);
+    qButton.setCharacterSize(60);
+    qButton.setFillColor(sf::Color::White);
+    sf::FloatRect qButtonRect = qButton.getLocalBounds();
+    qButton.setOrigin(qButtonRect.left + qButtonRect.width / 2.0f, qButtonRect.top + qButtonRect.height / 2.0f);
+    qButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (7*SCREENHEIGHT / 8.0f)));
     
     // Center text
-    sf::FloatRect textRect = text.getLocalBounds();
-    text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-    text.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f));
     
     sf::Event event;
     while (Running)
@@ -59,37 +81,42 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
             // Key pressed
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            if (event.type == sf::Event::MouseButtonPressed)
             {
-                sf::Vector2i position = sf::Mouse::getPosition();
-                std::cout << position.x << " " << position.y << std::endl;
-                //how to play
-                if((position.x > 890 && position.x < 1660) && (position.y > 2290 && position.y < 2380))
+                if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    return (1);
+                    std::cout << "in";
+                    sf::Vector2i position = sf::Mouse::getPosition(App);
+                    std::cout << position.x << " " << position.y << std::endl;
+                    //how to play button
+                    if((position.x > (htpButton.getPosition().x-(htpButtonRect.width/2)) && position.x < (htpButton.getPosition().x+(htpButtonRect.width/2)) && (position.y > (htpButton.getPosition().y-(htpButtonRect.height/2)) && position.y < (htpButton.getPosition().y + (htpButtonRect.height/2)))))
+                    {
+                        return (1);
+                    }
+                    //play button
+                    if((position.x > (pButton.getPosition().x-(pButtonRect.width/2)) && position.x < (pButton.getPosition().x+(pButtonRect.width/2)) && (position.y > (pButton.getPosition().y-(pButtonRect.height/2)) && position.y < (pButton.getPosition().y + (pButtonRect.height/2)))))
+                    {
+                        return (8);
+                    }
+                    //high score list button
+                    if((position.x > (hsButton.getPosition().x-(hsButtonRect.width/2)) && position.x < (hsButton.getPosition().x+(hsButtonRect.width/2)) && (position.y > (hsButton.getPosition().y-(hsButtonRect.height/2)) && position.y < (hsButton.getPosition().y + (hsButtonRect.height/2)))))
+                    {
+                        return (6);
+                    }
+                    //quit button
+                    if((position.x > (qButton.getPosition().x-(qButtonRect.width/2)) && position.x < (qButton.getPosition().x+(qButtonRect.width/2)) && (position.y > (qButton.getPosition().y-(qButtonRect.height/2)) && position.y < (qButton.getPosition().y + (qButtonRect.height/2)))))
+                    {
+                        return (-1);
+                    }
                 }
-                //game screen
-                if((position.x > 890 && position.x < 1175) && (position.y > 2530 && position.y < 2630))
-                {
-                    return (3);
-                }
-                //highscore screen
-                if((position.x > 890 && position.x < 2000) && (position.y > 2780 && position.y < 2875))
-                {
-                    cout << "6" << endl;
-                    return (6);
-                }
-                //quit
-                if((position.x > 890 && position.x < 1185) && (position.y > 3020 && position.y < 3105))
-                {
-                    return (-1);
-                }
-                
             }
         }
         
         App.clear();
-        App.draw(text);
+        App.draw(htpButton);
+        App.draw(pButton);
+        App.draw(hsButton);
+        App.draw(qButton);
         App.display();
     }
     

@@ -40,7 +40,7 @@ public:
     void loseShield();
     void loseLife();
     int getLives();
-	void increaseLife();
+    void increaseLife();
     int getScore();
     bool getShield();
     void setHit(int h) { hit = h; };

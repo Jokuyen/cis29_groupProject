@@ -13,5 +13,6 @@
 #include "screen_5.h"
 #include "screen_6.h"
 #include "Menu.h"
+#include "GameMode.h"
 
 #endif // SCREENS_H

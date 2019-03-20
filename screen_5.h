@@ -73,16 +73,16 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     text.setString(sout.str());
     text.setCharacterSize(40);
     text.setFillColor(sf::Color::White);
-    //sf::Text menuButton("Next", font);
-    //menuButton.setPosition(1750, 1400);
-    //menuButton.setFillColor(sf::Color::White);
-    //menuButton.setCharacterSize(70);
-    
-    // Center text
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
     text.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f));
-    App.draw(text);
+    
+    sf::Text nextButton("Next", font);
+    nextButton.setCharacterSize(40);
+    nextButton.setFillColor(sf::Color::Green);
+    sf::FloatRect nextButtonRect = nextButton.getLocalBounds();
+    nextButton.setOrigin(nextButtonRect.left + nextButtonRect.width / 2.0f, nextButtonRect.top + nextButtonRect.height / 2.0f);
+    nextButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (9*SCREENHEIGHT / 10.0f)));
     
     sf::Event event;
     while (Running)
@@ -94,7 +94,16 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
             // Key pressed
-            else if (event.type == sf::Event::TextEntered)
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                sf::Vector2i position = sf::Mouse::getPosition(App);
+                std::cout << position.x << " " << position.y << std::endl;
+                if((position.x > (nextButton.getPosition().x-(nextButtonRect.width/2)) && position.x < (nextButton.getPosition().x+(nextButtonRect.width/2)) && (position.y > (nextButton.getPosition().y-(nextButtonRect.height/2)) && position.y < (nextButton.getPosition().y + (nextButtonRect.height/2)))))
+                {
+                    return (6);
+                }
+            }
+            if (event.type == sf::Event::TextEntered)
             {
                 if (event.text.unicode < 128) {
                     name += static_cast<char>(event.text.unicode);
@@ -104,7 +113,7 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 //sout << "Next";
                 
             }
-            else if (event.type == sf::Event::KeyPressed)
+            if (event.type == sf::Event::KeyPressed)
             {
                 switch (event.key.code)
                 {
@@ -129,7 +138,7 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         
         App.clear();
         App.draw(text);
-        //App.draw(menuButton);
+        App.draw(nextButton);
         App.display();
     }
     

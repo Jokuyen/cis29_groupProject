@@ -30,10 +30,26 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    sf::Text text("Controls: \n\nMovement (Arrow keys) \nAttack (A) \nShield (S) \n\nShield lasts for 2 seconds \nand recharges after 4 seconds."
-                  "\n\n\n\nMenu\t\t\t\t\tPlay", font);
+    sf::Text text("Controls: \n\nMovement (Arrow keys) \nAttack (A) \nShield (S) \n\nShield lasts for 2 seconds \nand recharges after 4 seconds. \nClick (Left) to drop a bomb."
+                  , font);
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
+    
+    //menu button
+    sf::Text mButton("Menu", font);
+    mButton.setCharacterSize(50);
+    mButton.setFillColor(sf::Color::Green);
+    sf::FloatRect mButtonRect = mButton.getLocalBounds();
+    mButton.setOrigin(mButtonRect.left + mButtonRect.width / 2.0f, mButtonRect.top + mButtonRect.height / 2.0f);
+    mButton.setPosition(sf::Vector2f(SCREENWIDTH / 14.0f, (8*SCREENHEIGHT / 9.0f)));
+    
+    //play button
+    sf::Text pButton("Play", font);
+    pButton.setCharacterSize(50);
+    pButton.setFillColor(sf::Color::Green);
+    sf::FloatRect pButtonRect = pButton.getLocalBounds();
+    pButton.setOrigin(pButtonRect.left + pButtonRect.width / 2.0f, pButtonRect.top + pButtonRect.height / 2.0f);
+    pButton.setPosition(sf::Vector2f(13*SCREENWIDTH / 14.0f, (8*SCREENHEIGHT / 9.0f)));
     
     sf::Event event;
     while (Running)
@@ -47,15 +63,15 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             // mouse pressed
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                sf::Vector2i position = sf::Mouse::getPosition();
+                sf::Vector2i position = sf::Mouse::getPosition(App);
                 std::cout << position.x << " " << position.y << std::endl;
-                if((position.x > 426 && position.x < 690) && (position.y > 3220 && position.y < 3320))
+                if((position.x > (mButton.getPosition().x-(mButtonRect.width/2)) && position.x < (mButton.getPosition().x+(mButtonRect.width/2)) && (position.y > (mButton.getPosition().y-(mButtonRect.height/2)) && position.y < (mButton.getPosition().y + (mButtonRect.height/2)))))
                 {
                     return (7);
                 }
-                if((position.x > 2044 && position.x < 2324) && (position.y > 3220 && position.y < 3320))
+                if((position.x > (pButton.getPosition().x-(pButtonRect.width/2)) && position.x < (pButton.getPosition().x+(pButtonRect.width/2)) && (position.y > (pButton.getPosition().y-(pButtonRect.height/2)) && position.y < (pButton.getPosition().y + (pButtonRect.height/2)))))
                 {
-                    return (3);
+                    return (8);
                 }
             }
             if (event.type == sf::Event::KeyPressed)
@@ -63,7 +79,7 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 switch (event.key.code)
                 {
                     case sf::Keyboard::Return: // Progress to screen_2
-                        return (3);
+                        return (8);
                         break;
                     case sf::Keyboard::Backspace: // Progress to screen_2
                         return (2);
@@ -78,6 +94,8 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         
         App.clear();
         App.draw(text);
+        App.draw(mButton);
+        App.draw(pButton);
         App.display();
     }
     

@@ -17,6 +17,8 @@
 
 int main(int argc, char** argv)
 {
+    //const int SCREENWIDTH = 2048;
+    //const int SCREENHEIGHT = 1536;
     const int SCREENWIDTH = 1024;
     const int SCREENHEIGHT = 720;
     srand(static_cast<unsigned int>(time(NULL))); // To randomize the rand() function within Monster::randomNumber()
@@ -46,6 +48,8 @@ int main(int argc, char** argv)
     Screens.push_back(&s6);
     Menu m;
     Screens.push_back(&m);
+    GameMode gm;
+    Screens.push_back(&gm);
     
     // Main loop
     while (screen >= 0)

@@ -21,7 +21,7 @@ Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf
     if (bigBoss == false)
         sprite.setScale(0.75, 0.75);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
-	image = borderImage;
+    image = borderImage;
 }
 
 /*

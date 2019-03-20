@@ -41,10 +41,20 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                   "\n\nMonsters gradually increase in"
                   "\nspeed, so defeat them quickly"
                   "\nbefore things get out of hand!"
-                  "\n\n\t\t\t\t\t\t\t  Next"
                   , font);
     text.setCharacterSize(40);
     text.setFillColor(sf::Color::White);
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    text.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.5f));
+    
+    //next button
+    sf::Text nextButton("Next", font);
+    nextButton.setCharacterSize(40);
+    nextButton.setFillColor(sf::Color::Green);
+    sf::FloatRect nextButtonRect = nextButton.getLocalBounds();
+    nextButton.setOrigin(nextButtonRect.left + nextButtonRect.width / 2.0f, nextButtonRect.top + nextButtonRect.height / 2.0f);
+    nextButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (9*SCREENHEIGHT / 10.0f)));
     
     sf::Event event;
     while (Running)
@@ -57,9 +67,9 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 return (-1);
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
             {
-                sf::Vector2i position = sf::Mouse::getPosition();
+                sf::Vector2i position = sf::Mouse::getPosition(App);
                 std::cout << position.x << " " << position.y << std::endl;
-                if((position.x > 2110 && position.x < 2380) && (position.y > 3270 && position.y < 3360))
+                if((position.x > (nextButton.getPosition().x-(nextButtonRect.width/2)) && position.x < (nextButton.getPosition().x+(nextButtonRect.width/2)) && (position.y > (nextButton.getPosition().y-(nextButtonRect.height/2)) && position.y < (nextButton.getPosition().y + (nextButtonRect.height/2)))))
                 {
                     return (2);
                 }
@@ -82,6 +92,7 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         
         App.clear();
         App.draw(text);
+        App.draw(nextButton);
         App.display();
     }
     

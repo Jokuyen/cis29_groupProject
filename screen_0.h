@@ -40,18 +40,15 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     text.setFillColor(sf::Color::White);
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-    text.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f));
+    text.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.5f));
     
     //next button
     sf::Text nextButton("Next", font);
-    nextButton.setCharacterSize(50);
+    nextButton.setCharacterSize(60);
     nextButton.setFillColor(sf::Color::Green);
     sf::FloatRect nextButtonRect = nextButton.getLocalBounds();
     nextButton.setOrigin(nextButtonRect.left + nextButtonRect.width / 2.0f, nextButtonRect.top + nextButtonRect.height / 2.0f);
     nextButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (SCREENHEIGHT / 2.0f)+text.getCharacterSize()));
-    //nextButton.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-    //nextButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f));
-    // Center text
     
     
     sf::Event event;
@@ -69,10 +66,10 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
                     std::cout << "in";
-                    sf::Vector2i position = sf::Mouse::getPosition();
+                    sf::Vector2i position = sf::Mouse::getPosition(App);
                     std::cout << position.x << " " << position.y << std::endl;
                     std::cout << nextButton.getPosition().x << std::endl;
-                    if((position.x > nextButtonRect.left && position.x < (nextButtonRect.left+nextButtonRect.width) && (position.y > nextButtonRect.top && position.y < (nextButtonRect.top + nextButtonRect.height))))
+                    if((position.x > (nextButton.getPosition().x-(nextButtonRect.width/2)) && position.x < (nextButton.getPosition().x+(nextButtonRect.width/2)) && (position.y > (nextButton.getPosition().y-(nextButtonRect.height/2)) && position.y < (nextButton.getPosition().y + (nextButtonRect.height/2)))))
                     {
                         std::cout << 7;
                         return (7);

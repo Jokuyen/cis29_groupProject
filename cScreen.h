@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 const char* FONTIMAGE = "fake receipt.ttf";
+bool testmode = false;
 class cScreen
 {
 public:

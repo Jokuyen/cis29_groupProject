@@ -1,3 +1,4 @@
+
 //
 //  Player.cpp
 //  jscreens
@@ -341,7 +342,7 @@ int Player::getLives()
  */
 void Player::increaseLife()
 {
-	lives++;
+    lives++;
 }
 
 /*

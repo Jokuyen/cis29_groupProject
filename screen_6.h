@@ -46,15 +46,24 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     sf::Text text("", font);
     ostringstream sout;
-    sout << "Score Board\t\t\t\t\t\t\tMenu" << endl;
+    sout << "Score Board" << endl;
     
     int count = 0;
     for (auto it = highScores.rbegin(); it != highScores.rend(); ++it) {
         sout << setw(2) << (++count) << setw(10) << it->first << "\t\t" << it->second << endl;
     }
     text.setString(sout.str());
-    text.setCharacterSize(30);
+    text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
+    
+    //menu button
+    sf::Text mButton("Menu", font);
+    mButton.setCharacterSize(50);
+    mButton.setFillColor(sf::Color::Green);
+    sf::FloatRect mButtonRect = mButton.getLocalBounds();
+    mButton.setOrigin(mButtonRect.left + mButtonRect.width / 2.0f, mButtonRect.top + mButtonRect.height / 2.0f);
+    mButton.setPosition(sf::Vector2f(8*SCREENWIDTH / 9.0f, (SCREENHEIGHT / 20.0f)));
+    
     
     sf::Event event;
     while (Running)
@@ -65,6 +74,15 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             // Window closed
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                sf::Vector2i position = sf::Mouse::getPosition(App);
+                std::cout << position.x << " " << position.y << std::endl;
+                if((position.x > (mButton.getPosition().x-(mButtonRect.width/2)) && position.x < (mButton.getPosition().x+(mButtonRect.width/2)) && (position.y > (mButton.getPosition().y-(mButtonRect.height/2)) && position.y < (mButton.getPosition().y + (mButtonRect.height/2)))))
+                {
+                    return (7);
+                }
+            }
             // Key pressed
             if (event.type == sf::Event::KeyPressed)
             {
@@ -84,6 +102,7 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         
         App.clear();
         App.draw(text);
+        App.draw(mButton);
         App.display();
     }
     

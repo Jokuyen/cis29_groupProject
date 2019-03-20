@@ -13,8 +13,8 @@
 #include <SFML/Graphics.hpp>
 
 
+//static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(2048, 1536);
 static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(1024.0f, 720.0f);
-//static sf::Vector2f BACKGROUNDSIZE = sf::Vector2f(1024.0f, 720.0f);
 
 class Entity
 {
