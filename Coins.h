@@ -19,7 +19,6 @@ private:
     sf::Texture textureFour;
     sf::Texture textureFive;
     sf::Texture textureSix;
-    sf::Texture maskTexture;
     sf::Texture textureArr[6];
     
 public:

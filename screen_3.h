@@ -232,6 +232,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     bigBossHurtTexture.loadFromFile(BIGBOSSHURTIMAGE);
     
     // Monster sound
+    /*
     sf::SoundBuffer monstersoundBuffer;
     try { // throws error if file not opened
         if(!monstersoundBuffer.loadFromFile(MONSTERSOUND))
@@ -244,11 +245,12 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
+     */
     
-    sf::Sound monstersoundd;
+    //sf::Sound monstersoundd;
     
-    monstersoundd.setBuffer(monstersoundBuffer);
-    monstersoundd.setVolume(100);
+    //monstersoundd.setBuffer(monstersoundBuffer);
+    //monstersoundd.setVolume(100);
     
     sf::Texture borderTexture;
     try { // throws error if file not opened
@@ -567,7 +569,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 // Collision detection
                 if (playerObj.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
                 {
-                    monstersoundd.play();
+                    //monstersoundd.play();
                     if (playerObj.getHit() == -1) {
                         std::cout << "Player hit by Monster" << std::endl;
                         playerObj.setHit(counter);

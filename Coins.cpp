@@ -8,13 +8,6 @@
  */
 Coins::Coins(sf::Texture& textOne, sf::Texture& textTwo, sf::Texture& textThree, sf::Texture& textFour, sf::Texture& textFive, sf::Texture& textSix, sf::Texture& maskText, float h, float w) : Entity(textOne, w, h)
 {
-    textureOne = textOne;
-    textureTwo = textTwo;
-    textureThree = textThree;
-    textureFour = textFour;
-    textureFive = textFive;
-    textureSix = textSix;
-    
     textureArr[0] = textOne;
     textureArr[1] = textTwo;
     textureArr[2] = textThree;
@@ -22,10 +15,9 @@ Coins::Coins(sf::Texture& textOne, sf::Texture& textTwo, sf::Texture& textThree,
     textureArr[4] = textFive;
     textureArr[5] = textSix;
     
-    maskTexture = maskText;
-    image = maskTexture.copyToImage();
+    image = maskText.copyToImage();
     
-    sprite.setPosition(getRandom(100, 1800), getRandom(100, 1500));
+    collide();
     sprite.setScale(1.25, 1.25);
     
     currentTexture = 0;
@@ -50,9 +42,14 @@ double Coins::getRandom(int lower, int upper)
  */
 void Coins::collide()
 {
-    double xPos = getRandom(0, 1024);
-    double yPos = getRandom(0, 720);
-    sprite.setPosition(xPos, yPos);
+    double xPos = getRandom(0, 1300);
+    double yPos = getRandom(700, 1600);
+    if(image.getPixel(xPos, yPos) == sf::Color::Black)
+    {
+        collide();
+    }
+    else
+        sprite.setPosition(xPos, yPos);
 }
 
 /*

@@ -21,6 +21,7 @@ void Bomb::moveBombToStartPosition(float mousePosition_x, float mousePosition_y,
 
 bool Bomb::move()
 {
+    cout << mouseX << mouseY << endl;
     auto position = sprite.getPosition();
     position.y += 5.0f;
     sprite.setPosition(position.x, position.y);
