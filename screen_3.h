@@ -250,6 +250,19 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     monstersoundd.setBuffer(monstersoundBuffer);
     monstersoundd.setVolume(100);
     
+    sf::Texture borderTexture;
+    try { // throws error if file not opened
+        if(!borderTexture.loadFromFile(BORDERIMAGE))
+        {
+            throw FileOpenException(BORDERIMAGE);
+        }
+    }
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+    playerObj.setMask(borderTexture);
     
     // Coins
     std::vector<Coins*> coinArray;
@@ -272,7 +285,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     for(int i = 0; i < 6; i++)
     {
-        Coins * coinPtr = new Coins(cOne, cTwo, cThree, cFour, cFive, cSix, BG_HEIGHT, SCREENWIDTH);
+        Coins * coinPtr = new Coins(cOne, cTwo, cThree, cFour, cFive, cSix, borderTexture,  BG_HEIGHT, SCREENWIDTH);
         coinArray.push_back(coinPtr);
     }
     
@@ -337,19 +350,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     explosionSound.setVolume(100);
     
     //Border
-    sf::Texture borderTexture;
-    try { // throws error if file not opened
-        if(!borderTexture.loadFromFile(BORDERIMAGE))
-        {
-            throw FileOpenException(BORDERIMAGE);
-        }
-    }
-    catch(exception& e)
-    {
-        cout << "Cannot open: " << e.what() << endl;
-        exit(-1);
-    }
-    playerObj.setMask(borderTexture);
+    
     
     bool explode = false;
     int count = 0;
@@ -405,6 +406,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                         return (0);
                         break;
                     case sf::Keyboard::Return: // Return to screen_1
+                        App.setView(App.getDefaultView());
                         Score::score = playerObj.getScore();
                         return (4);
                         break;
@@ -548,19 +550,19 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     monsterSpeedClock.restart();
                 }
                 
-//                // Sound of the monster
-//                sf::Sound explosionTexture;
-//                try { // throws error if file not opened
-//                    if(!explosionTexture.loadFromFile(MONSTERSOUND))
-//                    {
-//                        throw FileOpenException(EXPLOSIONIMAGE);
-//                    }
-//                }
-//                catch(exception& e)
-//                {
-//                    cout << "Cannot open: " << e.what() << endl;
-//                    exit(-1);
-//                }
+                //                // Sound of the monster
+                //                sf::Sound explosionTexture;
+                //                try { // throws error if file not opened
+                //                    if(!explosionTexture.loadFromFile(MONSTERSOUND))
+                //                    {
+                //                        throw FileOpenException(EXPLOSIONIMAGE);
+                //                    }
+                //                }
+                //                catch(exception& e)
+                //                {
+                //                    cout << "Cannot open: " << e.what() << endl;
+                //                    exit(-1);
+                //                }
                 
                 // Collision detection
                 if (playerObj.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
@@ -710,9 +712,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     bigBoss->draw(App);
             }
             
-//            if (p.getScore() == 0) {
-//                cout << "GAME OVER"
-//            }
+            //            if (p.getScore() == 0) {
+            //                cout << "GAME OVER"
+            //            }
             
             
             //coinArray[0].draw(App);

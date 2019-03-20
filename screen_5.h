@@ -71,12 +71,12 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         sout << endl;
     }
     text.setString(sout.str());
-    text.setCharacterSize(70);
+    text.setCharacterSize(40);
     text.setFillColor(sf::Color::White);
-    sf::Text menuButton("Next", font);
-    menuButton.setPosition(1750, 1400);
-    menuButton.setFillColor(sf::Color::White);
-    menuButton.setCharacterSize(70);
+    //sf::Text menuButton("Next", font);
+    //menuButton.setPosition(1750, 1400);
+    //menuButton.setFillColor(sf::Color::White);
+    //menuButton.setCharacterSize(70);
     
     // Center text
     sf::FloatRect textRect = text.getLocalBounds();
@@ -129,7 +129,7 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         
         App.clear();
         App.draw(text);
-        App.draw(menuButton);
+        //App.draw(menuButton);
         App.display();
     }
     

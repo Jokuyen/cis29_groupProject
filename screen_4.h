@@ -37,8 +37,8 @@ int screen_4::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     sf::Text title(t + "\n", font);
     string score = "\n\n\nScore: ";
     sf::Text text(score + to_string(Score::score) +  "\n  Next", font);
-    title.setCharacterSize(175);
-    text.setCharacterSize(120);
+    title.setCharacterSize(70);
+    text.setCharacterSize(60);
     
     sf::FloatRect titleRect = title.getLocalBounds();
     title.setOrigin(titleRect.left + titleRect.width / 2.0f, titleRect.top + titleRect.height / 2.0f);

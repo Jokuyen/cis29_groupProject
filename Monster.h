@@ -28,10 +28,11 @@ private:
     float movementSpeed = 2;
     int movementCounter = 0;
     int movementLength = 55;
+    bool bigBoss;
     
 public:
     // Constructor
-    Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, float SCREENWIDTH, float BG_HEIGHT);
+    Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, sf::Texture& maskTexture, float chamberx, float chambery, bool boss = false);
     ~Monster();
     
     // Animations

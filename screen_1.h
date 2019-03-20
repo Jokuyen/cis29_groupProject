@@ -43,7 +43,7 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                   "\nbefore things get out of hand!"
                   "\n\n\t\t\t\t\t\t\t  Next"
                   , font);
-    text.setCharacterSize(85);
+    text.setCharacterSize(40);
     text.setFillColor(sf::Color::White);
     
     sf::Event event;
@@ -62,6 +62,20 @@ int screen_1::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 if((position.x > 2110 && position.x < 2380) && (position.y > 3270 && position.y < 3360))
                 {
                     return (2);
+                }
+            }
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                    case sf::Keyboard::Return: // Progress to screen_2
+                        return (2);
+                        break;
+                    case sf::Keyboard::Backspace: // Progress to screen_2
+                        return (1);
+                        break;
+                    default:
+                        break;
                 }
             }
         }

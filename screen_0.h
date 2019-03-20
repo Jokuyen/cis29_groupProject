@@ -33,11 +33,14 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     sf::Text text("Gold Rush"
-                  "\n\n   Next"
                   , font);
-    text.setCharacterSize(150);
+    text.setCharacterSize(70);
     text.setFillColor(sf::Color::White);
     
+    sf::Text nextButton("Next", font);
+    nextButton.setCharacterSize(50);
+    nextButton.setFillColor(sf::Color::Green);
+    nextButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, SCREENHEIGHT / 2.0f + nextButton.getCharacterSize()));
     // Center text
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
@@ -66,9 +69,21 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     }
                 }
             }
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                    case sf::Keyboard::Return: // Progress to screen_2
+                        return (1);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
         App.clear();
         App.draw(text);
+        App.draw(nextButton);
         App.display();
     }
     

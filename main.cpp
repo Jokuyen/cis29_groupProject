@@ -17,8 +17,8 @@
 
 int main(int argc, char** argv)
 {
-    const int SCREENWIDTH = 2048;
-    const int SCREENHEIGHT = 1536;
+    const int SCREENWIDTH = 1024;
+    const int SCREENHEIGHT = 720;
     srand(static_cast<unsigned int>(time(NULL))); // To randomize the rand() function within Monster::randomNumber()
     
     // Applications variables

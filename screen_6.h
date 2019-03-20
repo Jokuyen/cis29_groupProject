@@ -53,7 +53,7 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         sout << setw(2) << (++count) << setw(10) << it->first << "\t\t" << it->second << endl;
     }
     text.setString(sout.str());
-    text.setCharacterSize(70);
+    text.setCharacterSize(30);
     text.setFillColor(sf::Color::White);
     
     sf::Event event;

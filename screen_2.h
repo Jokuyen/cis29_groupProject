@@ -31,8 +31,8 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     sf::Text text("Controls: \n\nMovement (Arrow keys) \nAttack (A) \nShield (S) \n\nShield lasts for 2 seconds \nand recharges after 4 seconds."
-        "\n\n\n\nMenu\t\t\t\t\tPlay", font);
-    text.setCharacterSize(100);
+                  "\n\n\n\nMenu\t\t\t\t\tPlay", font);
+    text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
     
     sf::Event event;
@@ -58,6 +58,21 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     return (3);
                 }
             }
+            if (event.type == sf::Event::KeyPressed)
+            {
+                switch (event.key.code)
+                {
+                    case sf::Keyboard::Return: // Progress to screen_2
+                        return (3);
+                        break;
+                    case sf::Keyboard::Backspace: // Progress to screen_2
+                        return (2);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
             //key pressed
         }
         
