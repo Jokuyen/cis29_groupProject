@@ -76,17 +76,6 @@ int screen_0::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     }
                 }
             }
-            if (event.type == sf::Event::KeyPressed)
-            {
-                switch (event.key.code)
-                {
-                    case sf::Keyboard::Return: // Progress to menu
-                        return (7);
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
         App.clear();
         App.draw(text);

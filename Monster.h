@@ -32,7 +32,7 @@ private:
     
 public:
     // Constructor
-    Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, sf::Image borderImage, float chamberx, float chambery, bool boss = false);
+    Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, float chamberx, float chambery, bool boss = false);
     ~Monster();
     
     // Animations
@@ -44,7 +44,7 @@ public:
     int randomNumber(int max);
     bool getAlive();
     void setAlive(bool a);
-    void increaseSpeed(float inputSpeedNumber) { if (movementSpeed < 25) movementSpeed += inputSpeedNumber; }
+    void increaseSpeed(float inputSpeedNumber) { if (movementSpeed < 15) movementSpeed += inputSpeedNumber; }
     void updateMovement(const int SCREENWIDTH, const int BG_HEIGHT);
 };
 

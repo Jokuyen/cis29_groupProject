@@ -83,18 +83,6 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     return (7);
                 }
             }
-            // Key pressed
-            if (event.type == sf::Event::KeyPressed)
-            {
-                switch (event.key.code)
-                {
-                    case sf::Keyboard::Return: // Return to menu
-                        return (7);
-                        break;
-                    default:
-                        break;
-                }
-            }
         }
         
         App.clear();
@@ -105,3 +93,4 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     return (-1);
 }
+

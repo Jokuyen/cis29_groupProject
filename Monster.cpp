@@ -12,7 +12,7 @@
  Description: This is the constructor for the monster, it sets the movement texture, the collision texture, and the origin. It also calls the constructor of the parent class, Entity, to set the original texture and the starting position.
  */
 
-Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, sf::Image borderImage, float  chamberx, float chambery, bool boss): Entity(monsterTexture, chamberx, chambery)
+Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf::Texture& monsterCollisionTexture, float  chamberx, float chambery, bool boss): Entity(monsterTexture, chamberx, chambery)
 {
     movementOneTexture = monsterTexture;
     movementTwoTexture = monsterTwoTexture;
@@ -21,7 +21,7 @@ Monster::Monster(sf::Texture& monsterTexture, sf::Texture& monsterTwoTexture, sf
     if (bigBoss == false)
         sprite.setScale(0.75, 0.75);
     sprite.setOrigin(sprite.getLocalBounds().width / 2.0f, sprite.getLocalBounds().height / 2.0f);
-    image = borderImage;
+
 }
 
 /*

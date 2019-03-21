@@ -10,6 +10,8 @@
 #ifndef Entity_h
 #define Entity_h
 
+#include <iostream> //////////////////////////
+
 #include <SFML/Graphics.hpp>
 
 
@@ -20,7 +22,10 @@ class Entity
 {
 protected:
     sf::Sprite sprite;
-    sf::Image image;
+    sf::Image currentImage;
+
+	static sf::Image image; // border1
+	static sf::Image image2;  // border2
 public:
     enum Direction {Up,Down,Left,Right};
     Entity(sf::Texture& texture, float width, float height);
@@ -33,6 +38,15 @@ public:
     void draw(sf::RenderWindow& App);
     virtual sf::Vector2f size() const;
     void setPosition(float x, float y);
+	void setImage()
+	{
+		currentImage = image;
+	}
+	void setImage2() 
+	{
+		std::cout << "\nsetImage2 called\n";
+		currentImage = image2;
+	}
 };
 
 #endif /* Character_h */

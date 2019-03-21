@@ -74,22 +74,6 @@ int screen_2::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                     return (8);
                 }
             }
-            if (event.type == sf::Event::KeyPressed)
-            {
-                switch (event.key.code)
-                {
-                    case sf::Keyboard::Return: // Progress to screen_2
-                        return (8);
-                        break;
-                    case sf::Keyboard::Backspace: // Progress to screen_2
-                        return (2);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            
-            //key pressed
         }
         
         App.clear();

@@ -22,8 +22,7 @@ private:
     sf::Texture textureArr[6];
     
 public:
-    Coins();
-    Coins(sf::Texture& textOne, sf::Texture& textTwo, sf::Texture& textThree, sf::Texture& textFour, sf::Texture& textFive, sf::Texture& textSix, sf::Texture& maskText, float h, float w);
+    Coins(sf::Texture& textOne, sf::Texture& textTwo, sf::Texture& textThree, sf::Texture& textFour, sf::Texture& textFive, sf::Texture& textSix, float h, float w);
     double getRandom(int lower, int upper);
     void collide();
     void animate();

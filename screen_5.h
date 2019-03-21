@@ -1,3 +1,5 @@
+
+
 /********************
  *  Created by Manxin Zhang
  *  CIS29 / Group #4
@@ -98,12 +100,12 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 std::cout << position.x << " " << position.y << std::endl;
                 if((position.x > (nextButton.getPosition().x-(nextButtonRect.width/2)) && position.x < (nextButton.getPosition().x+(nextButtonRect.width/2)) && (position.y > (nextButton.getPosition().y-(nextButtonRect.height/2)) && position.y < (nextButton.getPosition().y + (nextButtonRect.height/2)))))
                 {
-                    if (!name.empty()) {
-                        highScores.insert({ score, name });
-                        if (highScores.size() > 10)
-                            highScores.erase((highScores.begin())->first);
-                        writeToScoreFile(filename, highScores);
-                    }
+					if (!name.empty()) {
+						highScores.insert({ score, name });
+						if (highScores.size() > 10)
+							highScores.erase((highScores.begin())->first);
+						writeToScoreFile(filename, highScores);
+					}
                     return (6);
                 }
             }
@@ -116,23 +118,6 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 }
                 //sout << "Next";
                 
-            }
-            if (event.type == sf::Event::KeyPressed)
-            {
-                switch (event.key.code)
-                {
-                    case sf::Keyboard::Return: // Progress to screen_6
-                        if (!name.empty()) {
-                            highScores.insert({ score, name });
-                            if (highScores.size() > 10)
-                                highScores.erase((highScores.begin())->first);
-                            writeToScoreFile(filename, highScores);
-                        }
-                        return (6);
-                        break;
-                    default:
-                        break;
-                }
             }
             App.draw(text);
         }

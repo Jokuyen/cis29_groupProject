@@ -80,7 +80,6 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
             // Window closed
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
-            // Key pressed
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
@@ -88,12 +87,12 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
                     std::cout << "in";
                     sf::Vector2i position = sf::Mouse::getPosition(App);
                     std::cout << position.x << " " << position.y << std::endl;
-                    //how to play button
+                    //play button
                     if((position.x > (htpButton.getPosition().x-(htpButtonRect.width/2)) && position.x < (htpButton.getPosition().x+(htpButtonRect.width/2)) && (position.y > (htpButton.getPosition().y-(htpButtonRect.height/2)) && position.y < (htpButton.getPosition().y + (htpButtonRect.height/2)))))
                     {
                         return (8);
                     }
-                    //play button
+                    // how to play button
                     if((position.x > (pButton.getPosition().x-(pButtonRect.width/2)) && position.x < (pButton.getPosition().x+(pButtonRect.width/2)) && (position.y > (pButton.getPosition().y-(pButtonRect.height/2)) && position.y < (pButton.getPosition().y + (pButtonRect.height/2)))))
                     {
                         return (1);

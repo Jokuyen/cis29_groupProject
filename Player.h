@@ -46,12 +46,11 @@ public:
     void setHit(int h) { hit = h; };
     int getHit() const { return hit; };
     bool attack(float monster_x, float monster_y,  sf::Vector2f monster_size);
-    void attackAnimation();
+	void attackAnimation();
     void incrementCurrentAttackTexture() { currentAttackTexture++; }
     double getDistance(float monster_x, float monster_y);
     bool collectCoin(float coin_x, float coin_y, float coinSize_x, float coinSize_y);
     bool hitByMonster(float monster_x, float monster_y,  sf::Vector2f monster_size);
-    void setMask(sf::Texture& maskTexture);
     friend ostream& operator <<(ostream& op, Player &val);
     ~Player();
     
