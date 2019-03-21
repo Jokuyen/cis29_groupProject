@@ -290,6 +290,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	bigBossTwoTexture.loadFromFile(BIGBOSSTWOIMAGE);
 	bigBossCollisionTexture.loadFromFile(BIGBOSSCOLLISIONIMAGE);
 	bigBossHurtTexture.loadFromFile(BIGBOSSHURTIMAGE);
+	bool bigBossAlive = true;
 
 	// Create Big Boss
 	Monster* bigBoss = new Monster(bigBossTexture, bigBossTwoTexture, bigBossCollisionTexture, 2 * 2100, 2 * 300, true);
@@ -347,7 +348,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	bool explode = false;
 	int count = 0;
 	int bigBossCountdown = 0;
-	//bool doorOpen = false;
 	bool bombDrop = false;
 
 	//View a.k.a camera
@@ -611,6 +611,16 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 					{
 						spawnCount++;
 					}
+
+					if (bigBossAlive == false && playerObj.getScore() % 50 == 0)
+					{
+						bigBossAlive = true;
+						rectangle.setSize(sf::Vector2f(300, 15));
+						rectangle.setFillColor(sf::Color::Magenta);
+						rectangle.setOutlineColor(sf::Color::Red);
+						rectangle.setOutlineThickness(5);
+						bossTxt.setFillColor(sf::Color::Red);
+					}
 				}
 			}
 
@@ -638,7 +648,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			}
 
 			// Render big boss
-			if (bigBoss != nullptr)
+			if (bigBossAlive == true)
 			{
 				if (bigBossCountdown < 35)
 					bigBossCountdown++;
@@ -694,8 +704,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 					rectangle.setFillColor(sf::Color::Transparent);
 					rectangle.setOutlineColor(sf::Color::Transparent);
 					App.draw(rectangle);
-					delete bigBoss;
-					bigBoss = nullptr;
+					//delete bigBoss;
+					//bigBoss = nullptr;
+					bigBossAlive = false;
 					if (testmode == false)
 						playerObj.increaseLife();
 					txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
