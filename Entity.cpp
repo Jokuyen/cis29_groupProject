@@ -34,6 +34,20 @@ void Entity::setPosition(float x, float y)
 {
     sprite.setPosition(x, y);
 }
+void Entity::move(Direction d) {
+	switch (d) {
+	case Up:
+		sprite.move(sprite.getPosition().x, sprite.getPosition().y - 1);
+	case Down:
+		sprite.move(sprite.getPosition().x, sprite.getPosition().y + 1);
+	case Left:
+		sprite.move(sprite.getPosition().x - 1, sprite.getPosition().y);
+	case Right:
+		sprite.move(sprite.getPosition().x + 1, sprite.getPosition().y);
+	default:
+		return;
+	}
+}
 
 /*
  Description: This is the size function, it returns the calculated size of the sprite using the scale and local bounds.
