@@ -37,6 +37,7 @@ public:
     sf::Sprite getSprite() const { return sprite; }
     void draw(sf::RenderWindow& App);
     virtual sf::Vector2f size() const;
+    virtual void move(Direction d);
     void setPosition(float x, float y);
 	void setImage()
 	{
