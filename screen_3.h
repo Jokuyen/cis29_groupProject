@@ -22,48 +22,49 @@
 
 using namespace std;
 
-const char* BACKGROUNDIMAGE = "wall8.png";
-const char* THEMEMUSIC = "American Beauty.wav";
+const char* BACKGROUNDIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/wall8.png";
+const char* THEMEMUSIC = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/American Beauty.wav";
 
 // Player assets
-const char* PLAYERIMAGE = "catSpriteSheet.png";
-const char* SHIELDIMAGE = "catSpriteSheetTwo.png";
-const char* FLIPPEDPLAYERIMAGE = "flippedCatSpriteSheet.png";
-const char* FLIPPEDSHIELDIMAGE = "flippedCatSpriteSheetTwo.png";
-const char* PLAYERAHURTSOUND = "bodyimpact_jack_01.wav";
+const char* PLAYERIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/catSpriteSheet.png";
+const char* SHIELDIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/catSpriteSheetTwo.png";
+const char* FLIPPEDPLAYERIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/flippedCatSpriteSheet.png";
+const char* FLIPPEDSHIELDIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/flippedCatSpriteSheetTwo.png";
 
 // Monster assets
-const char* MONSTERIMAGE = "monster.png";
-const char* MONSTERTWOIMAGE = "monsterTwo.png";
-const char* MONSTERCOLLISIONIMAGE = "monsterCollision.png";
-const char* MONSTERSOUND = "cyborg_hurt.wav";
+const char* MONSTERIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/monster.png";
+const char* MONSTERTWOIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/monsterTwo.png";
+const char* MONSTERCOLLISIONIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/monsterCollision.png";
 
 // BigBoss assets
-const char* BIGBOSSIMAGE = "octopus.png";
-const char* BIGBOSSTWOIMAGE = "octopus2.png";
-const char* BIGBOSSCOLLISIONIMAGE = "octopusCollision.png";
-const char* BIGBOSSHURTIMAGE = "octopusHurt.png";
+const char* BIGBOSSIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/octopus.png";
+const char* BIGBOSSTWOIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/octopus2.png";
+const char* BIGBOSSCOLLISIONIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/octopusCollision.png";
+const char* BIGBOSSHURTIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/playertempone.png";
 
 //Bomb assets
-const char* BOMBIMAGE = "missile.png";
-const char* EXPLOSIONIMAGE = "explosion.png";
-const char* EXPLOSIONSOUND = "BOOM.wav";
-
-//Coin assets
-const char* COIN_ONE= "coin1.png";
-const char* COIN_TWO= "coin2.png";
-const char* COIN_THREE= "coin3.png";
-const char* COIN_FOUR= "coin4.png";
-const char* COIN_FIVE= "coin5.png";
-const char* COIN_SIX= "coin6.png";
+//const char* BOMBIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/bombs.png";
+const char* BOMBIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/missile.png";
+const char* EXPLOSIONIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/explosion.png";
+const char* EXPLOSIONSOUND = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/explosion.wav";
 
 //Border assets
-const char* BORDERIMAGE = "wall8Mask.png";
+const char* BORDERIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/wall8Mask.png";
+const char* BORDER2IMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/wall8Open.png";
+const char* DOORIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/door.png";
+const char* KEYIMAGE = "/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/key2.png";
 
 namespace Score
 {
-    int score = 0;
+	int score = 0;
 }
+
+double getRandom(int lower, int upper)
+{
+	double num = (rand() % (upper - lower + 1)) + lower;
+	return num;
+}
+
 
 class screen_3 : public cScreen
 {
@@ -75,8 +76,8 @@ public:
 int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIGHT)
 {
     bool Running = true;
-    bool pause = false;
-    
+	bool pause = false;
+
     // Music
     sf::Music theme;
     try
@@ -92,23 +93,22 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         exit(-1);
     }
     theme.setLoop(true);
-    theme.setVolume(30);
     theme.play();
-    
+
     // Font
     sf::Font font;
     try { // throws error if file not opened
-        if (!font.loadFromFile(FONTIMAGE))
+        if(!font.loadFromFile(FONTIMAGE))
         {
             throw FileOpenException(FONTIMAGE);
         }
     }
-    catch (exception& e)
+    catch(exception& e)
     {
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    
+
     // Background
     //const int BG_HEIGHT = SCREENHEIGHT - 100;
     const int BG_WIDTH = 2700;
@@ -117,39 +117,56 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     background.setPosition(sf::Vector2f(0, 0));
     sf::Texture backgroundTexture;
     try { // throws error if file not opened
-        if (!backgroundTexture.loadFromFile(BACKGROUNDIMAGE))
+        if(!backgroundTexture.loadFromFile(BACKGROUNDIMAGE))
         {
             throw FileOpenException(BACKGROUNDIMAGE);
         }
     }
-    catch (exception& e)
+    catch(exception& e)
     {
         //cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
     background.setTexture(&backgroundTexture);
-    
+
+    //Door
+    sf::RectangleShape door(sf::Vector2f(160, 60)); //door image dimension
+    door.setPosition(sf::Vector2f(1210, 700)); //door location in the background
+    sf::Texture doorTexture;
+    try { // throws error if file not opened
+        if(!doorTexture.loadFromFile(DOORIMAGE))
+        {
+            throw FileOpenException(DOORIMAGE);
+        }
+    }
+    catch(exception& e)
+    {
+        //cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+    door.setTexture(&doorTexture);
+
     // Player
     sf::Texture playerTexture;
     try { // throws error if file not opened
-        if (!playerTexture.loadFromFile(PLAYERIMAGE))
+        if(!playerTexture.loadFromFile(PLAYERIMAGE))
         {
             throw FileOpenException(PLAYERIMAGE);
         }
     }
-    catch (exception& e)
+    catch(exception& e)
     {
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
     sf::Texture shieldTexture;
     try { // throws error if file not opened
-        if (!shieldTexture.loadFromFile(SHIELDIMAGE))
+        if(!shieldTexture.loadFromFile(SHIELDIMAGE))
         {
             throw FileOpenException(SHIELDIMAGE);
         }
     }
-    catch (exception& e)
+    catch(exception& e)
     {
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
@@ -178,92 +195,15 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         cout << "Cannot open: " << e.what() << endl;
         exit(-1);
     }
-    Player playerObj(playerTexture, shieldTexture, flippedPlayerTexture, flippedShieldTexture, SCREENWIDTH, BG_HEIGHT);
-    playerObj.setPosition(200, 1000);
-    // player sound
-    sf::SoundBuffer playerhurtBuffer;
-    try { // throws error if file not opened
-        if (!playerhurtBuffer.loadFromFile(PLAYERAHURTSOUND))
-        {
-            throw FileOpenException(PLAYERAHURTSOUND);
-        }
-    }
-    catch (exception& e)
-    {
-        cout << "Cannot open: " << e.what() << endl;
-        exit(-1);
-    }
-    sf::Sound playerhurtsound;
-    playerhurtsound.setBuffer(playerhurtBuffer);
-    playerhurtsound.setVolume(100);
-    
-    //background mask
-    sf::Texture borderTexture;
-    try { // throws error if file not opened
-        if (!borderTexture.loadFromFile(BORDERIMAGE))
-        {
-            throw FileOpenException(BORDERIMAGE);
-        }
-    }
-    catch (exception& e)
-    {
-        cout << "Cannot open: " << e.what() << endl;
-        exit(-1);
-    }
-    playerObj.setMask(borderTexture);
-    sf::Image borderImage = borderTexture.copyToImage();
-    
-    // Bombs
-    sf::Texture bombTexture;
-    Bomb* bombPtr = nullptr;
-    try { // throws error if file not opened
-        if (!bombTexture.loadFromFile(BOMBIMAGE))
-        {
-            throw FileOpenException(BOMBIMAGE);
-        }
-    }
-    catch (exception& e)
-    {
-        cout << "Cannot open: " << e.what() << endl;
-        exit(-1);
-    }
-    
+    Player p(playerTexture, shieldTexture, flippedPlayerTexture, flippedShieldTexture, SCREENWIDTH, BG_HEIGHT);
+    p.setPosition(200,1000);
+
     // Header line
     string name = "Gold Rush";
-    sf::Text txt(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()), font);
-    txt.setCharacterSize(25);
+    sf::Text txt(name + "\t\t\t\t\t\tScore: " + to_string(p.getScore()) + "\t\t\t\t\t\tLives: " + to_string(p.getLives()), font);
+    txt.setCharacterSize(20);
     txt.setFillColor(sf::Color::White);
-    
-    // Explosion
-    sf::Texture explosionTexture;
-    try { // throws error if file not opened
-        if (!explosionTexture.loadFromFile(EXPLOSIONIMAGE))
-        {
-            throw FileOpenException(EXPLOSIONIMAGE);
-        }
-    }
-    catch (exception& e)
-    {
-        cout << "Cannot open: " << e.what() << endl;
-        exit(-1);
-    }
-    Explosion explosion(explosionTexture);
-    sf::SoundBuffer explosionBuffer;
-    try { // throws error if file not opened
-        if (!explosionBuffer.loadFromFile(EXPLOSIONSOUND))
-        {
-            throw FileOpenException(EXPLOSIONSOUND);
-        }
-    }
-    catch (exception& e)
-    {
-        cout << "Cannot open: " << e.what() << endl;
-        exit(-1);
-    }
-    sf::Sound explosionSound;
-    explosionSound.setBuffer(explosionBuffer);
-    explosionSound.setVolume(100);
-    
+
     // Monster
     sf::Texture monsterTexture;
     sf::Texture monsterTwoTexture;
@@ -271,12 +211,12 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     monsterTexture.loadFromFile(MONSTERIMAGE);
     monsterTwoTexture.loadFromFile(MONSTERTWOIMAGE);
     monsterCollisionTexture.loadFromFile(MONSTERCOLLISIONIMAGE);
-    float speedNumber = 0.5;
-    
+	int spawnCount = 1;
+
     // Monster Vector Array
     std::vector<Monster *>::const_iterator monsterIterator;
     std::vector<Monster *> monsterArray;
-    
+
     // Big Boss
     sf::Texture bigBossTexture;
     sf::Texture bigBossTwoTexture;
@@ -286,87 +226,173 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     bigBossTwoTexture.loadFromFile(BIGBOSSTWOIMAGE);
     bigBossCollisionTexture.loadFromFile(BIGBOSSCOLLISIONIMAGE);
     bigBossHurtTexture.loadFromFile(BIGBOSSHURTIMAGE);
-    
-    Monster* bigBoss = new Monster(bigBossTexture, bigBossTwoTexture, bigBossCollisionTexture, borderImage, 2 * 2100, 2 * 300, true);
-    
-    // Monster sound
-    /*
-     sf::SoundBuffer monstersoundBuffer;
-     try { // throws error if file not opened
-     if(!monstersoundBuffer.loadFromFile(MONSTERSOUND))
-     {
-     throw FileOpenException(MONSTERSOUND);
-     }
-     }
-     catch(exception& e)
-     {
-     cout << "Cannot open: " << e.what() << endl;
-     exit(-1);
-     }
-     */
-    
-    //sf::Sound monstersoundd;
-    
-    //monstersoundd.setBuffer(monstersoundBuffer);
-    //monstersoundd.setVolume(100);
-    
-    // Coins
-    std::vector<Coins*> coinArray;
-    //Coins coinArray[6];
-    
-    sf::Texture cOne;
-    cOne.loadFromFile(COIN_ONE);
-    sf::Texture cTwo;
-    cTwo.loadFromFile(COIN_TWO);
-    sf::Texture cThree;
-    cThree.loadFromFile(COIN_THREE);
-    sf::Texture cFour;
-    cFour.loadFromFile(COIN_FOUR);
-    sf::Texture cFive;
-    cFive.loadFromFile(COIN_FIVE);
-    sf::Texture cSix;
-    cSix.loadFromFile(COIN_SIX);
-    
-    sf::SoundBuffer buffer;
-    
-    for (int i = 0; i < 6; i++)
-    {
-        Coins * coinPtr = new Coins(cOne, cTwo, cThree, cFour, cFive, cSix, borderTexture, BG_HEIGHT, SCREENWIDTH);
-        coinArray.push_back(coinPtr);
+
+	// Coins
+	sf::RectangleShape coinArray[6];
+
+	srand(time(0));
+	sf::RectangleShape coin1(sf::Vector2f(40.0f, 40.0f));
+	coinArray[0] = coin1;
+	sf::RectangleShape coin2(sf::Vector2f(40.0f, 40.0f));
+	coinArray[1] = coin2;
+	sf::RectangleShape coin3(sf::Vector2f(40.0f, 40.0f));
+	coinArray[2] = coin3;
+	sf::RectangleShape coin4(sf::Vector2f(40.0f, 40.0f));
+	coinArray[3] = coin4;
+	sf::RectangleShape coin5(sf::Vector2f(40.0f, 40.0f));
+	coinArray[4] = coin5;
+	sf::RectangleShape coin6(sf::Vector2f(40.0f, 40.0f));
+	coinArray[5] = coin6;
+
+	sf::SoundBuffer buffer;
+	sf::Texture coinTexture;
+
+	if (!buffer.loadFromFile("/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/1_Coins.wav")) {
+		std::cout << "Error " << std::endl;
+	}
+
+	if (!coinTexture.loadFromFile("/Users/feliciadewanaga/Documents/computer_sci_books/C++/Adv/GoldRushGame/Coin1.png")) {
+		std::cerr << "An error occured" << std::endl;
+	}
+
+	sf::Sound coinSound;
+
+	//sound.setBuffer(buffer);
+	Coins gameCoins(coinSound);
+	for (int i = 0; i < 6; i++)
+	{
+		coinArray[i].setFillColor(sf::Color::Yellow);
+		coinArray[i].setTexture(&coinTexture);
+		coinArray[i].setPosition(getRandom(100, 1800), getRandom(100, 1500));
+	}
+
+	// Time management variables
+	sf::Clock monsterSpawnClock;
+	sf::Clock monsterSpeedClock;
+	sf::Clock shieldDelayClock;
+	sf::Clock shieldPopClock;
+
+	// Bombs
+    sf::Texture bombTexture;
+
+    Bomb* bombPtr = nullptr;
+    try { // throws error if file not opened
+        if(!bombTexture.loadFromFile(BOMBIMAGE))
+        {
+            throw FileOpenException(BOMBIMAGE);
+        }
     }
-    
-    // Time management variables
-    sf::Clock monsterSpawnClock;
-    sf::Clock monsterSpeedClock;
-    sf::Clock shieldDelayClock;
-    sf::Clock shieldPopClock;
-    
-    
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+
+    // Explosion
+    sf::Texture explosionTexture;
+    try { // throws error if file not opened
+        if(!explosionTexture.loadFromFile(EXPLOSIONIMAGE))
+        {
+            throw FileOpenException(EXPLOSIONIMAGE);
+        }
+    }
+     catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+    Explosion explosion(explosionTexture);
+    sf::SoundBuffer explosionBuffer;
+    try { // throws error if file not opened
+        if(!explosionBuffer.loadFromFile(EXPLOSIONSOUND))
+        {
+            throw FileOpenException(EXPLOSIONSOUND);
+        }
+    }
+     catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+
+    sf::Sound explosionSound;
+
+    explosionSound.setBuffer(explosionBuffer);
+
     //Border
-    
+    sf::Texture borderTexture;
+    try { // throws error if file not opened
+        if(!borderTexture.loadFromFile(BORDERIMAGE))
+        {
+            throw FileOpenException(BORDERIMAGE);
+        }
+    }
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+    sf::Texture border2Texture;
+    try { // throws error if file not opened
+        if(!border2Texture.loadFromFile(BORDER2IMAGE))
+        {
+            throw FileOpenException(BORDER2IMAGE);
+        }
+    }
+    catch(exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+    p.setMask(borderTexture);
+
+    sf::RectangleShape key(sf::Vector2f(60, 60)); //key image dimension
+
+            sf::Texture keyTexture;
+            try { // throws error if file not opened
+                if(!keyTexture.loadFromFile(KEYIMAGE))
+                {
+                throw FileOpenException(KEYIMAGE);
+                }
+            }
+            catch(exception& e)
+            {
+                //cout << "Cannot open: " << e.what() << endl;
+                exit(-1);
+            }
+
     bool explode = false;
     int count = 0;
     int bigBossCountdown = 0;
-    
+    //bool doorOpen = false;
+    int scoreCount = 0;
+    bool bombDrop = false;
+
     //View a.k.a camera
     sf::View view;
     view.reset(sf::FloatRect(0, 0, SCREENWIDTH, SCREENHEIGHT));
     sf::Vector2f viewPosition(SCREENWIDTH / 2, SCREENHEIGHT / 2);
-    
+
     // Create Big Boss
-    
-    
-    
+    Monster* bigBoss = new Monster(bigBossTexture, bigBossTwoTexture, bigBossCollisionTexture, borderTexture, 2*2100, 2*300, true);
+
+
     // Big Boss health bar
+
     sf::RectangleShape rectangle;
+    rectangle.setSize(sf::Vector2f(30, 30));
+
     rectangle.setSize(sf::Vector2f(300, 15));
     rectangle.setFillColor(sf::Color::Magenta);
     rectangle.setOutlineColor(sf::Color::Red);
     rectangle.setOutlineThickness(5);
+
     sf::Text bossTxt("Monster Health", font);
     bossTxt.setCharacterSize(30);
     bossTxt.setFillColor(sf::Color::Red);
-    
+
+
+
     sf::Event event;
     while (Running)
     {
@@ -375,10 +401,9 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
         sf::Time monsterSpeedTimer = monsterSpeedClock.getElapsedTime();
         sf::Time shieldDelayTimer = shieldDelayClock.getElapsedTime();
         sf::Time shieldPopTimer = shieldPopClock.getElapsedTime();
-        
+
         bool attack = false;
-        bool bombDrop = false;
-        
+
         // Verifying events
         while (App.pollEvent(event))
         {
@@ -390,349 +415,347 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
             {
                 switch (event.key.code)
                 {
-                    case sf::Keyboard::Q: // Back to menu
-                        App.setView(App.getDefaultView());
-                        return (7);
+                    case sf::Keyboard::Backspace: // Back to screen 2
+                        return (2);
                         break;
-                    case sf::Keyboard::Space:
-                        pause = !pause;
+                    case sf::Keyboard::Q: // Back to screen 0
+                        return (0);
                         break;
-                    case sf::Keyboard::R:
-                        testmode = false;
+                    case sf::Keyboard::Return: // Return to screen_1
+						Score::score = p.getScore();
+						App.setView(App.getDefaultView());
+                        return (4);
+                        break;
+					case sf::Keyboard::Space:
+						pause = !pause;
+						break;
                     default:
                         break;
                 }
             }
         }
-        
-        if (!pause)
-        {
-            // Attack Mechanism
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            {
-                attack = true;
-                playerObj.incrementCurrentAttackTexture();
-                playerObj.attackAnimation();
-            }
-            else
-            {
-                // Player movement
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-                {
-                    playerObj.move(Player::Left);
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                {
-                    playerObj.move(Player::Right);
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-                {
-                    playerObj.move(Player::Up);
-                }
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-                {
-                    playerObj.move(Player::Down);
-                }
-            }
-            
-            //Bomb drop
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && bombPtr == nullptr)
+
+		if (!pause)
+		{
+			// Attack Mechanism
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				attack = true;
+				p.incrementCurrentAttackTexture();
+			}
+			else
+			{
+				// Player movement
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+				{
+					p.move(Player::Left);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+				{
+					p.move(Player::Right);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+				{
+					p.move(Player::Up);
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+				{
+					p.move(Player::Down);
+				}
+			}
+
+			//Bomb drop
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && bombPtr == nullptr)
             {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(App);
                 if (mousePos.x > 0 && mousePos.y > 0)
                 {
                     bombPtr = new Bomb(bombTexture);
-                    bombPtr->moveBombToStartPosition(static_cast<float>(mousePos.x + viewPosition.x - SCREENWIDTH / 2), static_cast<float>(mousePos.y + viewPosition.y - SCREENHEIGHT / 2), static_cast<float>(viewPosition.y - SCREENHEIGHT / 2));
+                    bombPtr -> moveBombToStartPosition(static_cast<float>(mousePos.x + viewPosition.x - SCREENWIDTH / 2), static_cast<float>(mousePos.y + viewPosition.y - SCREENHEIGHT / 2), static_cast<float>(viewPosition.y - SCREENHEIGHT / 2));
                 }
             }
-            
+
             if (bombPtr)
             {
                 if (!bombPtr->move())
-                {
-                    bombDrop = true;
+                    {
+                        bombDrop = true;
                 }
             }
-            
+
             // Shield Mechanism
-            if (shieldDelayTimer.asSeconds() > 3)
+			if (shieldDelayTimer.asSeconds() > 3)
+			{
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+				{
+					p.applyShield();
+					shieldDelayClock.restart();
+					shieldPopClock.restart();
+				}
+			}
+			if (shieldPopTimer.asSeconds() > 2.8 && shieldPopTimer.asSeconds() < 2.9)
+			{
+				p.loseShield();
+			}
+
+			 // View following player algorithm
+            if(p.getPosition().x > SCREENWIDTH / 2)
             {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-                {
-                    playerObj.applyShield();
-                    shieldDelayClock.restart();
-                    shieldPopClock.restart();
-                }
-            }
-            if (shieldPopTimer.asSeconds() > 2.8 && shieldPopTimer.asSeconds() < 2.9)
-            {
-                playerObj.loseShield();
-            }
-            
-            // View following player algorithm
-            if (playerObj.getPosition().x > SCREENWIDTH / 2)
-            {
-                if (playerObj.getPosition().x < 2700 - SCREENWIDTH / 2)
-                    viewPosition.x = playerObj.getPosition().x;
+                if (p.getPosition().x < 2700 - SCREENWIDTH / 2)
+                    viewPosition.x = p.getPosition().x;
                 else
                     viewPosition.x = 2700 - SCREENWIDTH / 2;
             }
             else
                 viewPosition.x = SCREENWIDTH / 2;
-            
-            if (playerObj.getPosition().y > SCREENHEIGHT / 2)
+
+            if(p.getPosition().y > SCREENHEIGHT / 2)
             {
-                if (playerObj.getPosition().y < 1800 - SCREENHEIGHT / 2)
-                    viewPosition.y = playerObj.getPosition().y;
+                if (p.getPosition().y < 1800 - SCREENHEIGHT / 2)
+                    viewPosition.y = p.getPosition().y;
                 else
                     viewPosition.y = 1800 - SCREENHEIGHT / 2;
             }
             else
                 viewPosition.y = SCREENHEIGHT / 2;
-            
+
             view.setCenter(viewPosition);
             txt.setPosition(viewPosition.x - SCREENWIDTH / 2, viewPosition.y - SCREENHEIGHT / 2);
-            bossTxt.setPosition(viewPosition.x - SCREENWIDTH / 2, viewPosition.y + SCREENHEIGHT / 2 - 50);
+            bossTxt.setPosition(viewPosition.x - SCREENWIDTH / 2, viewPosition.y + SCREENHEIGHT / 2 - 50 );
             rectangle.setPosition(viewPosition.x - SCREENWIDTH / 2 + 400, viewPosition.y + SCREENHEIGHT / 2 - 30);
-            
+
             App.setView(view);
-            App.clear();
-            App.draw(background);
-            playerObj.draw(App);
-            if (bombPtr)
+			App.clear();
+			App.draw(background);
+			if (scoreCount < 3)
+                App.draw(door);
+			p.draw(App);
+			if (bombPtr)
                 bombPtr->draw(App);
-            
-            // Create new monster
-            if (monsterSpawnTimer.asSeconds() > 5)
-            {
-                monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, borderImage, 2 * 250, 2 * 1700));
-                monsterSpawnClock.restart();
-            }
-            
-            int counter = 0;
-            for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
-            {
-                monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
-                
-                // If timer passes, increase monsters' speed and restart clock to 0
-                if (monsterSpeedTimer.asSeconds() > 5)
-                {
-                    monsterArray[counter]->movementAnimation();
-                    monsterArray[counter]->increaseSpeed(speedNumber);
-                    monsterSpeedClock.restart();
-                }
-                
-                //                // Sound of the monster
-                //                sf::Sound explosionTexture;
-                //                try { // throws error if file not opened
-                //                    if(!explosionTexture.loadFromFile(MONSTERSOUND))
-                //                    {
-                //                        throw FileOpenException(EXPLOSIONIMAGE);
-                //                    }
-                //                }
-                //                catch(exception& e)
-                //                {
-                //                    cout << "Cannot open: " << e.what() << endl;
-                //                    exit(-1);
-                //                }
-                
-                // Collision detection
-                if (playerObj.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
-                {
-                    //monstersoundd.play();
-                    if (playerObj.getHit() == -1) {
-                        std::cout << "Player hit by Monster" << std::endl;
-                        playerObj.setHit(counter);
-                        if (testmode == false)
-                            playerObj.loseLife();
-                        txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-                        monsterArray[counter]->collisionAnimation();
-                    }
-                }
-                else
-                {
-                    if (playerObj.getHit() == counter)
-                        playerObj.setHit(-1);
-                }
-                if (attack == true)
-                {
-                    if (playerObj.attack(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
+
+             // Create new monster
+			if (monsterSpawnTimer.asSeconds() > 8)
+			{
+				for (int i = 0; i < spawnCount; i++)
+				{
+					int randomNumber;
+					randomNumber = rand() % 2;
+
+					// Spawn from left side
+					if (randomNumber == 0)
+					{
+						monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, borderTexture, 2*250, 2*(750+static_cast<float>(rand() % 1000))));
+					}
+					// Spawn from right side
+					else if (randomNumber == 1)
+					{
+						 monsterArray.push_back(new Monster(monsterTexture, monsterTwoTexture, monsterCollisionTexture, borderTexture, 2*1200, 2*(800 + static_cast<float>(rand() % 1000))));
+					}
+				}
+				monsterSpawnClock.restart();
+			}
+
+			int counter = 0;
+			for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+			{
+				monsterArray[counter]->updateMovement(SCREENWIDTH, BG_HEIGHT);
+
+				// If timer passes, increase monsters' speed and restart clock to 0
+				if (monsterSpeedTimer.asSeconds() > 2.5)
+				{
+					monsterArray[counter]->movementAnimation();
+					monsterArray[counter]->increaseSpeed();
+					monsterSpeedClock.restart();
+				}
+
+				// Collision detection
+				if (p.hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
+				{
+					if (p.getHit() == -1) {
+						std::cout << "Player hit by Monster" << std::endl;
+						p.setHit(counter);
+						p.loseLife();
+						txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+						monsterArray[counter]->collisionAnimation();
+					}
+				}
+				else
+				{
+					if (p.getHit() == counter)
+						p.setHit(-1);
+				}
+				if (attack == true)
+				{
+					if(p.attack(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
                     {
-                        monsterArray[counter]->setAlive(false);
+                        monsterArray[counter]->setAlive(false) ;
                         cout << "ATTACK" << endl;
                         break;
                     }
-                }
-                
-                
-                if (bombDrop == true)
+				}
+
+
+                if(bombDrop == true)
                 {
-                    if (bombPtr->hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
+                    if(bombPtr->hitByMonster(monsterArray[counter]->getPosition().x, monsterArray[counter]->getPosition().y, monsterArray[counter]->size()))
                     {
-                        monsterArray[counter]->setAlive(false);
+                        monsterArray[counter]->setAlive(false) ;
                     }
                 }
-                
+
                 if ((*monsterIterator)->getAlive())
                     monsterArray[counter]->draw(App);
                 counter++;
             }
-            counter = 0;
-            for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+            monsterArray.erase(std::remove_if(monsterArray.begin(), monsterArray.end(), [](Monster *x) {return !x->getAlive(); }), monsterArray.end());
+
+			// Coin generation
+			for (int i = 0; i < 6; i++)
+			{
+				App.draw(coinArray[i]);
+				if (p.collectCoin(coinArray[i].getPosition().x, coinArray[i].getPosition().y, 40, 40))
+				{
+					coinArray[i].setPosition(getRandom(100, 1800), getRandom(100, 1500));
+					txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+					cout << p.getScore() << endl;
+					scoreCount++;
+					if (p.getScore() % 15 == 0)
+					{
+						spawnCount++;
+					}
+				}
+			}
+
+        if(bombDrop == true)
+        {
+            explosionSound.play();
+            explosion.startExplosion(bombPtr->getPosition());
+            delete bombPtr;
+            bombPtr = nullptr;
+            bombDrop = false;
+            explode = true;
+        }
+
+        if (explode)
+        {
+            explosion.draw(App);
+            count++;
+            if (count > 10)
             {
-                if(monsterArray[counter]->getAlive() == false)
-                {
-                    delete monsterArray[counter];
-                    monsterArray[counter] = nullptr;
-                }
-                
-                counter++;
+                explode = false;
+                count = 0;
+                explosionSound.stop();
             }
-            monsterArray.erase(std::remove_if(monsterArray.begin(), monsterArray.end(), [](Monster *x) {return x == nullptr; }), monsterArray.end());
-            
-            // Coin generation
-            for (int i = 0; i < 6; i++)
+
+        }
+
+        // Door opens
+        if (scoreCount == 1)
+        {
+            key.setPosition(sf::Vector2f(p.getPosition().x + 100, p.getPosition().y)); //key location in the background
+            key.setTexture(&keyTexture);
+            scoreCount++;
+        }
+        if(scoreCount == 2)
+        {
+             if(p.getPosition() == key.getPosition())
+             {
+                 key.setFillColor(sf::Color::Transparent);
+                  scoreCount++;
+                  p.setMask(border2Texture);
+             }
+
+        }
+
+
+
+            /*
+        if (doorOpen == true)
+        {
+            doorOpen = false;
+            p.setMask(border2Texture);
+            door.setFillColor(sf::Color::Transparent);
+        }
+*/
+
+
+        //Render big boss
+        if (bigBoss != nullptr)
+        {
+            if (bigBossCountdown < 35)
+                 bigBossCountdown++;
+            if (bigBossCountdown > 10)
             {
-                coinArray[i]->draw(App);
-                coinArray[i]->animate();
-                //App.draw(coinArray[i]);
-                if (playerObj.collectCoin(coinArray[i]->getPosition().x, coinArray[i]->getPosition().y, coinArray[i]->size().x, coinArray[i]->size().y))
-                {
-                    coinArray[i]->collide();
-                    txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-                    if (playerObj.getScore() % 10 == 0)
-                    {
-                        speedNumber += 0.25;
-                    }
-                }
+                bigBoss->updateMovement(SCREENWIDTH, BG_HEIGHT);
+                bigBoss->movementAnimation();
+                bigBoss->increaseSpeed();
+                bigBossCountdown = 0;
             }
-            
-            if (bombDrop == true)
+
+            // Big boss collision detection
+            if (attack == false)
             {
-                explosionSound.play();
-                explosion.startExplosion(bombPtr->getPosition());
-                delete bombPtr;
-                bombPtr = nullptr;
-                bombDrop = false;
-                explode = true;
-            }
-            
-            if (explode)
-            {
-                explosion.draw(App);
-                count++;
-                if (count > 10)
+                if (p.hitByMonster(bigBoss->getPosition().x, bigBoss->getPosition().y, bigBoss->size()))
                 {
-                    explode = false;
-                    count = 0;
-                    explosionSound.stop();
-                }
-                
-            }
-            
-            // Render big boss
-            if (bigBoss != nullptr)
-            {
-                if (bigBossCountdown < 35)
-                    bigBossCountdown++;
-                if (bigBossCountdown > 10)
-                {
-                    bigBoss->updateMovement(SCREENWIDTH, BG_HEIGHT);
-                    bigBoss->movementAnimation();
-                    bigBoss->increaseSpeed(speedNumber);
-                    bigBossCountdown = 0;
-                }
-                
-                // Big boss collision detection
-                if (attack == false)
-                {
-                    if (playerObj.hitByMonster(bigBoss->getPosition().x, bigBoss->getPosition().y, bigBoss->size()))
+                    if (p.getHit() == -1)
                     {
-                        if (playerObj.getHit() == -1)
-                        {
-                            playerObj.setHit(-20);
-                            if (testmode == false)
-                                playerObj.loseLife();
-                            txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-                            bigBoss->collisionAnimation();
-                        }
+                        p.setHit(-20);
+                        p.loseLife();
+                        txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+                        bigBoss->collisionAnimation();
                     }
-                    else
-                    {
-                        if (playerObj.getHit() == -20)
-                            playerObj.setHit(-1);
-                    }
-                }
-                
-                if (attack == true)
-                {
-                    playerhurtsound.play();
-                    if (playerObj.attack(bigBoss->getPosition().x, bigBoss->getPosition().y, bigBoss->size()))
-                    {
-                        if (playerObj.getHit() == -1)
-                        {
-                            playerObj.setHit(-20);
-                            if (testmode == false)
-                                playerObj.loseLife();
-                            txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-                            rectangle.setSize(sf::Vector2f(rectangle.getSize().x - 100, 15));
-                        }
-                    }
-                    else
-                    {
-                        if (playerObj.getHit() == -20)
-                            playerObj.setHit(-1);
-                    }
-                }
-                
-                if (rectangle.getSize().x < 0)
-                {
-                    rectangle.setFillColor(sf::Color::Transparent);
-                    rectangle.setOutlineColor(sf::Color::Transparent);
-                    App.draw(rectangle);
-                    delete bigBoss;
-                    bigBoss = nullptr;
-                    if (testmode == false)
-                        playerObj.increaseLife();
-                    txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-                    playerObj.setHit(-1);
                 }
                 else
-                    bigBoss->draw(App);
-                
-                App.draw(bossTxt);
-                if (rectangle.getSize().x >= 0)
-                    App.draw(rectangle);
+                {
+                    if (p.getHit() == -20)
+                        p.setHit(-1);
+                }
             }
-            
-            if (playerObj.getLives() == 0 && testmode == false)
+
+            if(attack == true)
             {
-                counter = 0;
-                for (monsterIterator = monsterArray.begin(); monsterIterator != monsterArray.end(); monsterIterator++)
+                if(p.attack(bigBoss->getPosition().x, bigBoss->getPosition().y, bigBoss->size()))
                 {
-                    delete monsterArray[counter];
-                    monsterArray[counter] = nullptr;
-                    counter++;
+                    if (p.getHit() == -1)
+                    {
+                        p.setHit(-20);
+                        p.loseLife();
+                        txt.setString(name + "                      " + "Score: " + to_string(p.getScore()) + "                     " + "Lives: " + to_string(p.getLives()));
+                        rectangle.setSize(sf::Vector2f(rectangle.getSize().x - 100, 15));
+                    }
                 }
-                for(int i = 0; i < coinArray.size(); i++)
+                else
                 {
-                    delete coinArray[i];
-                    coinArray[i] = nullptr;
+                    if (p.getHit() == -20)
+                        p.setHit(-1);
                 }
-                if(bigBoss != nullptr)
-                    delete bigBoss;
-                App.setView(App.getDefaultView());
-                Score::score = playerObj.getScore();
-                return (4);
             }
-            
-            //coinArray[0].draw(App);
-            App.draw(txt);
-            App.display();
+
+            if (rectangle.getSize().x < 0)
+            {
+                rectangle.setFillColor(sf::Color::Transparent);
+                rectangle.setOutlineColor(sf::Color::Transparent);
+                App.draw(rectangle);
+                delete bigBoss;
+                bigBoss = nullptr;
+            }
+            else
+            bigBoss->draw(App);
         }
-        
+
+
+
+			App.draw(txt);
+			App.draw(bossTxt);
+            if (rectangle.getSize().x >= 0)
+                App.draw(rectangle);
+            if (scoreCount < 4)
+                App.draw(key);
+			App.display();
+		}
+
     }
-    
+
     // Never reach this point normally, but just in case, exit the application
     return (-1);
 }
