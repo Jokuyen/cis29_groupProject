@@ -38,7 +38,7 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
     }
     
     //how to play button
-    sf::Text htpButton("How to Play", font);
+    sf::Text htpButton("Play", font);
     htpButton.setCharacterSize(60);
     htpButton.setFillColor(sf::Color::White);
     sf::FloatRect htpButtonRect = htpButton.getLocalBounds();
@@ -46,7 +46,7 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
     htpButton.setPosition(sf::Vector2f(SCREENWIDTH / 2.0f, (SCREENHEIGHT / 8.0f)));
     
     //play button
-    sf::Text pButton("Play", font);
+    sf::Text pButton("How to Play", font);
     pButton.setCharacterSize(60);
     pButton.setFillColor(sf::Color::White);
     sf::FloatRect pButtonRect = pButton.getLocalBounds();
@@ -81,17 +81,6 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
             if (event.type == sf::Event::EventType::Closed)
                 return (-1);
             // Key pressed
-			if (event.type == sf::Event::KeyPressed)
-			{
-				switch (event.key.code)
-				{
-				case sf::Keyboard::Backspace: // Return to title screen
-					return (0);
-					break;
-				default:
-					break;
-				}
-			}
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
@@ -102,12 +91,12 @@ int Menu::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREENHEIG
                     //how to play button
                     if((position.x > (htpButton.getPosition().x-(htpButtonRect.width/2)) && position.x < (htpButton.getPosition().x+(htpButtonRect.width/2)) && (position.y > (htpButton.getPosition().y-(htpButtonRect.height/2)) && position.y < (htpButton.getPosition().y + (htpButtonRect.height/2)))))
                     {
-                        return (1);
+                        return (8);
                     }
                     //play button
                     if((position.x > (pButton.getPosition().x-(pButtonRect.width/2)) && position.x < (pButton.getPosition().x+(pButtonRect.width/2)) && (position.y > (pButton.getPosition().y-(pButtonRect.height/2)) && position.y < (pButton.getPosition().y + (pButtonRect.height/2)))))
                     {
-                        return (8);
+                        return (1);
                     }
                     //high score list button
                     if((position.x > (hsButton.getPosition().x-(hsButtonRect.width/2)) && position.x < (hsButton.getPosition().x+(hsButtonRect.width/2)) && (position.y > (hsButton.getPosition().y-(hsButtonRect.height/2)) && position.y < (hsButton.getPosition().y + (hsButtonRect.height/2)))))

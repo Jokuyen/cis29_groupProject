@@ -105,4 +105,3 @@ int screen_6::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
     
     return (-1);
 }
-

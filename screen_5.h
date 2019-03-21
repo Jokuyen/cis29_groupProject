@@ -1,5 +1,3 @@
-
-
 /********************
  *  Created by Manxin Zhang
  *  CIS29 / Group #4
@@ -100,12 +98,12 @@ int screen_5::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
                 std::cout << position.x << " " << position.y << std::endl;
                 if((position.x > (nextButton.getPosition().x-(nextButtonRect.width/2)) && position.x < (nextButton.getPosition().x+(nextButtonRect.width/2)) && (position.y > (nextButton.getPosition().y-(nextButtonRect.height/2)) && position.y < (nextButton.getPosition().y + (nextButtonRect.height/2)))))
                 {
-					if (!name.empty()) {
-						highScores.insert({ score, name });
-						if (highScores.size() > 10)
-							highScores.erase((highScores.begin())->first);
-						writeToScoreFile(filename, highScores);
-					}
+                    if (!name.empty()) {
+                        highScores.insert({ score, name });
+                        if (highScores.size() > 10)
+                            highScores.erase((highScores.begin())->first);
+                        writeToScoreFile(filename, highScores);
+                    }
                     return (6);
                 }
             }
