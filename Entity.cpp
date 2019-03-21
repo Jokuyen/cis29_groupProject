@@ -30,10 +30,12 @@ void Entity::draw(sf::RenderWindow& App)
     App.draw(sprite);
 }
 
+
 void Entity::setPosition(float x, float y)
 {
     sprite.setPosition(x, y);
 }
+
 void Entity::move(Direction d) {
 	switch (d) {
 	case Up:

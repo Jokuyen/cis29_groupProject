@@ -58,11 +58,7 @@ const char* COIN_FIVE= "coin5.png";
 const char* COIN_SIX= "coin6.png";
 
 //Border assets
-const char* BORDERIMAGE = "wall8Mask.png";
-const char* BORDER2IMAGE = "wall8Open.png";
-const char* DOORIMAGE = "door.png";
-const char* KEYIMAGE = "key2.png";
-
+const char* BORDERIMAGE = "wall8OpenMask.png";
 
 sf::Image getBorderImage()
 {
@@ -79,29 +75,7 @@ sf::Image getBorderImage()
 		cout << "Cannot open: " << e.what() << endl;
 		exit(-1);
 	}
-	std::cerr << "\ngetBorderImage called!\n";
 	return borderTexture.copyToImage();
-
-}
-
-sf::Image getBorder2Image()
-{
-	//background mask
-	sf::Texture border2Texture;
-	try { // throws error if file not opened
-		if (!border2Texture.loadFromFile(BORDER2IMAGE))
-		{
-			throw FileOpenException(BORDER2IMAGE);
-		}
-	}
-	catch (exception& e)
-	{
-		cout << "Cannot open: " << e.what() << endl;
-		exit(-1);
-	}
-	std::cerr << "\ngetBorder2Image called!\n";
-	return border2Texture.copyToImage();
-
 }
 
 namespace Score
@@ -173,23 +147,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	}
 	background.setTexture(&backgroundTexture);
 
-	//Door
-	sf::RectangleShape door(sf::Vector2f(160, 60)); //door image dimension
-	door.setPosition(sf::Vector2f(1210, 700)); //door location in the background
-	sf::Texture doorTexture;
-	try { // throws error if file not opened
-		if (!doorTexture.loadFromFile(DOORIMAGE))
-		{
-			throw FileOpenException(DOORIMAGE);
-		}
-	}
-	catch (exception& e)
-	{
-		//cout << "Cannot open: " << e.what() << endl;
-		exit(-1);
-	}
-	door.setTexture(&doorTexture);
-
 	// Player
 	sf::Texture playerTexture;
 	try { // throws error if file not opened
@@ -241,7 +198,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	}
 	Player playerObj(playerTexture, shieldTexture, flippedPlayerTexture, flippedShieldTexture, SCREENWIDTH, BG_HEIGHT);
 	playerObj.setPosition(200, 1000);
-	playerObj.setImage();
 
 	// player sound
 	sf::SoundBuffer playerhurtBuffer;
@@ -388,40 +344,10 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	sf::Clock shieldDelayClock;
 	sf::Clock shieldPopClock;
 
-	sf::Texture border2Texture;
-	try { // throws error if file not opened
-		if (!border2Texture.loadFromFile(BORDER2IMAGE))
-		{
-			throw FileOpenException(BORDER2IMAGE);
-		}
-	}
-	catch (exception& e)
-	{
-		cout << "Cannot open: " << e.what() << endl;
-		exit(-1);
-	}
-
-	sf::RectangleShape key(sf::Vector2f(60, 60)); //key image dimension
-
-	sf::Texture keyTexture;
-	try { // throws error if file not opened
-		if (!keyTexture.loadFromFile(KEYIMAGE))
-		{
-			throw FileOpenException(KEYIMAGE);
-		}
-	}
-	catch (exception& e)
-	{
-		//cout << "Cannot open: " << e.what() << endl;
-		exit(-1);
-	}
-
-
 	bool explode = false;
 	int count = 0;
 	int bigBossCountdown = 0;
 	//bool doorOpen = false;
-	int scoreCount = 0;
 	bool bombDrop = false;
 
 	//View a.k.a camera
@@ -571,8 +497,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 			App.setView(view);
 			App.clear();
 			App.draw(background);
-			if (scoreCount < 3)
-				App.draw(door);
+
 			playerObj.draw(App);
 			if (bombPtr)
 				bombPtr->draw(App);
@@ -678,7 +603,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 				{
 					coinArray[i]->collide();
 					txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
-					scoreCount++;
 					if (playerObj.getScore() % 10 == 0)
 					{
 						speedNumber += 0.05;
@@ -709,26 +633,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 					explode = false;
 					count = 0;
 					explosionSound.stop();
-				}
-
-			}
-
-			// Door opens
-			if (scoreCount == 1)
-			{
-				key.setPosition(sf::Vector2f(playerObj.getPosition().x + 100, playerObj.getPosition().y)); //key location in the background
-				key.setTexture(&keyTexture);
-				scoreCount++;
-			}
-			if (scoreCount == 2)
-			{
-				if (playerObj.getPosition() == key.getPosition())
-				{
-					key.setFillColor(sf::Color::Transparent);
-					scoreCount++;
-					std::cout << "CALLING setImage2! \n";
-					playerObj.setImage2();
-
 				}
 
 			}
@@ -828,8 +732,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 
 			//coinArray[0].draw(App);
 			App.draw(txt);
-			if (scoreCount < 4)
-				App.draw(key);
 			App.display();
 		}
 
@@ -838,8 +740,6 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	// Never reach this point normally, but just in case, exit the application
 	return (-1);
 }
-
 sf::Image Entity::image = getBorderImage();
-sf::Image Entity::image2 = getBorder2Image();
 
 #endif /* screen_3_h */
