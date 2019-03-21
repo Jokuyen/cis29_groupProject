@@ -56,6 +56,7 @@ const char* COIN_THREE= "coin3.png";
 const char* COIN_FOUR= "coin4.png";
 const char* COIN_FIVE= "coin5.png";
 const char* COIN_SIX= "coin6.png";
+const char* COIN_SOUND = "1_Coins.wav";
 
 //Border assets
 const char* BORDERIMAGE = "wall8OpenMask.png";
@@ -364,6 +365,24 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 	sf::Text bossTxt("Monster Health", font);
 	bossTxt.setCharacterSize(30);
 	bossTxt.setFillColor(sf::Color::Red);
+    
+    
+    // coin sound
+    sf::SoundBuffer coinsoudnBUFFER;
+    try { // throws error if file not opened
+        if (!coinsoudnBUFFER.loadFromFile(COIN_SOUND))
+        {
+            throw FileOpenException(COIN_SOUND);
+        }
+    }
+    catch (exception& e)
+    {
+        cout << "Cannot open: " << e.what() << endl;
+        exit(-1);
+    }
+    sf::Sound coinSound;
+    coinSound.setBuffer(coinsoudnBUFFER);
+    coinSound.setVolume(100);
 
 	sf::Event event;
 	while (Running)
@@ -601,6 +620,7 @@ int screen_3::Run(sf::RenderWindow &App, const int SCREENWIDTH, const int SCREEN
 				//App.draw(coinArray[i]);
 				if (playerObj.collectCoin(coinArray[i]->getPosition().x, coinArray[i]->getPosition().y, coinArray[i]->size().x, coinArray[i]->size().y))
 				{
+                    coinSound.play();
 					coinArray[i]->collide();
 					txt.setString(name + "\t\t\t\tScore: " + to_string(playerObj.getScore()) + "\t\t\t\tLives: " + to_string(playerObj.getLives()));
 					if (playerObj.getScore() % 10 == 0)
